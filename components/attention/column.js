@@ -13,6 +13,7 @@ import {
 var {width} = Dimensions.get('window')
 import {request_user_column} from "../api"
 export default class Column extends Component{
+
     constructor(props){
         super(props)
         this.state={
@@ -31,6 +32,7 @@ export default class Column extends Component{
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#f8f8f8"}}>
+                <TouchableWithoutFeedback onPress={()=>{this.props.navigate.navigate("ColumnDetailed")}}>
                 <View style={{width:width}}>
                     <FlatList
                         data={this.state.column_list}
@@ -62,6 +64,7 @@ export default class Column extends Component{
 
 
                 </View>
+                </TouchableWithoutFeedback>
             </View>
         )
     }

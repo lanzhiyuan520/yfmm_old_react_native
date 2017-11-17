@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 import React, {Component} from 'react';
 import {
@@ -111,24 +110,4 @@ export default class MinePage extends Component {
 const styles = StyleSheet.create({
 
 });
-=======
-import React, { Component } from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    TouchableWithoutFeedback,
-    Alert,
-    Image
-} from 'react-native';
-export default class Answer extends Component{
-    render(){
-        return(
-            <View>
-                <Text>问答</Text>
-            </View>
-        )
-    }
-}
->>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
+

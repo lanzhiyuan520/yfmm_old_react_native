@@ -6,7 +6,6 @@ import {
     View,
     TouchableWithoutFeedback,
     Alert,
-<<<<<<< HEAD
     Image,
     FlatList,
     Dimensions
@@ -116,21 +115,4 @@ const styles = StyleSheet.create({
         top:0,
     }
 });
-=======
-    Image
-} from 'react-native';
 
-export default class Find extends Component{
-    render(){
-        return(
-            <View>
-                <Text>发现</Text>
-
-            </View>
-        )
-    }
-    componentDidMount(){
-        console.log(this.props)
-    }
-}
->>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88

@@ -33,6 +33,7 @@ import Address from "./components/personalData/address"
 import My from "./components/My"
 import First from "./components/welcome/First"
 import TalentDetailed from "./components/attention/talent_detailed"
+import ColumnDetailed from "./components/attention/column_detailed"
 const  SimpleApp = StackNavigator({
     App:{
         screen:App
@@ -82,5 +83,6 @@ const  SimpleApp = StackNavigator({
     Phone:{screen:Phone},
     Address:{screen:Address},
     TalentDetailed:{screen:TalentDetailed},
+    ColumnDetailed:{screen:ColumnDetailed},
 })
 export default SimpleApp;
