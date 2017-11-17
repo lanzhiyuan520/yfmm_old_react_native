@@ -1,5 +1,5 @@
 {
-  "name": "myapp",
+  "name": "AwesomeProject",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -20,7 +20,21 @@
     "react-native-vector-icons": "^4.4.2",
     "react-native-video": "^2.0.0",
     "react-native-wechat": "^1.9.9",
-    "react-navigation": "^1.0.0-beta.15"
+    "react-navigation": "^1.0.0-beta.15",
+    "crypto-js": "^3.1.9-1",
+    "eslint": "^4.9.0",
+    "moment": "^2.19.1",
+    "react-naive-highly-customizable-action-sheet": "^1.1.2",
+    "react-native-actionsheet": "^2.3.0",
+    "react-native-camera": "^0.10.0",
+    "react-native-device-info": "^0.12.1",
+    "react-native-htmlview": "^0.12.1",
+    "react-native-image-crop-picker": "^0.18.1",
+    "react-native-pull": "^2.0.2",
+    "react-native-refreshable-listview": "^2.0.0-beta4",
+    "react-native-scrollable-tab-view": "^0.8.0",
+    "test": "jest",
+    "lint": "eslint . --fix --format=node_modules/eslint-formatter-pretty --quiet"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",
@@ -34,5 +48,6 @@
   "main": "index.js",
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "optionalDependencies": {}
 }

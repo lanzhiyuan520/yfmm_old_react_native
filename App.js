@@ -13,12 +13,17 @@ import {
   View,
     TouchableWithoutFeedback,
     Alert,
-    Image
+    Image,
+    AsyncStorage,
+    ToastAndroid,
+    BackAndroid,
+    BackHandler
 } from 'react-native';
 import Home from "./components/Home"
 import Answer from "./components/answer"
 import Find from "./components/Find"
 import My from "./components/My"
+import {init_user_behavior} from "./components/api"
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
@@ -35,7 +40,11 @@ export default class App extends Component<{}> {
     super(props);
       this.state = {
           selectedTab:'首页',
+          selectedTab:this.props.navigation.state.params.selectedTab,
+          user_data:{}
       }
+      this.find=this.find.bind(this)
+      this.behavior=this.behavior.bind(this)
   }
 
     componentDidMount(){
@@ -43,7 +52,36 @@ export default class App extends Component<{}> {
         WeChat.registerApp('wx825ecd9a849eef9d');
     }
 
-    _renderTabarItems(selectedTab,icon,selectedIcon,Component,navigate){
+    find () {
+        this.setState({
+            selectedTab: "发现"
+        })
+    }
+    componentWillMount() {
+        if (Platform.OS === 'android') {
+            BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
+        }
+    }
+    onBackAndroid(){
+        if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+            //最近2秒内按过back键，可以退出应用。
+            BackAndroid.exitApp();
+        }
+        this.lastBackPressed = Date.now();
+        ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
+        return true;
+    }
+    componentDidMount() {
+        var user = JSON.parse(this.props.navigation.state.params.user)
+        init_user_behavior(user,this.behavior)
+        const dismissKeyboard = require('dismissKeyboard');
+        dismissKeyboard();
+    }
+    behavior(responseText){
+        AsyncStorage.setItem("user_behavior",JSON.stringify(responseText.data))
+    }
+
+    _renderTabarItems(selectedTab,icon,selectedIcon,Component,navigate,find,user,navigation){
         return (
             <TabNavigator.Item
                 selected={this.state.selectedTab === selectedTab}
@@ -54,21 +92,23 @@ export default class App extends Component<{}> {
                 renderSelectedIcon={() => <Image style={styles.icon} source={selectedIcon} />}
                 onPress={() => this.setState({ selectedTab: selectedTab })}
             >
-              <Component navigate={navigate} />
+              <Component navigate={navigate} find={find} user={user} navigation={navigation} />
             </TabNavigator.Item>
         )
 
     }
+
+
   render() {
-    const { navigate } = this.props.navigation;
+      const { navigate } = this.props.navigation;
     return (
       <View  style={styles.container}>
-        <TabNavigator>
-            {this._renderTabarItems('首页',require('./img/home2.png'),require('./img/home.png'),Home,navigate)}
-            {this._renderTabarItems('问答',require('./img/answer2.png'),require('./img/answer.png'),Answer,navigate)}
-            {this._renderTabarItems('发现',require('./img/find2.png'),require('./img/find.png'),Find,navigate)}
-            {this._renderTabarItems('我的',require('./img/my2.png'),require('./img/my.png'),My,navigate)}
-        </TabNavigator>
+          <TabNavigator>
+              {this._renderTabarItems('首页',require('./img/home2.png'),require('./img/home.png'),Home,navigate,this.find,this.props.navigation.state.params.user,this.props.navigation)}
+              {this._renderTabarItems('问答',require('./img/answer2.png'),require('./img/answer.png'),Answer,navigate,this.find,this.props.navigation.state.params.user,this.props.navigation)}
+              {this._renderTabarItems('发现',require('./img/find2.png'),require('./img/find.png'),Find,navigate,this.find,this.props.navigation.state.params.user,this.props.navigation)}
+              {this._renderTabarItems('我的',require('./img/my2.png'),require('./img/my.png'),My,navigate,this.find,this.props.navigation.state.params.user,this.props.navigation)}
+          </TabNavigator>
       </View>
     );
   }

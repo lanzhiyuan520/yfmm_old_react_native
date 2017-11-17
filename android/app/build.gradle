@@ -1,4 +1,8 @@
 apply plugin: "com.android.application"
+<<<<<<< HEAD
+=======
+
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
 import com.android.build.OutputFile
 
 /**
@@ -97,7 +101,12 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
+<<<<<<< HEAD
         applicationId "com.myapp"
+=======
+       vectorDrawables.useSupportLibrary = true
+        applicationId "com.awesomeproject"
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
@@ -106,6 +115,18 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+<<<<<<< HEAD
+=======
+     signingConfigs {
+            release {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
+
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
     splits {
         abi {
             reset()
@@ -118,6 +139,10 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+<<<<<<< HEAD
+=======
+            signingConfig signingConfigs.release
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
         }
     }
     // applicationVariants are e.g. debug, release
@@ -136,14 +161,24 @@ android {
 }
 
 dependencies {
+<<<<<<< HEAD
     compile project(':react-native-image-picker')
     compile project(':react-native-wechat')
     compile project(':react-native-share')
     compile project(':react-native-video')
+=======
+    compile project(':react-native-device-info')
+    compile project(':react-native-image-crop-picker')
+    compile project(':react-native-wechat')
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile project(':react-native-vector-icons')
+<<<<<<< HEAD
+=======
+
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
 }
 
 // Run this once to be able to run the application with BUCK
@@ -152,6 +187,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+<<<<<<< HEAD
 
 project.ext.vectoricons = [
 
@@ -162,3 +198,9 @@ iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ] // Name of the font file
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 
+=======
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ]
+]
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
