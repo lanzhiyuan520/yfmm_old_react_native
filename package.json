@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint . --fix --format=node_modules/eslint-formatter-pretty --quiet"
   },
   "dependencies": {
     "react": "16.0.0-beta.5",
@@ -32,9 +33,7 @@
     "react-native-image-crop-picker": "^0.18.1",
     "react-native-pull": "^2.0.2",
     "react-native-refreshable-listview": "^2.0.0-beta4",
-    "react-native-scrollable-tab-view": "^0.8.0",
-    "test": "jest",
-    "lint": "eslint . --fix --format=node_modules/eslint-formatter-pretty --quiet"
+    "react-native-scrollable-tab-view": "^0.8.0"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",

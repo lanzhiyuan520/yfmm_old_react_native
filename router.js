@@ -35,6 +35,7 @@ import First from "./components/welcome/First"
 import TalentDetailed from "./components/attention/talent_detailed"
 import ColumnDetailed from "./components/attention/column_detailed"
 const  SimpleApp = StackNavigator({
+    First:{screen:First},
     App:{
         screen:App
     },
@@ -56,7 +57,6 @@ const  SimpleApp = StackNavigator({
     ExpertDetail:{
         screen:ExpertDetail
     },
-    First:{screen:First},
     Welcome:{screen:Welcome},
     Login:{screen:Login},
     Message:{screen:Message},
