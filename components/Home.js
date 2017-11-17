@@ -8,6 +8,17 @@ import {
     Alert,
     Image,
     Dimensions,
+<<<<<<< HEAD
+    FlatList
+} from 'react-native';
+export default class Home extends Component{
+
+    render(){
+        return(
+            <View>
+                <Text>首页</Text>
+            </View>
+=======
     FlatList,
     ScrollView,
     ToastAndroid,
@@ -353,10 +364,14 @@ export default class Home extends Component{
                 </ScrollView>
             </View>
             </PullView>
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
         )
     }
 }
 const styles = StyleSheet.create({
+<<<<<<< HEAD
+
+=======
     text:{
         color:"#333",
         fontSize:14,
@@ -382,4 +397,5 @@ const styles = StyleSheet.create({
     img_last:{
         marginRight:0
     }
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
 })

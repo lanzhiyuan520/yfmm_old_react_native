@@ -6,6 +6,15 @@ import {
     View,
     TouchableWithoutFeedback,
     Alert,
+<<<<<<< HEAD
+    Image
+} from 'react-native';
+export default class My extends Component{
+    render(){
+        return(
+            <View>
+                <Text>我的</Text>
+=======
     Image,
     Dimensions,
     BackAndroid,
@@ -182,6 +191,7 @@ export default class My extends Component{
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
+>>>>>>> 33b91709abc2fff838f66293dbda3b5e3b203c88
             </View>
         )
     }

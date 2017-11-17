@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import * as WeChat from 'react-native-wechat';
 import {
   Platform,
   StyleSheet,
@@ -32,18 +33,25 @@ const instructions = Platform.select({
 import TabNavigator from 'react-native-tab-navigator';
 export default class App extends Component<{}> {
     static navigationOptions = {
-        title: '',
+        title: 'Welcome',
         header:null
     };
   constructor(props){
-    super(props)
+    super(props);
       this.state = {
+          selectedTab:'首页',
           selectedTab:this.props.navigation.state.params.selectedTab,
           user_data:{}
       }
       this.find=this.find.bind(this)
       this.behavior=this.behavior.bind(this)
   }
+
+    componentDidMount(){
+        console.log(this.props.navigation);
+        WeChat.registerApp('wx825ecd9a849eef9d');
+    }
+
     find () {
         this.setState({
             selectedTab: "发现"
@@ -90,6 +98,7 @@ export default class App extends Component<{}> {
 
     }
 
+
   render() {
       const { navigate } = this.props.navigation;
     return (
@@ -108,7 +117,7 @@ export default class App extends Component<{}> {
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:'#fff'
+        backgroundColor:'#f8f8f8'
     },
     tabText:{
         color:'#000000',
