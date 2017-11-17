@@ -9,12 +9,9 @@ import {
     Image,
     Dimensions,
     FlatList,
-    ScrollView,
-    ToastAndroid,
-    ImageBackground,
     AsyncStorage,
-    BackHandler,
-    InteractionManager
+    ImageBackground,
+    ScrollView
 } from 'react-native';
 import moment from 'moment';
 import {setSpText,scaleSize} from "../font"

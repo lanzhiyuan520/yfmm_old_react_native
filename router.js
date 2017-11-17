@@ -1,5 +1,11 @@
 import { StackNavigator , TabNavigator} from 'react-navigation'
 import App from './App';
+import subAnswer from './components/answer/wenda';
+import PublishProblem from './components/answer/publish_problem';
+import Problem from './components/answer/problem_detail';
+import ColumnDetail from './components/column/column_detail';
+import VideoDetail from './components/find/video_detail';
+import ExpertDetail from './components/find/expert_detail';
 import Message from "./components/message"
 import Expertsdetails from "./components/Experts/Expertsdetails"
 import ExpertsList from "./components/Experts/ExpertsList"
@@ -28,12 +34,30 @@ import My from "./components/My"
 import First from "./components/welcome/First"
 import TalentDetailed from "./components/attention/talent_detailed"
 import ColumnDetailed from "./components/attention/column_detailed"
-
-
 const  SimpleApp = StackNavigator({
+    App:{
+        screen:App
+    },
+    subAnswer:{
+        screen:subAnswer
+    },
+    PublishProblem:{
+        screen:PublishProblem
+    },
+    Problem:{
+        screen:Problem
+    },
+    ColumnDetail:{
+        screen:ColumnDetail
+    },
+    VideoDetail:{
+        screen:VideoDetail
+    },
+    ExpertDetail:{
+        screen:ExpertDetail
+    },
     First:{screen:First},
     Welcome:{screen:Welcome},
-    App:{screen:App},
     Login:{screen:Login},
     Message:{screen:Message},
     Expertsdetails:{screen:Expertsdetails},
@@ -60,6 +84,5 @@ const  SimpleApp = StackNavigator({
     Address:{screen:Address},
     TalentDetailed:{screen:TalentDetailed},
     ColumnDetailed:{screen:ColumnDetailed},
-
 })
 export default SimpleApp;
