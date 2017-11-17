@@ -466,8 +466,24 @@ export function request_professionals_content(uuid, token, rid, successCallBack)
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })
 }
-//今日建议页面
-/*export function requestTodayView(rid, userstatus, uuid, token, successCallback){
-    var url = URI + API_VERSION + "advice?rid=" + rid + "&userStatus=" + userstatus + "&uuid=" + uuid;
-    var urlSigned = getSingedUrl(url, uuid);
-}*/
+//达人详情页
+export function request_daren_care_data(id, user, successCallback){
+    var url = URI + API_VERSION + 'userbehavior/care?uuid=' + user.uuid + "&operateId=" + id + "&operateType=8" + "&userId=" + user.id;
+    var urlSigned = getSingedUrl(url, user.uuid);
+    fetch(urlSigned,{
+        method:"GET",
+        headers:{
+            "Http-App-Token": user.token
+        }
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
