@@ -8,11 +8,12 @@ import {
     Alert,
     Image,
     Dimensions,
-    FlatList
+    FlatList,
+    ScrollView
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import ScrollableTabView,{ScrollableTabBar} from "react-native-scrollable-tab-view"
-import {request_daren_care_data} from "../api"
+import {request_get_article_byauth} from "../api"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default class TalentDetailed extends Component{
     static navigationOptions = ({navigation}) => ({
@@ -40,14 +41,17 @@ export default class TalentDetailed extends Component{
     componentDidMount(){
         var id = this.props.navigation.state.params.id
         var user = this.props.navigation.state.params.user
-        request_daren_care_data(id,user,this.daren_detailed)
+        request_get_article_byauth(id,user,this.daren_detailed)
     }
     daren_detailed(responseText){
-        console.log(responseText)
+        this.setState({
+            daren:responseText.data.dataList
+        })
     }
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#f8f8f8"}}>
+                <ScrollView>
                 <View style={{marginBottom:15}}>
                     <View style={{width:width,backgroundColor:"#fff",borderTopWidth:1,borderTopColor:"#f2f2f2"}}>
                         <View style={{width:width,height:80,paddingLeft:10,paddingRight:10,flexDirection:"row",alignItems:"center"}}>
@@ -85,36 +89,40 @@ export default class TalentDetailed extends Component{
                         <View style={{width:width,height:20,paddingLeft:10,paddingRight:10}}>
                             <Text style={{color:"#000",fontSize:14}}>Ta的动态</Text>
                         </View>
-                        <View style={{width:width,height:70,paddingLeft:10,borderBottomWidth:1,borderBottomColor:"#f2f2f2",paddingRight:10,position:"relative",flexDirection:"row",alignItems:"center"}}>
-                            <View style={{width:width,height:60,justifyContent:"space-between",flexDirection:"column"}}>
-                                <View>
-                                    <Text style={{color:"#333",fontSize:14}}>420宝宝学坐巧训练</Text>
-                                </View>
-                                <View style={{flexDirection:"row"}}>
-                                    <Text style={{color:"#999",fontSize:13,marginRight:15}}>9月26日 52:15</Text>
-                                    <Text style={{color:"#999",fontSize:13}}> 阅读2282</Text>
-                                </View>
-                            </View>
-                            <View style={{width:80,height:60,position:"absolute",right:10}}>
-                                <Image source={require("../../img/baobao.jpg")} style={{width:80,height:60}} />
-                            </View>
-                        </View>
-                        <View style={{width:width,height:80,paddingLeft:10,borderBottomWidth:1,borderBottomColor:"#f2f2f2",paddingRight:10,position:"relative",flexDirection:"row",alignItems:"center"}}>
-                            <View style={{width:width,height:60,justifyContent:"space-between",flexDirection:"column"}}>
-                                <View>
-                                    <Text style={{color:"#333",fontSize:14}}>420宝宝学坐巧训练</Text>
-                                </View>
-                                <View style={{flexDirection:"row"}}>
-                                    <Text style={{color:"#999",fontSize:13,marginRight:15}}>9月26日 52:15</Text>
-                                    <Text style={{color:"#999",fontSize:13}}> 阅读2282</Text>
-                                </View>
-                            </View>
-                            <View style={{width:80,height:60,position:"absolute",right:10}}>
-                                <Image source={require("../../img/baobao.jpg")} style={{width:80,height:60}} />
-                            </View>
-                        </View>
+                        <FlatList
+                            data={this.state.daren}
+                            initialNumToRender={5}
+                            renderItem={({item})=>{
+                                return (
+                                    <TouchableWithoutFeedback onPress={()=>{
+                                        this.props.navigation.navigate("Xfdetailed",{
+                                            id:item.id,
+                                            user:JSON.stringify(this.props.navigation.state.params.user)
+                                        })
+                                    }}>
+                                        <View style={{width:width,height:70,paddingLeft:10,borderBottomWidth:1,borderBottomColor:"#f2f2f2",paddingRight:10,position:"relative",flexDirection:"row",alignItems:"center"}}>
+                                            <View style={{width:width,height:60,justifyContent:"space-between",flexDirection:"column"}}>
+                                                <View>
+                                                    <Text style={{color:"#333",fontSize:14}}>{item.title}</Text>
+                                                </View>
+                                                <View style={{flexDirection:"row"}}>
+                                                    <Text style={{color:"#999",fontSize:13,marginRight:15}}>{item.created_at}</Text>
+                                                    <Text style={{color:"#999",fontSize:13}}> 阅读{item.visit_num}</Text>
+                                                </View>
+                                            </View>
+                                            <View style={{width:80,height:60,position:"absolute",right:10}}>
+                                                <Image source={{uri:item.banner}} style={{width:80,height:60}} />
+                                            </View>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                )
+                            }}
+                        />
+
+
                     </View>
                 </View>
+                </ScrollView>
             </View>
         )
     }

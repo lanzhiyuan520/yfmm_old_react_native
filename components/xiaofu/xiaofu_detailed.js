@@ -20,6 +20,7 @@ const options = [ '取消', '微信朋友圈', '微信好友', '复制到剪切�
 import *as wechat from 'react-native-wechat'
 var {width} = Dimensions.get('window')
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {request_article_xiaofu_xiangqing} from "../api"
 export default class XfDetailed extends Component{
     static navigationOptions = ({navigation}) => ({
         title: "小福精选",
@@ -49,19 +50,28 @@ export default class XfDetailed extends Component{
         super(props)
         this.state = {
             collect:false,
-            attention:false
+            attention:false,
+            xiaofu:{}
         }
         wechat.registerApp('wx825ecd9a849eef9d')
         this.showActionSheet = this.showActionSheet.bind(this)
         this.handlePress = this.handlePress.bind(this)
         this.collect = this.collect.bind(this)
         this.attention = this.attention.bind(this)
+        this.xiaofu_detailed = this.xiaofu_detailed.bind(this)
     }
 
     componentDidMount(){
+        var id = this.props.navigation.state.params.id
+        var user = JSON.parse(this.props.navigation.state.params.user)
+        request_article_xiaofu_xiangqing(id,user.uuid,user.token,this.xiaofu_detailed)
         this.props.navigation.setParams({navigatePress:this.showActionSheet,collect:this.collect})
     }
-
+    xiaofu_detailed(responseText){
+        this.setState({
+            xiaofu:responseText.data
+        })
+    }
     showActionSheet() {
         this.ActionSheet.show()
     }
@@ -128,11 +138,11 @@ export default class XfDetailed extends Component{
                 }}>
                     <View style={{width:width,height:50,justifyContent:"space-between",paddingRight:10}}>
                         <View>
-                            <Text style={{fontSize:16,color:"#333",fontWeight:"bold"}}>{this.props.navigation.state.params.title}</Text>
+                            <Text style={{fontSize:16,color:"#333",fontWeight:"bold"}}>{this.state.xiaofu.title}</Text>
                         </View>
                         <View style={{flexDirection:"row"}}>
-                            <Text style={{color:"#999"}}> {this.props.navigation.state.params.time} </Text>
-                            <Text style={{color:"#999",marginLeft:20}}>阅读 2590</Text>
+                            <Text style={{color:"#999"}}> {this.state.xiaofu.created_at} </Text>
+                            <Text style={{color:"#999",marginLeft:20}}>阅读 {this.state.xiaofu.visit_num}</Text>
                         </View>
                     </View>
                 </View>
@@ -151,8 +161,8 @@ export default class XfDetailed extends Component{
                         borderBottomColor:"#f5f5f5"
                     }}>
                         <View style={{flexDirection:"row",alignItems:"center"}}>
-                            <Image source={{uri:this.props.navigation.state.params.img}} style={{width:46,height:46,borderRadius:23}}/>
-                            <Text style={{marginLeft:10}}>{this.props.navigation.state.params.name}</Text>
+                            <Image source={{uri:this.state.xiaofu.author_img}} style={{width:46,height:46,borderRadius:23}}/>
+                            <Text style={{marginLeft:10}}>{this.state.xiaofu.author_name}</Text>
                         </View>
                         <TouchableWithoutFeedback onPress={()=>{this.attention()}}>
                             <View style={{

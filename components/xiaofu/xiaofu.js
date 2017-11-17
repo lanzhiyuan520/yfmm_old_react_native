@@ -102,13 +102,9 @@ export default class Smallfu extends Component{
                         return (
                             <TouchableWithoutFeedback
                                 onPress={()=>{
-                                    this.props.navigate("Xfdetailed",{
-                                title:item.title,
-                                time:item.created_at,
-                                name:item.author_name,
-                                img:item.author_img,
+                                this.props.navigate("Xfdetailed",{
                                 id:item.id,
-                                content:item.content
+                                user:this.props.user
                             })
                                 }}>
                                 <View
