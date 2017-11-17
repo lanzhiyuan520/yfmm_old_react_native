@@ -39,7 +39,6 @@ export default class App extends Component<{}> {
   constructor(props){
     super(props);
       this.state = {
-          selectedTab:'首页',
           selectedTab:this.props.navigation.state.params.selectedTab,
           user_data:{}
       }
