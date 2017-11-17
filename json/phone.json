@@ -1,0 +1,12 @@
+
+{
+  "code":0,
+  "msg":"success",
+  "data":{
+    "id":1,
+    "uuid":11111111111111111111111111111111,
+    "phone":18888888888,
+    "head_img":"http://cdn.ayi800.com/image/jpg/headbaobao.jpg",
+    "status":3
+  }
+}
