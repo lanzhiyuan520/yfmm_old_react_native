@@ -55,9 +55,10 @@ export default class Problem extends Component{
                         console.log(error);
                     }else{
                         result=JSON.parse(result);
+                        var that = this;
                         if(result.shoucang.wenti.dataList.length !== 0){
                             if(result.shoucang.wenti.dataList.indexOf(id) !== -1){
-                                this.setState({
+                                that.setState({
                                     attend:'true'
                                 })
                             }

@@ -234,7 +234,9 @@ export default class Home extends Component{
                         <TouchableWithoutFeedback
                             disabled={this.state.disabled}
                             onPress={()=>{
-                                this.props.navigate('Message')
+                                this.props.navigate('Message',{
+                                    user:this.state.user
+                                })
                                 this.setState({disabled:true})
                                 setTimeout(()=>{
                                     this.setState({disabled:false})

@@ -91,7 +91,7 @@ export default class Diet extends Component{
                                                 }}>
                                                 <View>
                                                     <View style={{opacity:.8,backgroundColor:"#000"}}>
-                                                        <Image source={{uri:"http://cdn.ayi800.com/1504686351"}} style={{width:190,height:120}}/>
+                                                        <Image source={{uri:item.banner}} style={{width:190,height:120}}/>
                                                     </View>
                                                     <View style={{
                                                         position:"absolute",

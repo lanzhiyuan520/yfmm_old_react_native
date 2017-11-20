@@ -124,7 +124,7 @@ export default class PersonalData extends Component{
                         disabled={this.state.disabled}
                         onPress={()=>{this.props.navigation.state.params.navigate("Username",{
                         navigate:this.props.navigation.state.params.navigate,
-                            user:this.user
+                            user:this.props.navigation.state.params.user
                     });this.disabled()}}>
                         <View style={{width:width,height:45,borderBottomColor:"#f2f2f2",borderBottomWidth:1,flexDirection:"row",alignItems:"center",paddingLeft:10,paddingRight:10,position:"relative"}}>
                             <View>
@@ -154,7 +154,8 @@ export default class PersonalData extends Component{
                         onPress={()=>{this.props.navigation.state.params.navigate("Address",{
                             keys:{B_key:this.props.navigation.state.key},
                             navigate:this.props.navigation.state.params.navigate,
-                            address:this.address
+                            address:this.address,
+                            user:this.props.navigation.state.params.user
                         });this.disabled()}}
                     >
                         <View style={{width:width,height:45,borderBottomColor:"#f2f2f2",borderBottomWidth:1,flexDirection:"row",alignItems:"center",paddingLeft:10,paddingRight:10,position:"relative"}}>

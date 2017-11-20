@@ -530,3 +530,105 @@ export function columnDetail(token, uuid , id, successCallback,){
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })
 }
+//获取消息列表
+export function request_noticelist(uuid, token, successCallBack){
+    var url = URI + API_VERSION + "push?uuid=" + uuid;
+    var urlSigned = getSingedUrl(url, uuid);
+    fetch(urlSigned,{
+        method:"GET",
+        headers:{
+            "Http-App-Token": token
+        }
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallBack(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//用户状态
+export function request_user_status(user, selectTableWarp, successCallback){
+    var url = URI + API_VERSION + 'user?uuid=' + user.uuid;
+    var urlSigned = getSingedUrl(url, user.uuid);
+    var dataEncrypt = getEncryptParam(selectTableWarp);
+    console.log(urlSigned)
+    console.log(url)
+    console.log(dataEncrypt)
+    fetch(urlSigned,{
+        method:"PUT",
+        headers: {
+            "Http-App-Token": user.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body:`param=${dataEncrypt.param}`
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//修改用户名
+export function username(userData, postData, successCallback){
+    var url = URI + API_VERSION + "user?uuid=" + userData.uuid;
+    var urlSigned = getSingedUrl(url, userData.uuid);
+    postData.id = userData.id;
+    var dataEncrypt = getEncryptParam(postData);
+    console.log(postData)
+    fetch(urlSigned,{
+        method:"POST",
+        headers: {
+            "Http-App-Token": userData.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body:`param=${dataEncrypt.param}`
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//修改地址
+export function address(userData, postData, successCallback){
+    var url = URI + API_VERSION + "user?uuid=" + userData.uuid;
+    var urlSigned = getSingedUrl(url, userData.uuid);
+    postData.id = userData.id;
+    var dataEncrypt = getEncryptParam(postData);
+    fetch(urlSigned,{
+        method:"POST",
+        headers: {
+            "Http-App-Token": userData.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body:`param=${dataEncrypt.param}`
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}

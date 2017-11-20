@@ -39,7 +39,9 @@ export default class RecColumn  extends Component {
             data:{}
         }
     }
-
+    componentWillMount(){
+        this.getActionList();
+    }
     componentWillReceiveProps(nextProps) {
         this.setState({attend: nextProps.attend});
     }

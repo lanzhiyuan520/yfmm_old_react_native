@@ -32,6 +32,16 @@ export default class My extends Component{
                 user_status:result
             })
         })
+        /*if(this.props.user){
+            this.setState({
+                user:JSON.parse(this.props.user)
+            })
+        }else{
+            this.setState({
+                user:this.props.navigation.state.params.user
+            })
+        }*/
+
         this.setState({
             user:JSON.parse(this.props.user)
         })
@@ -62,7 +72,9 @@ export default class My extends Component{
                     </View>
                     <TouchableWithoutFeedback
                         disabled={this.state.disabled}
-                        onPress={()=>{this.props.navigate('Message');this.disabled()}}>
+                        onPress={()=>{this.props.navigate('Message',{
+                            user:this.state.user
+                        });this.disabled()}}>
                         <View style={{position:"absolute",right:10}}>
                             <Text style={{color:"#666",fontSize:17}}>消息</Text>
                         </View>
@@ -77,7 +89,8 @@ export default class My extends Component{
                         head_img:this.state.user.head_img,
                         name:this.state.user.nickname,
                         phone:this.state.user.phone,
-                        address:this.state.user.address
+                        address:this.state.user.address,
+                        user:this.state.user
                     });this.disabled()}}>
                     <View style={{width:width,height:150,backgroundColor:"#fff",justifyContent:"center",alignItems:"center"}}>
                         <View style={{width:width,height:80,paddingLeft:10,paddingRight:10,flexDirection:"row"}}>
@@ -130,7 +143,9 @@ export default class My extends Component{
                 <View style={{width:width,backgroundColor:"#fff",}}>
                     <TouchableWithoutFeedback
                         disabled={this.state.disabled}
-                        onPress={()=>{this.props.navigate('State');this.disabled()}}>
+                        onPress={()=>{this.props.navigate('State',{
+                            user:this.state.user
+                        });this.disabled()}}>
                         <View style={{width:width,height:45,borderBottomColor:"#f2f2f2",borderBottomWidth:1,flexDirection:"row",alignItems:"center",paddingLeft:10,paddingRight:10,position:"relative"}}>
                             <View>
                                 <Text style={{color:"#333"}}>我的状态</Text>
