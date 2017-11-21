@@ -466,14 +466,57 @@ export function request_professionals_content(uuid, token, rid, successCallBack)
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })
 }
-//达人详情页
-export function request_daren_care_data(id, user, successCallback){
-    var url = URI + API_VERSION + 'userbehavior/care?uuid=' + user.uuid + "&operateId=" + id + "&operateType=8" + "&userId=" + user.id;
+//获取达人详情文章
+export function request_get_article_byauth(id,user,succCallback){
+    var url = URI + API_VERSION + 'article?uuid='+user.uuid +"&articleType=8" + "&limit=10" + "&offset=0" + "&orderBy=created_at desc" + "&articleSource=auth" + "&authId=" + id;
+    console.log(url)
     var urlSigned = getSingedUrl(url, user.uuid);
     fetch(urlSigned,{
         method:"GET",
         headers:{
             "Http-App-Token": user.token
+        }
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            succCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//小福精选详情页
+export function request_article_xiaofu_xiangqing(id, uuid, token, successCallBack){
+    var url = URI + API_VERSION + "article/" + id + "?uuid=" + uuid + "&articleType=" + ARTICLE_XIAOFU;
+    var urlSigned = getSingedUrl(url, uuid);
+    fetch(urlSigned,{
+        method:"GET",
+        headers:{
+            "Http-App-Token": token
+        }
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallBack(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//专栏详情页面
+export function columnDetail(token, uuid , id, successCallback,){
+    var url = URI + API_VERSION + COLUMNLIST + "rid=" + id + "&offset=0&limit=1&uuid=" + uuid;
+    var urlSigned = getSingedUrl(url, uuid);
+    fetch(urlSigned,{
+        method:"GET",
+        headers:{
+            "Http-App-Token": token
         }
     })
         .then((response) => {
