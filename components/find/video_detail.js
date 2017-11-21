@@ -18,7 +18,6 @@ import {
 } from 'react-native';
 import Header from './../commen/header';
 import Btn from './../column/att_btn';
-import constants from './../constants';
 import Recommend from './dongtai_tuijian';
 import ExpertDetail from './expert_detail';
 import Video from 'react-native-video';
@@ -40,18 +39,20 @@ export default class VideoDetail extends Component{
         }
         this.changeBtn=this.changeBtn.bind(this);
     }
-
+    //视频加载成功后回调函数
     onLoad(info){
         // info == {currentTime,duration,...}
         ToastAndroid.show('视频加载成功！', ToastAndroid.SHORT);
     }
+    //视频加载失败后回调函数
     onError(e){
         ToastAndroid.show('视频加载错误！', ToastAndroid.SHORT);
     }
+
     onProgress(info){
         // info == {currentTime: 0, playableDuration: 0}
     }
-
+    //点击播放按钮视频播放
     showVideo(){
         let author=this.props.navigation.state.params.author;
         if(this.state.play){
@@ -86,7 +87,7 @@ export default class VideoDetail extends Component{
     componentDidMount(){
         this.changeBtn()
     }
-
+    //达人的关注按钮
     changeBtn(){
         const author_id=this.props.navigation.state.params.author.author_id;
         try {
@@ -97,15 +98,18 @@ export default class VideoDetail extends Component{
                         console.log(error)
                     }else{
                         result=JSON.parse(result);
-                        if(result.guanzhu.daren.dataList.indexOf(author_id) !== -1){
-                            this.setState({
-                                attend:'true'
-                            })
-                        }else {
-                            this.setState({
-                                attend:'false'
-                            })
+                        if(result.guanzhu.daren.dataList.length!==0){
+                            if(result.guanzhu.daren.dataList.indexOf(author_id) !== -1){
+                                this.setState({
+                                    attend:'true'
+                                })
+                            }else {
+                                this.setState({
+                                    attend:'false'
+                                })
+                            }
                         }
+
                     }
                 }
             )
@@ -113,7 +117,7 @@ export default class VideoDetail extends Component{
             console.log(error)
         }
     }
-
+    //监听按钮改变和播放按钮是否播放
     shouldComponentUpdate(nextProps,nextState){
         if(this.state.attend !== nextState.attend){
             return true;
@@ -123,7 +127,7 @@ export default class VideoDetail extends Component{
         }
 
     }
-
+    //显示分享组件
     shareShow(){
         this.setState({
             show:true

@@ -26,9 +26,7 @@ var storage = new Storage({
     storageBackend: AsyncStorage,
     defaultExpires: 'null',
     enableCache: true
-})
-
-
+});
 
 export default class RecColumn  extends Component {
 
@@ -44,25 +42,9 @@ export default class RecColumn  extends Component {
         this.setState({attend: nextProps.attend});
     }
 
-    //最终要删除的函数
-    changeAtt(){
-        if(this.props.attend == 'true'){
-            this.props.changeitem(this.props.id);
-            return;
-        }
-        if(this.state.attend == 'true'){
-            this.setState({
-                attend:'false'
-            });
-        }else {
-            this.setState({
-                attend:'true'
-            });
-            this.changeBtn();
-        }
+    componentWillMount(){
+        this.getActionList();
     }
-
-
 
     //获取用户的点赞 - 关注 - 收藏 list
     getActionList(){
@@ -70,30 +52,35 @@ export default class RecColumn  extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson.data);
-                try {
-                    AsyncStorage.setItem(
-                        'userActionList',
-                        JSON.stringify(responseJson.data),
-                        (error)=>{
-                            console.log(error)
-                            if (error){
-                                console.log(error)
-                            }else{
-                                console.log("存值成功!")
-                                if(this.props.ischange=='true'){
-                                    // this.props.change()
-                                    this.props.removeItem(this.props.id)
-                                }
-                            }
-                        }
-                    );
-                } catch (error){
-                    // alert('失败'+error);
-                }
-                this.setState({
-                    data:responseJson.data
+                // try {
+                //     AsyncStorage.setItem(
+                //         'userActionList',
+                //         JSON.stringify(responseJson.data),
+                //         (error)=>{
+                //             console.log(error);
+                //             if (error){
+                //                 console.log(error)
+                //             }else{
+                //                 console.log("存值成功!");
+                //                 if(this.props.ischange=='true'){
+                //                     // this.props.change()
+                //                     this.props.removeItem(this.props.id)
+                //                 }
+                //             }
+                //         }
+                //     );
+                // } catch (error){
+                //     // alert('失败'+error);
+                // }
+                // this.setState({
+                //     data:responseJson.data
+                // });
+                // console.log(this.state.data);
+                storage.save({
+                    key: 'userActionList',
+                    data: JSON.stringify(responseJson.data),
+                    expires: null
                 });
-                console.log(this.state.data);
             })
             .catch((err) => {
                 console.error('数据请求失败');
@@ -176,6 +163,19 @@ export default class RecColumn  extends Component {
             </View>
         );
     }
+    //从存储中获取
+    // componentDidMount(){
+    //     AsyncStorage.getItem('userActionList', (error, object) => {
+    //         if (error) {
+    //             console.log('Error:' + error.message);
+    //         } else {
+    //             console.log(object);
+    //             object=JSON.parse(object);
+    //             this.isCollect(object);
+    //         }
+    //     })
+    // }
+
 }
 const styles = StyleSheet.create({
     att_btn:{

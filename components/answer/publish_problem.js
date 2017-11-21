@@ -19,7 +19,8 @@ import {
 } from 'react-native';
 import PubTop from './publish_top';
 import Btn from './btn';
-import Camera from './CameraButton';
+import CameraButton from './CameraButton';
+import Camera from './../commen/camera';
 import constants from './../constants';
 // import queryString from 'query-string';
 import qs from 'qs';
@@ -35,14 +36,20 @@ export default class Find extends Component{
             service:0,
             quiz:0,
             text:'',
-            arr:[]
+            arr:[],
+            show:false,
+            picArr:[],
+            camera:false
         }
         this.getService=this.getService.bind(this);
         this.putIn=this.putIn.bind(this);
         this.getImg=this.getImg.bind(this);
         this.postData=this.postData.bind(this);
+        this.cameraShow=this.cameraShow.bind(this);
+        this.getPic=this.getPic.bind(this);
+        this.cameraHide=this.cameraHide.bind(this);
     }
-
+    //匿名提问、公开提问按钮
     changeFont(){
         if(this.state.trueSwitchIsOn){
             return (
@@ -101,8 +108,7 @@ export default class Find extends Component{
                 quiz:1
             })
         }
-        this.postData()
-
+        this.postData();
     }
 
     //获取选中专家的类型
@@ -116,6 +122,27 @@ export default class Find extends Component{
     getImg(arr){
         this.setState({
             arr:arr
+        })
+    }
+    //显示照册或相机
+    cameraShow(){
+        this.setState({
+            show:true
+        })
+    }
+
+    //隐藏照册或相机
+    cameraHide(){
+        this.setState({
+            show:false
+        })
+    }
+
+    //得到照片的数组
+    getPic(photos,condition){
+        this.setState({
+            picArr:photos,
+            camera:condition
         })
     }
 
@@ -138,7 +165,7 @@ export default class Find extends Component{
                             ref="aTextInputRef"
                         />
                         <View style={styles.pic_box}>
-                            <Camera getImg={this.getImg} />
+                            <CameraButton camera={this.state.camera} picArr={this.state.picArr} getImg={this.getImg} cameraShow={this.cameraShow} />
                         </View>
                     </View>
                     <View style={{backgroundColor:'#fff',height:40,paddingTop:5}}>
@@ -155,10 +182,11 @@ export default class Find extends Component{
                             <Text style={{fontSize:12}}>我想让以下方面得专家解答</Text>
                         </View>
                         <View>
-                             <Btn title="不限" getService={this.getService} />
+                             <Btn title="不限"  getService={this.getService} />
                         </View>
                     </View>
                 </ScrollView>
+                <Camera cameraHide={this.cameraHide} getPic={this.getPic} show={this.state.show}/>
             </View>
         )
     }

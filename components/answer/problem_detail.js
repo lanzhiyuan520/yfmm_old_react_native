@@ -24,8 +24,8 @@ var storage = new Storage({
     storageBackend: AsyncStorage,
     defaultExpires: 'null',
     enableCache: true
-})
-
+});
+var QMStorage ={};
 export default class Problem extends Component{
 
     static navigationOptions = {
@@ -38,13 +38,17 @@ export default class Problem extends Component{
             author:{},
             attend:'false',
             show:false
-        }
+        };
+        this.isCollect=this.isCollect.bind(this);
     }
 
     componentWillMount(){
         const id=this.props.navigation.state.params.id;
         this.requestData(id);
     }
+
+
+
     componentDidMount(){
         const id=this.props.navigation.state.params.id;
         try {
@@ -54,14 +58,17 @@ export default class Problem extends Component{
                     if (error){
                         console.log(error);
                     }else{
-                        result=JSON.parse(result);
-                        if(result.shoucang.wenti.dataList.length !== 0){
-                            if(result.shoucang.wenti.dataList.indexOf(id) !== -1){
-                                this.setState({
-                                    attend:'true'
-                                })
-                            }
-                        }
+                        console.log(result)
+                        // result=JSON.parse(result);
+                        // if(result.shoucang.wenti.dataList !== []){
+                        //     if(result.shoucang.wenti.dataList.indexOf(id) !== -1){
+                        //         this.setState({
+                        //             attend:'true'
+                        //         })
+                        //     }
+                        // }else {
+                        //     console.log("木有任何关注");
+                        // }
                     }
                 }
             )
@@ -70,6 +77,10 @@ export default class Problem extends Component{
         }
     }
 
+
+
+
+    //渲染图片
     renderPic(){
         if(false){
             return(
@@ -89,7 +100,7 @@ export default class Problem extends Component{
             )
         }
     }
-
+    //渲染列表头部
     renderTop(){
         return (
             <View>
@@ -104,7 +115,7 @@ export default class Problem extends Component{
             </View>
         )
     }
-
+    //请求数据
     requestData(id){
         fetch(constants.url+"/v1/problem?rid="+id+"&offset=0&limit=3&type=0&uuid="+constants.uuid)
             .then((response) => response.json())

@@ -35,7 +35,7 @@ export default class Expert extends Component{
         const id=this.props.navigation.state.params.id;
         this.requestData(id)
     }
-
+    //关注收藏按钮
     componentDidMount(){
         const id=this.props.navigation.state.params.id;
         try {
