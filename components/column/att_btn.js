@@ -19,14 +19,7 @@ import {
 } from 'react-native';
 import {setSpText} from './../UiStyle';
 import {scaleSize} from './../UiStyle';
-import Storage from 'react-native-storage';
 import constants from './../constants';
-var storage = new Storage({
-    size: 1000,
-    storageBackend: AsyncStorage,
-    defaultExpires: 'null',
-    enableCache: true
-});
 
 export default class RecColumn  extends Component {
 
@@ -52,35 +45,30 @@ export default class RecColumn  extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson.data);
-                // try {
-                //     AsyncStorage.setItem(
-                //         'userActionList',
-                //         JSON.stringify(responseJson.data),
-                //         (error)=>{
-                //             console.log(error);
-                //             if (error){
-                //                 console.log(error)
-                //             }else{
-                //                 console.log("存值成功!");
-                //                 if(this.props.ischange=='true'){
-                //                     // this.props.change()
-                //                     this.props.removeItem(this.props.id)
-                //                 }
-                //             }
-                //         }
-                //     );
-                // } catch (error){
-                //     // alert('失败'+error);
-                // }
-                // this.setState({
-                //     data:responseJson.data
-                // });
-                // console.log(this.state.data);
-                storage.save({
-                    key: 'userActionList',
-                    data: JSON.stringify(responseJson.data),
-                    expires: null
+                try {
+                    AsyncStorage.setItem(
+                        'userActionList',
+                        JSON.stringify(responseJson.data),
+                        (error)=>{
+                            console.log(error);
+                            if (error){
+                                console.log(error)
+                            }else{
+                                console.log("存值成功!");
+                                if(this.props.ischange=='true'){
+                                    // this.props.change()
+                                    this.props.removeItem(this.props.id)
+                                }
+                            }
+                        }
+                    );
+                } catch (error){
+                    // alert('失败'+error);
+                }
+                this.setState({
+                    data:responseJson.data
                 });
+                console.log(this.state.data);
             })
             .catch((err) => {
                 console.error('数据请求失败');

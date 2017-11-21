@@ -36,8 +36,8 @@ export default class VideoDetail extends Component{
             play:false,
             attend:'false',
             show:false
-        }
-        this.changeBtn=this.changeBtn.bind(this);
+        };
+        this._loadInitialState=this._loadInitialState.bind(this);
     }
     //视频加载成功后回调函数
     onLoad(info){
@@ -85,38 +85,35 @@ export default class VideoDetail extends Component{
     }
 
     componentDidMount(){
-        this.changeBtn()
+        this._loadInitialState();
     }
-    //达人的关注按钮
-    changeBtn(){
-        const author_id=this.props.navigation.state.params.author.author_id;
-        try {
-            AsyncStorage.getItem(
-                'userActionList',
-                (error,result)=>{
-                    if (error){
-                        console.log(error)
-                    }else{
-                        result=JSON.parse(result);
-                        if(result.guanzhu.daren.dataList.length!==0){
-                            if(result.guanzhu.daren.dataList.indexOf(author_id) !== -1){
-                                this.setState({
-                                    attend:'true'
-                                })
-                            }else {
-                                this.setState({
-                                    attend:'false'
-                                })
-                            }
-                        }
-
-                    }
+    //关注收藏按钮初始化
+    async _loadInitialState(){
+        const id=this.props.navigation.state.params.author.author_id;
+        try{
+            var value=await AsyncStorage.getItem('userActionList');
+            if(value!=null){
+                result=JSON.parse(value);
+                console.log(result);
+                if(result.guanzhu.daren.dataList.indexOf(id) !== -1){
+                    this.setState({
+                        attend:'true'
+                    })
+                }else {
+                    this.setState({
+                        attend:'false'
+                    })
                 }
-            )
+            }else{
+                console.log('无数据')
+            }
         }catch(error){
-            console.log(error)
+            this._appendMessage('AsyncStorage错误'+error.message);
         }
     }
+
+
+
     //监听按钮改变和播放按钮是否播放
     shouldComponentUpdate(nextProps,nextState){
         if(this.state.attend !== nextState.attend){
@@ -166,7 +163,7 @@ export default class VideoDetail extends Component{
                         </View>
                         <View style={{flex:1,justifyContent:'space-between',flexDirection:'row',paddingHorizontal:15,paddingVertical:10}}>
                             <View>
-                                <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('ExpertDetail',{id:state.params.author.author_id,changeBtn:this.changeBtn})}>
+                                <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('ExpertDetail',{id:state.params.author.author_id,changeBtn:this._loadInitialState})}>
                                     <View style={{flex:1,flexDirection:'row'}}>
                                         <View style={{marginRight:10}}>
                                             <Image source={{uri:state.params.author.author_img}} style={{width:30,height:30,borderRadius:15}} />

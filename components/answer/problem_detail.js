@@ -39,7 +39,7 @@ export default class Problem extends Component{
             attend:'false',
             show:false
         };
-        this.isCollect=this.isCollect.bind(this);
+        this._loadInitialState=this._loadInitialState.bind(this);
     }
 
     componentWillMount(){
@@ -51,33 +51,27 @@ export default class Problem extends Component{
 
     componentDidMount(){
         const id=this.props.navigation.state.params.id;
-        try {
-            AsyncStorage.getItem(
-                'userActionList',
-                (error,result)=>{
-                    if (error){
-                        console.log(error);
-                    }else{
-                        console.log(result)
-                        // result=JSON.parse(result);
-                        // if(result.shoucang.wenti.dataList !== []){
-                        //     if(result.shoucang.wenti.dataList.indexOf(id) !== -1){
-                        //         this.setState({
-                        //             attend:'true'
-                        //         })
-                        //     }
-                        // }else {
-                        //     console.log("木有任何关注");
-                        // }
-                        
-                    }
-                }
-            )
-        }catch(error){
-            console.log(error)
-        }
+        this._loadInitialState(id);
     }
 
+    async _loadInitialState(id){
+        try{
+            var value=await AsyncStorage.getItem('userActionList');
+            if(value!=null){
+                console.log(value);
+                result=JSON.parse(value);
+                if(result.shoucang.wenti.dataList.indexOf(id) !== -1){
+                    this.setState({
+                        attend:'true'
+                    })
+                }
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
+    }
 
 
 
