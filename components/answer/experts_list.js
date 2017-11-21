@@ -13,7 +13,7 @@ import {
 import {setSpText} from './../UiStyle';
 import {scaleSize} from './../UiStyle';
 import constants from './../constants';
-import PublishProblem from './publish_problem'
+import PublishProblem from './publish_problem';
 export default class ExpertList extends Component {
     constructor(props){
         super(props);

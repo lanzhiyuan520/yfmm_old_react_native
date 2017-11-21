@@ -78,7 +78,7 @@ export default class Header extends Component{
             )
         }else{
             return (
-                <TouchableWithoutFeedback onPress={() => alert(4)}>
+                <TouchableWithoutFeedback>
                     <View style={[styles.sub_container, styles.pr]}>
                     </View>
                 </TouchableWithoutFeedback>

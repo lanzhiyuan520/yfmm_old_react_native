@@ -19,16 +19,7 @@ import {
 } from 'react-native';
 import {setSpText} from './../UiStyle';
 import {scaleSize} from './../UiStyle';
-import Storage from 'react-native-storage';
 import constants from './../constants';
-var storage = new Storage({
-    size: 1000,
-    storageBackend: AsyncStorage,
-    defaultExpires: 'null',
-    enableCache: true
-})
-
-
 
 export default class RecColumn  extends Component {
 
@@ -46,25 +37,9 @@ export default class RecColumn  extends Component {
         this.setState({attend: nextProps.attend});
     }
 
-    //最终要删除的函数
-    changeAtt(){
-        if(this.props.attend == 'true'){
-            this.props.changeitem(this.props.id);
-            return;
-        }
-        if(this.state.attend == 'true'){
-            this.setState({
-                attend:'false'
-            });
-        }else {
-            this.setState({
-                attend:'true'
-            });
-            this.changeBtn();
-        }
+    componentWillMount(){
+        this.getActionList();
     }
-
-
 
     //获取用户的点赞 - 关注 - 收藏 list
     getActionList(){
@@ -77,11 +52,11 @@ export default class RecColumn  extends Component {
                         'userActionList',
                         JSON.stringify(responseJson.data),
                         (error)=>{
-                            console.log(error)
+                            console.log(error);
                             if (error){
                                 console.log(error)
                             }else{
-                                console.log("存值成功!")
+                                console.log("存值成功!");
                                 if(this.props.ischange=='true'){
                                     // this.props.change()
                                     this.props.removeItem(this.props.id)
@@ -178,6 +153,19 @@ export default class RecColumn  extends Component {
             </View>
         );
     }
+    //从存储中获取
+    // componentDidMount(){
+    //     AsyncStorage.getItem('userActionList', (error, object) => {
+    //         if (error) {
+    //             console.log('Error:' + error.message);
+    //         } else {
+    //             console.log(object);
+    //             object=JSON.parse(object);
+    //             this.isCollect(object);
+    //         }
+    //     })
+    // }
+
 }
 const styles = StyleSheet.create({
     att_btn:{
