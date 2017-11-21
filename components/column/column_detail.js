@@ -31,7 +31,8 @@ export default class Problem extends Component{
             author:{},
             attend:'false',
             show:false
-        }
+        };
+        this._loadInitialState=this._loadInitialState.bind(this);
     }
 
     componentWillMount(){
@@ -54,27 +55,24 @@ export default class Problem extends Component{
 
     componentDidMount(){
         const id=this.props.navigation.state.params.id;
-        try {
-            AsyncStorage.getItem(
-                'userActionList',
-                (error,result)=>{
-                    if (error){
-                        console.log(error);
-                    }else{
-                        result=JSON.parse(result);
-                        if(result.guanzhu.zhuanlan.dataList.length !== 0){
-                            if(result.guanzhu.zhuanlan.dataList.indexOf(id) !== -1){
-                                this.setState({
-                                    attend:'true'
-                                })
-                            }
-                        }
-
-                    }
+        this._loadInitialState(id);
+    }
+    async _loadInitialState(id){
+        try{
+            var value=await AsyncStorage.getItem('userActionList');
+            if(value!=null){
+                console.log(value);
+                result=JSON.parse(value);
+                if(result.guanzhu.zhuanlan.dataList.indexOf(id) !== -1){
+                    this.setState({
+                        attend:'true'
+                    })
                 }
-            )
+            }else{
+                console.log('无数据')
+            }
         }catch(error){
-            console.log(error)
+            this._appendMessage('AsyncStorage错误'+error.message);
         }
     }
 

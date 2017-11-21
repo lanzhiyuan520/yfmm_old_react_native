@@ -60,7 +60,7 @@ export default class Home extends Component{
           show:false
         })
     }
-
+    //分享到朋友圈
     shareCircle(){
         WeChat.isWXAppInstalled()
             .then( ( isInstalled ) => {
@@ -82,7 +82,7 @@ export default class Home extends Component{
                 }
             } );
     }
-
+    //分享给朋友
     shareFriend(){
         WeChat.isWXAppInstalled()
             .then( ( isInstalled ) => {
