@@ -65,7 +65,7 @@ export default class Video extends Component{
                                 <View style={[styles.img_line,index==this.state.count-1&&styles.img_last]}>
                                     <View>
                                         <View style={{opacity:.8,backgroundColor:"#000"}}>
-                                            <Image source={{uri:"http://cdn.ayi800.com/1504697124"}} style={{width:190,height:120}}/>
+                                            <Image source={{uri:item.banner}} style={{width:190,height:120}}/>
                                         </View>
                                         <View style={{
                                             position:"absolute",

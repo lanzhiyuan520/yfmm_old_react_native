@@ -8,9 +8,12 @@ import {
     Alert,
     Image,
     Dimensions,
-    TextInput
+    TextInput,
+    AsyncStorage
 } from 'react-native';
 var {width} = Dimensions.get('window')
+import {username} from "../api"
+var postData = {}
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default class Username extends Component{
     static navigationOptions = ({navigation}) => ({
@@ -30,19 +33,34 @@ export default class Username extends Component{
     constructor(props){
         super(props)
         this.state={
-            text:null
+            text:null,
+            user:null
         }
         this.preservation=this.preservation.bind(this)
+        this.username_success=this.username_success.bind(this)
     }
     componentDidMount(){
         this.props.navigation.setParams({preservation:this.preservation})
     }
     preservation(){
-        this.props.navigation.navigate("App",{
-            selectedTab:"我的"
-        })
-    }
+        if(!this.state.text){
+            return false
+        }
+        var user = this.props.navigation.state.params.user
 
+        username(user,postData,this.username_success)
+
+           }
+    username_success(responseText){
+        var user = this.props.navigation.state.params.user
+        user.nickname = this.state.text
+        AsyncStorage.setItem("user",JSON.stringify(user))
+        this.props.navigation.navigate("App",{
+            selectedTab:"我的",
+            user:JSON.stringify(user)
+        })
+
+    }
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#f5f5f5"}}>
@@ -59,6 +77,8 @@ export default class Username extends Component{
                     }}
                     underlineColorAndroid={"transparent"}
                     onChangeText={(text) => {
+                        /*var postData = {nickname:name};*/
+                        postData.nickname=text
                         this.setState({
                             text:text
                         })

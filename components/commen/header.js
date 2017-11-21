@@ -8,6 +8,7 @@ import {
     View,
     TouchableWithoutFeedback,
 } from 'react-native';
+import {Circle,friends} from "../fenxiang/fenxiang"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import *as wechat from 'react-native-wechat';
 export default class Header extends Component{
@@ -116,6 +117,7 @@ export default class Header extends Component{
     render(){
 
         return(
+
             <View style={styles.container}>
                 <View style={{flex:1,flexDirection:'row',height:40}}>
                     {this.hasLeft()}
