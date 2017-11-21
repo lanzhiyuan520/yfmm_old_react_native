@@ -632,3 +632,27 @@ export function address(userData, postData, successCallback){
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })
 }
+//上传图片
+export function user_img(uuid,token,path,successCallback){
+    var url = DOMAIN+'/'+API_VERSION+'/'+'upload?uuid='+uuid;
+    var urlSigned = getSingedUrl(url,uuid);
+    fetch(urlSigned,{
+        method:"POST",
+        headers: {
+            "Http-App-Token": token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body:`${path}`
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}

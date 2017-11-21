@@ -1,24 +1,12 @@
-packageyour.package.wxapi;
-
-importandroid.app.Activity;
-
-importandroid.os.Bundle;
-
-importcom.theweflex.react.WeChatModule;
-
-publicclassWXEntryActivityextendsActivity{
-
+package com.awesomeproject.wxapi;
+import android.app.Activity;
+import android.os.Bundle;
+import com.theweflex.react.WeChatModule;
+public class WXEntryActivity extends Activity{
 @Override
-
-protectedvoidonCreate(Bundle savedInstanceState) {
-
-super.onCreate(savedInstanceState);
-
-WeChatModule.handleIntent(getIntent());
-
-finish();
-
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    WeChatModule.handleIntent(getIntent());
+    finish();
+  }
 }
-
-}
-

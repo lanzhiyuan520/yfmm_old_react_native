@@ -16,6 +16,8 @@ const options = [ '取消', '拍照','从照片中选择']
 import ActionSheet from 'react-native-actionsheet'
 import ImagePicker from 'react-native-image-crop-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {username,user_img} from "../api"
+var postData = {}
 export default class PersonalData extends Component{
     static navigationOptions = ({navigation}) => ({
 
@@ -38,17 +40,15 @@ export default class PersonalData extends Component{
         this.state={
             disabled:false,
             username:this.props.navigation.state.params.username,
-            add:"未设置",
-            user:"兰志远"
         }
         this.go=this.go.bind(this)
        this.address=this.address.bind(this)
        this.user=this.user.bind(this)
+       this.user_image=this.user_image.bind(this)
     }
     componentDidMount(){
         const dismissKeyboard = require('dismissKeyboard');
         dismissKeyboard();
-        console.log(this.props)
         this.props.navigation.setParams({go:this.go})
     }
 
@@ -70,8 +70,7 @@ export default class PersonalData extends Component{
                 height: 400,
                 cropping: true
             }).then(image => {
-                console.log(image);
-
+                console.log(image)
             });
         }  else if(i==2){
             ImagePicker.openPicker({
@@ -82,8 +81,16 @@ export default class PersonalData extends Component{
                 showCropGuidelines:false
             }).then(image => {
                 console.log(image)
+                alert("hello")
+                var user = this.props.navigation.state.params.user
+                postData.head_img=image.path
+                user_img(user.uuid,user.token,{head_img:image.path},this.user_image)
+                /*username(user,postData,this.user_image)*/
             });
         }
+    }
+    user_image(response){
+        console.log(response)
     }
     user(user){
         this.setState({

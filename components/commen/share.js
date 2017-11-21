@@ -18,7 +18,6 @@ import {
 } from 'react-native';
 const {width,height}=Dimensions.get('window');
 export default class Home extends Component{
-
     constructor(props){
         super(props);
         this.state={

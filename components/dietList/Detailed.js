@@ -12,15 +12,13 @@ import {
     AsyncStorage
 } from 'react-native';
 var {width} = Dimensions.get('window')
-const CANCEL_INDEX = 0
-const DESTRUCTIVE_INDEX = 4
-const options = [ '取消', '微信朋友圈', '微信好友', '复制到剪切板']
+import Variable from "../Variable/Variable"
 import ActionSheet from 'react-native-actionsheet'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {Circle,friends} from "../fenxiang/fenxiang"
 import {request_article_yinshi_xiangqing,request_user_action,user_behavior} from "../api"
 export default class DietList extends Component{
     static navigationOptions = ({navigation}) => ({
-
         title: navigation.state.params.title,
         headerTitleStyle:{
             alignSelf:'center',
@@ -88,9 +86,9 @@ export default class DietList extends Component{
         if(i==0){
             alert("点了取消")
         } else if(i==1){
-            alert("点了微信朋友圈")
+            Circle({type:"text",description:"测试分享朋友圈"})
         } else if(i==2){
-            alert("点了微信好友")
+            friends({type:"text",description:"测试分享好友"})
         } else if(i==3){
             alert("点了剪切板")
         }
@@ -184,9 +182,9 @@ export default class DietList extends Component{
                 <View>
                     <ActionSheet
                         ref={o => this.ActionSheet = o}
-                        options={options}
-                        cancelButtonIndex={CANCEL_INDEX}
-                        destructiveButtonIndex={DESTRUCTIVE_INDEX}
+                        options={Variable.options}
+                        cancelButtonIndex={Variable.CANCEL_INDEX}
+                        destructiveButtonIndex={Variable.DESTRUCTIVE_INDEX}
                         onPress={this.handlePress}
                     />
                 </View>

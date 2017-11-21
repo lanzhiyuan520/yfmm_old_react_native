@@ -11,7 +11,7 @@ import {
     Dimensions,
     ToastAndroid,
     AsyncStorage,
-    InteractionManager
+    InteractionManager,
 } from 'react-native';
 import {request_article_xiaofujingxuan} from "../api"
 var {width} = Dimensions.get('window')
@@ -52,7 +52,7 @@ export default class Smallfu extends Component{
                 status:result.statusCon
             })
              this.state.status=result.statusCon
-            request_article_xiaofujingxuan(this.state.user.uuid,this.state.user.status,"weightDesc", 0, this.state.list_num,  this.state.user.token, this.xiaofu)
+            request_article_xiaofujingxuan(this.state.user.uuid,this.state.user.status,"weightDesc", 2, this.state.list_num,  this.state.user.token, this.xiaofu)
         })
 
     }
@@ -91,6 +91,7 @@ export default class Smallfu extends Component{
     hello(){
         alert("hello")
     }
+
     render(){
         let img = "http://cdn.ayi800.com/1504086833"
         return(
@@ -142,7 +143,7 @@ export default class Smallfu extends Component{
                                                     </View>
                                                 </View>
                                             </View>
-                                            <View>{/*"http://cdn.ayi800.com/1504775127"*/}
+                                            <View>
                                                 <Image source={{uri:item.banner}} style={styles.xiaofu_banner} />
                                             </View>
                                         </View>
