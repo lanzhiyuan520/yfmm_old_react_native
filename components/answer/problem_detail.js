@@ -69,6 +69,7 @@ export default class Problem extends Component{
                         // }else {
                         //     console.log("木有任何关注");
                         // }
+                        
                     }
                 }
             )
