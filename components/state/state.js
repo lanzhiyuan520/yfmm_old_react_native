@@ -9,9 +9,12 @@ import {
     Image,
     Dimensions,
     DatePickerAndroid,
+    AsyncStorage
 } from 'react-native';
 var {width} = Dimensions.get('window')
+import {request_user_status} from "../api"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+var selectTableWarp = {}
 export default class State extends Component{
     static navigationOptions = ({navigation}) => ({
         title: "我的状态",
@@ -35,7 +38,7 @@ export default class State extends Component{
             birth:require("../../img/chusheng2.png"),
             Sta:false,
             state:true,
-            Text:"宝宝生日"
+            Text:"宝宝生日",
         }
         this.production=this.production.bind(this)
         this.birth=this.birth.bind(this)
@@ -48,7 +51,8 @@ export default class State extends Component{
                 date: new Date()
             });
             if (action !== DatePickerAndroid.dismissedAction) {
-                alert(`你选择的时间是${year}年${month+1}月${day}日`)
+               /* alert(`你选择的时间是${year}年${month+1}月${day}日`)*/
+                selectTableWarp.confinementDate=year+"-"+month+"-"+day
             }
         } catch ({code, message}) {
             console.warn('Cannot open date picker', message);
@@ -59,9 +63,22 @@ export default class State extends Component{
 
     }
     submit(){
-        this.props.navigation.navigate("App",{
-            selectedTab:"我的"
+        var user = this.props.navigation.state.params.user
+        if(this.state.state){
+               selectTableWarp.userStatus=1
+        }else{
+            selectTableWarp.userStatus=3
+        }
+        AsyncStorage.getItem("user_data",(error,result)=>{
+            request_user_status(user,this.state.selectTableWarp,this.state_success)
         })
+        console.log(selectTableWarp)
+        /*this.props.navigation.navigate("App",{
+            selectedTab:"我的"
+        })*/
+    }
+    state_success(responseText){
+        console.log(responseText)
     }
     production(){
             this.setState({

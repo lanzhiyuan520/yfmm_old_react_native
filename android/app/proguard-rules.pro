@@ -71,3 +71,8 @@
 
 -keep class android.text {* ;}
 -dontwarn android.text.*
+
+-keep class com.tencent.mm.sdk.** {
+   *;
+}
+

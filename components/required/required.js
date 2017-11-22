@@ -17,6 +17,9 @@ const DESTRUCTIVE_INDEX = 4
 const options = [ '取消', '微信朋友圈', '微信好友', '复制到剪切板']
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {getKeywordsByUserStatus} from "../tools/tools"
+import { TabNavigator } from "react-navigation";
+import Variable from "../Variable/Variable"
+import {Circle,friends} from "../fenxiang/fenxiang"
 export default class Required extends Component{
     static navigationOptions = ({navigation}) => ({
             title: "每日推荐",
@@ -44,18 +47,10 @@ export default class Required extends Component{
     }
     componentDidMount(){
         this.nav_list()
-
     }
     nav_list(){
         var user = this.props.navigation.state.params.user
         this.props.navigation.setParams({navigatePress:this.showActionSheet})
-        /*var nav = getKeywordsByUserStatus(user.user_status)
-        console.log(getKeywordsByUserStatus(user.user_status))
-        for (var i = nav[2]; i < nav[3]; i++) {
-                var ele = <RequiredList tabLabel={nav[0] +i +nav[1]} user={this.props.navigation.state.params.user} index={this.state.index}/>
-            console.log(ele)
-        }
-        return ele*/
     }
     showActionSheet() {
         this.ActionSheet.show()
@@ -65,9 +60,9 @@ export default class Required extends Component{
         if(i==0){
             alert("点了取消")
         } else if(i==1){
-            alert("点了微信朋友圈")
+            Circle({type:"text",description:"测试分享朋友圈"})
         } else if(i==2){
-            alert("点了微信好友")
+            friends({type:"text",description:"测试分享好友"})
         } else if(i==3){
             alert("点了剪切板")
         }
@@ -81,6 +76,7 @@ export default class Required extends Component{
     render(){
         return(
             <View style={{flex:1}}>
+
                 <ScrollableTabView
                     initialPage={0}
                     scrollWithoutAnimation={true}
@@ -109,9 +105,9 @@ export default class Required extends Component{
                 </ScrollableTabView>
                 <ActionSheet
                     ref={o => this.ActionSheet = o}
-                    options={options}
-                    cancelButtonIndex={CANCEL_INDEX}
-                    destructiveButtonIndex={DESTRUCTIVE_INDEX}
+                    options={Variable.options}
+                    cancelButtonIndex={Variable.CANCEL_INDEX}
+                    destructiveButtonIndex={Variable.DESTRUCTIVE_INDEX}
                     onPress={this.handlePress}
                 />
             </View>

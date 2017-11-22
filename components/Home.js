@@ -39,9 +39,10 @@ export default class Home extends Component{
             status:"",
             status_img:null,
             user:[],
-            experts:[],
+            experts:{},
             suggest:{},
-            read:"每周必读"
+            read:"每周必读",
+            data:{}
         }
         this.loading=this.loading.bind(this)
         this.disabled=this.disabled.bind(this)
@@ -49,7 +50,6 @@ export default class Home extends Component{
         this.onPullRelease=this.onPullRelease.bind(this)
         this.answer_success=this.answer_success.bind(this)
         this.suggest_success=this.suggest_success.bind(this)
-        this.renderItem=this.renderItem.bind(this)
     }
     clear(){
         /*try {
@@ -105,7 +105,7 @@ export default class Home extends Component{
     //问答成功回调
     answer_success(responseText){
         this.setState({
-            experts:responseText.data
+            experts:responseText.data[0]
         })
     }
     loading(num){
@@ -117,64 +117,6 @@ export default class Home extends Component{
             this.setState({
                 loading:false
             })
-        }
-
-    }
-    renderItem = ({item,index})=>{
-        if(index==0){
-           return  <View style={{
-               flex:1,
-               flexDirection:"row",
-               alignItems:"center",
-               paddingRight:10,
-               paddingLeft:10,
-               position:"relative"
-           }}>
-               <View style={{flexDirection:"row"}}>
-                   <View>
-                       <Image source={{uri:item.img}} style={{width:50,height:50,borderRadius:20}}/>
-                   </View>
-                   <View style={{flexDirection:"column", width:210,marginLeft:5}}>
-                       <View style={{flexDirection:"row"}}>
-                           <Text style={{color:"#000",fontSize:16,marginRight:5}}>{item.name}</Text>
-                           <Text style={{fontSize:13,textAlignVertical:"center"}}>{item.title}</Text>
-                       </View>
-                       <View>
-                           <Text numberOfLines={2} style={{fontSize:13,color:"#999"}}>{item.content}</Text>
-                       </View>
-                   </View>
-               </View>
-               <TouchableWithoutFeedback
-                   disabled={this.state.disabled}
-                   onPress={()=>{
-                       this.props.navigate('Expertsdetails',{
-                           expert:item.name,
-                           user:this.state.user,
-                           id:item.id
-                       });
-                       this.setState({disabled:true})
-                       setTimeout(()=>{
-                           this.setState({disabled:false})
-                       },500)
-                   }}>
-                   <View style={{
-                       position:"absolute",
-                       right:10,
-                       width:80,
-                       height:35,
-                       borderRadius:3,
-                       backgroundColor:"#fff",
-                       justifyContent:"center",
-                       alignItems:"center",
-                       borderWidth:1,
-                       borderColor:"#f5f5f5"
-                   }}>
-                       <Text style={{color:"#FF9490",fontSize:11}}>去问TA</Text>
-                   </View>
-               </TouchableWithoutFeedback>
-           </View>
-        }else{
-           return <View></View>
         }
 
     }
@@ -234,7 +176,9 @@ export default class Home extends Component{
                         <TouchableWithoutFeedback
                             disabled={this.state.disabled}
                             onPress={()=>{
-                                this.props.navigate('Message')
+                                this.props.navigate('Message',{
+                                    user:this.state.user
+                                })
                                 this.setState({disabled:true})
                                 setTimeout(()=>{
                                     this.setState({disabled:false})
@@ -339,10 +283,60 @@ export default class Home extends Component{
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>
-                        <FlatList
-                            data={this.state.experts}
-                            renderItem={this.renderItem}
-                        />
+                        {
+                            this.state.experts?<View style={{
+                                flex:1,
+                                flexDirection:"row",
+                                alignItems:"center",
+                                paddingRight:10,
+                                paddingLeft:10,
+                                position:"relative"
+                            }}>
+                                <View style={{flexDirection:"row"}}>
+                                    <View>
+                                        <Image source={{uri:this.state.experts.img}} style={{width:50,height:50,borderRadius:25}}/>
+                                    </View>
+                                    <View style={{flexDirection:"column", width:210,marginLeft:5}}>
+                                        <View style={{flexDirection:"row"}}>
+                                            <Text style={{color:"#000",fontSize:16,marginRight:5}}>{this.state.experts.name}</Text>
+                                            <Text style={{fontSize:13,textAlignVertical:"center"}}>{this.state.experts.title}</Text>
+                                        </View>
+                                        <View>
+                                            <Text numberOfLines={2} style={{fontSize:13,color:"#999"}}>{this.state.experts.content}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <TouchableWithoutFeedback
+                                    disabled={this.state.disabled}
+                                    onPress={()=>{
+                                        this.props.navigate('Expertsdetails',{
+                                            expert:this.state.experts.name,
+                                            user:this.state.user,
+                                            id:this.state.experts.id
+                                        });
+                                        this.setState({disabled:true})
+                                        setTimeout(()=>{
+                                            this.setState({disabled:false})
+                                        },500)
+                                    }}>
+                                    <View style={{
+                                        position:"absolute",
+                                        right:10,
+                                        width:80,
+                                        height:35,
+                                        borderRadius:3,
+                                        backgroundColor:"#fff",
+                                        justifyContent:"center",
+                                        alignItems:"center",
+                                        borderWidth:1,
+                                        borderColor:"#f5f5f5"
+                                    }}>
+                                        <Text style={{color:"#FF9490",fontSize:11}}>去问TA</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>:<View></View>
+                        }
+
 
                     </View>
                     <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>

@@ -11,7 +11,7 @@ import {
     Dimensions,
     ToastAndroid,
     AsyncStorage,
-    InteractionManager
+    InteractionManager,
 } from 'react-native';
 import {request_article_xiaofujingxuan} from "../api"
 var {width} = Dimensions.get('window')
@@ -32,6 +32,7 @@ export default class Smallfu extends Component{
         this.render_list=this.render_list.bind(this)
         this.xiaofu_list=this.xiaofu_list.bind(this)
         this.xiaofu=this.xiaofu.bind(this)
+        this.hello=this.hello.bind(this)
     }
     componentDidMount(){
         InteractionManager.runAfterInteractions(()=>{
@@ -51,7 +52,7 @@ export default class Smallfu extends Component{
                 status:result.statusCon
             })
              this.state.status=result.statusCon
-            request_article_xiaofujingxuan(this.state.user.uuid,this.state.user.status,"weightDesc", 0, this.state.list_num,  this.state.user.token, this.xiaofu)
+            request_article_xiaofujingxuan(this.state.user.uuid,this.state.user.status,"weightDesc", 2, this.state.list_num,  this.state.user.token, this.xiaofu)
         })
 
     }
@@ -87,6 +88,10 @@ export default class Smallfu extends Component{
         }
         this.xiaofu_list()
     }
+    hello(){
+        alert("hello")
+    }
+
     render(){
         let img = "http://cdn.ayi800.com/1504086833"
         return(
@@ -98,6 +103,10 @@ export default class Smallfu extends Component{
                 </View>
                 <FlatList
                     data={this.state.xiaofu_list}
+                    getItemLayout={(data, index) => (
+                        // 91 是被渲染 item 的高度 ITEM_HEIGHT。
+                        {length: 91, offset: 91 * index, index}
+                    )}
                     renderItem={({item,index})=>{
                         return (
                             <TouchableWithoutFeedback
@@ -135,14 +144,16 @@ export default class Smallfu extends Component{
                                                 </View>
                                             </View>
                                             <View>
-                                                <Image source={{uri:"http://cdn.ayi800.com/1504775127"}} style={styles.xiaofu_banner} />
+                                                <Image source={{uri:item.banner}} style={styles.xiaofu_banner} />
                                             </View>
                                         </View>
                                     </View>
                                 </View>
                             </TouchableWithoutFeedback>
                         )
-                    }}
+                    }
+
+                    }
                 />
                 <TouchableWithoutFeedback
                     disabled={this.state.disabled}

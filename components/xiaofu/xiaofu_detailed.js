@@ -17,7 +17,7 @@ import ActionSheet from 'react-native-actionsheet'
 const CANCEL_INDEX = 0
 const DESTRUCTIVE_INDEX = 4
 const options = [ '取消', '微信朋友圈', '微信好友', '复制到剪切板']
-import *as wechat from 'react-native-wechat'
+var WeChat=require('react-native-wechat');
 var {width} = Dimensions.get('window')
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {request_article_xiaofu_xiangqing} from "../api"
@@ -53,7 +53,7 @@ export default class XfDetailed extends Component{
             attention:false,
             xiaofu:{}
         }
-        wechat.registerApp('wx825ecd9a849eef9d')
+        WeChat.registerApp('wx825ecd9a849eef9d')
         this.showActionSheet = this.showActionSheet.bind(this)
         this.handlePress = this.handlePress.bind(this)
         this.collect = this.collect.bind(this)
@@ -71,6 +71,7 @@ export default class XfDetailed extends Component{
         this.setState({
             xiaofu:responseText.data
         })
+        console.log(this.state.xiaofu)
     }
     showActionSheet() {
         this.ActionSheet.show()
@@ -85,22 +86,22 @@ export default class XfDetailed extends Component{
         if(i==0){
             alert("点了取消")
         } else if(i==1){
-            wechat.isWXAppInstalled()
+            WeChat.isWXAppInstalled()
                 .then((isInstalled) => {
                     if (isInstalled) {
-                        wechat.shareToTimeline({type: 'text', description: '测试微信朋友圈分享文本'})
+                        WeChat.shareToTimeline({type: "text",description:this.state.xiaofu.title})
                             .catch((error) => {
-                                console.log(error)
+                                ToastAndroid(error.message);
                             });
                     } else {
-                        console.log('没有安装微信软件，请您安装微信之后再试');
+                        ToastAndroid('没有安装微信软件，请您安装微信之后再试');
                     }
                 });
         } else if(i==2){
-            wechat.isWXAppInstalled()
+            WeChat.isWXAppInstalled()
                 .then((isInstalled) => {
                     if (isInstalled) {
-                        wechat.shareToSession({type: 'text', description: '测试微信好友分享文本'})
+                        WeChat.shareToSession({type: "text",description:this.state.xiaofu.title})
                             .catch((error) => {
                                console.log(error)
                             });

@@ -8,9 +8,12 @@ import {
     Alert,
     Image,
     Dimensions,
-    TextInput
+    TextInput,
+    AsyncStorage
 } from 'react-native';
+var postData = {}
 var {width} = Dimensions.get('window')
+import {address} from "../api"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default class Phone extends Component{
     static navigationOptions = ({navigation}) => ({
@@ -34,15 +37,27 @@ export default class Phone extends Component{
         }
         this.preservation=this.preservation.bind(this)
         this.go=this.go.bind(this)
+        this.address_success=this.address_success.bind(this)
     }
     componentDidMount(){
         this.props.navigation.setParams({preservation:this.preservation,go:this.go})
     }
     preservation(){
-        /*this.props.navigation.goBack(this.props.navigation.state.params.keys.B_key)*/
+        var user = this.props.navigation.state.params.user
+        if(!this.state.text){
+            return false
+        }
+        address(user,postData,this.address_success)
+    }
+    address_success(responseText){
+        var user = this.props.navigation.state.params.user
+        user.address = this.state.text
+        AsyncStorage.setItem("user",JSON.stringify(user))
         this.props.navigation.navigate("App",{
-            selectedTab:"我的"
+            selectedTab:"我的",
+            user:JSON.stringify(user)
         })
+
     }
     go(){
         this.props.navigation.goBack()
@@ -53,6 +68,7 @@ export default class Phone extends Component{
                 <View style={{width:width,height:150,borderBottomColor:"#f2f2f2",borderBottomWidth:1,borderTopColor:"#f2f2f2",borderTopWidth:1,backgroundColor:"#fff"}}>
                     <TextInput
                         onChangeText={(text) => {
+                            postData.address=text
                             this.setState({
                                 text:text
                             })
