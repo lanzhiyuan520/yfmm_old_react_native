@@ -53,7 +53,7 @@ export default class Problem extends Component{
         const id=this.props.navigation.state.params.id;
         this._loadInitialState(id);
     }
-
+    //问题初始化
     async _loadInitialState(id){
         try{
             var value=await AsyncStorage.getItem('userActionList');
