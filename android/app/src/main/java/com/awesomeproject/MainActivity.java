@@ -8,6 +8,7 @@ import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import cl.json.RNSharePackage;
 import com.imagepicker.ImagePickerPackage;
+import com.getui.reactnativegetui.GetuiModule;
 
 public class MainActivity extends ReactActivity {
 
@@ -19,4 +20,5 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "AwesomeProject";
     }
+
 }

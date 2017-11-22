@@ -3750,6 +3750,10 @@ react-native-easy-toast@^1.0.9:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-getui@^1.1.18:
+  version "1.1.18"
+  resolved "http://registry.npm.taobao.org/react-native-getui/download/react-native-getui-1.1.18.tgz#afffaaa954e15d6a9430a0964a60f561f9115812"
+
 react-native-htmlview@^0.12.1:
   version "0.12.1"
   resolved "http://registry.npm.taobao.org/react-native-htmlview/download/react-native-htmlview-0.12.1.tgz#4b987f1f34fae89f7bbd3c478f8f20d601019639"
@@ -3764,6 +3768,10 @@ react-native-image-crop-picker@^0.18.1:
 react-native-image-picker@^0.26.7:
   version "0.26.7"
   resolved "http://registry.npm.taobao.org/react-native-image-picker/download/react-native-image-picker-0.26.7.tgz#ad2ee957f7f6cc01396893ea03d84cb2adb2e376"
+
+react-native-loader@^1.2.1:
+  version "1.2.1"
+  resolved "http://registry.npm.taobao.org/react-native-loader/download/react-native-loader-1.2.1.tgz#e08589a89cfcd076595b9301c1d618f54da73329"
 
 react-native-pull@^2.0.2:
   version "2.0.2"

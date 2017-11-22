@@ -47,6 +47,7 @@ export default class ExpertsList extends Component{
             <View style={{flex:1}}>
                 <ScrollableTabView
                     initialPage={0}
+                    locked={true}
                     scrollWithoutAnimation={true}
                     tabBarPosition='top'
                     renderTabBar={() => <ScrollableTabBar/>}
