@@ -97,6 +97,11 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
+    manifestPlaceholders = [
+                        GETUI_APP_ID : "FVJsSFRlCw8daG9yzx9yE9",
+                        GETUI_APP_KEY : "JgAJJwZI4O6duPKqqZ0kb1",
+                        GETUI_APP_SECRET : "ApOUan5Cyh8RWEKK5GL7F8"
+                    ]
        vectorDrawables.useSupportLibrary = true
         applicationId "com.awesomeproject"
         minSdkVersion 16
@@ -106,11 +111,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        manifestPlaceholders = [
-                    GETUI_APP_ID : "FVJsSFRlCw8daG9yzx9yE9",
-                    GETUI_APP_KEY : "JgAJJwZI4O6duPKqqZ0kb1",
-                    GETUI_APP_SECRET : "ApOUan5Cyh8RWEKK5GL7F8"
-                ]
+
     }
 
     signingConfigs {

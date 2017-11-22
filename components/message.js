@@ -44,42 +44,14 @@ export default class Message extends Component{
     componentWillMount() {
 
         this.updateComponentInfo()
-        //订阅消息通知
-        var { NativeAppEventEmitter } = require('react-native');
-        var resigsteClientIdSub = NativeAppEventEmitter.addListener(
-            'registeClientId',
-            (clientId) => {
-                console.log(clientId);
-            }
-        )
-        var receiveRemoteNotificationSub = NativeAppEventEmitter.addListener(
-            'receiveRemoteNotification',
-            (notification) => {
-                //消息类型分为 APNs 和 payload 透传消息，具体的消息体格式会有差异
-                switch (notification.type) {
-                    case "apns":
-                        console.log('APNs 消息通知',JSON.stringify(notification))
-                        break;
-                    case "payload":
-                        console.log('payload 消息通知',JSON.stringify(notification))
-                        break;
-                    default:
-                }
-            }
-        );
 
-        var clickRemoteNotificationSub = NativeAppEventEmitter.addListener(
-            'clickRemoteNotification',
-            (notification) => {
-                console.log('点击通知',JSON.stringify(notification))
-            }
-        );
     }
 
     updateComponentInfo (){
 
         Getui.clientId((param)=> {
             this.setState({'clientId': param})
+            console.log(param)
         })
 
         Getui.version((param)=> {
@@ -111,7 +83,7 @@ export default class Message extends Component{
     }
     componentDidMount(){
         var user = this.props.navigation.state.params.user
-       /* request_noticelist(user.uuid,user.token,this.message_success)*/
+        request_noticelist(user.uuid,user.token,this.message_success)
     }
     message_success(responseText){
         this.setState({
@@ -131,16 +103,7 @@ export default class Message extends Component{
     render(){
         return(
             <View style={{width:width,backgroundColor:"#f2f2f2"}}>
-                <Text>
-                    运行状态 : {this.state.status}
-                </Text>
-                <Text>
-                    ClientId : {this.state.clientId}
-                </Text>
-                <Text>
-                    Version : {this.state.version}
-                </Text>
-                {/*<FlatList
+                <FlatList
                     data={this.state.message_list}
                     renderItem={({item})=>{
                         return (
@@ -167,9 +130,40 @@ export default class Message extends Component{
                             </TouchableWithoutFeedback>
                         )
                     }}
-                />*/}
+                />
 
             </View>
         )
     }
 }
+//订阅消息通知
+var { NativeAppEventEmitter } = require('react-native');
+
+var receiveRemoteNotificationSub = NativeAppEventEmitter.addListener(
+    'receiveRemoteNotification',
+    (notification) => {
+        //Android的消息类型为payload 透传消息 或者 cmd消息
+        switch (notification.type) {
+            case "cid":
+                //  console.log("receiveRemoteNotification cid = " + notification.cid)
+                Alert.alert('初始化获取到cid',JSON.stringify(notification))
+                console.log(notification)
+                break;
+            case 'payload':
+                Alert.alert('payload 消息通知',JSON.stringify(notification))
+                console.log(notification)
+                break
+            case 'cmd':
+                Alert.alert('cmd 消息通知', 'cmd action = ' + notification.cmd)
+                break
+            default:
+        }
+    }
+);
+
+var clickRemoteNotificationSub = NativeAppEventEmitter.addListener(
+    'clickRemoteNotification',
+    (notification) => {
+        Alert.alert('点击通知',JSON.stringify(notification))
+    }
+);

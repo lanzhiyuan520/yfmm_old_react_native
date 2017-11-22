@@ -34,7 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new WeChatPackage(),
-            new GetuiPackage(),
+            new GetuiPackage(true),
             new RNDeviceInfo(),
             new PickerPackage(),
             new VectorIconsPackage()
