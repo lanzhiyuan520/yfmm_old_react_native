@@ -58,6 +58,7 @@ export default class Home extends Component{
         this.setState({
           show:false
         })
+        
     }
     //分享到朋友圈
     shareCircle(){
