@@ -656,3 +656,34 @@ export function user_img(uuid,token,path,successCallback){
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })
 }
+
+//修改信箱数据
+export function message(user, post_params){
+    var url = URI + API_VERSION + "push?uuid=" + user.uuid;
+    var urlSigned = getSingedUrl(url, user.uuid);
+    var data = {
+        time: post_params.time,
+    };
+    console.log(data.time)
+    var dataEncrypt = getEncryptParam(data);
+    console.log(dataEncrypt)
+    fetch(urlSigned,{
+        method:"POST",
+        headers: {
+            "Http-App-Token": user.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body:`param=${dataEncrypt.param}`
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            console.log(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}

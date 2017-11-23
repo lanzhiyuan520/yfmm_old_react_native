@@ -11,9 +11,10 @@ import {
     FlatList
 } from 'react-native';
 var {width} = Dimensions.get('window')
-import {request_noticelist} from "./api"
+import {request_noticelist,message} from "./api"
 import Getui from 'react-native-getui'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+var user
 export default class Message extends Component{
     static navigationOptions = ({navigation}) => ({
 
@@ -27,54 +28,20 @@ export default class Message extends Component{
             elevation: 0
         },
         headerRight: <View></View>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 30, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>
+        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>
     });
     constructor(props){
         super(props)
         this.state={
             message_list:[],
-            clientId: '',
-            version:'',
-            status:''
+            title:""
         }
         this.message_success=this.message_success.bind(this)
         this.getLocalTime=this.getLocalTime.bind(this)
         this.message_img=this.message_img.bind(this)
+        this.title=this.title.bind(this)
+        this.list=this.list.bind(this)
     }
-    componentWillMount() {
-
-        this.updateComponentInfo()
-
-    }
-
-    updateComponentInfo (){
-
-        Getui.clientId((param)=> {
-            this.setState({'clientId': param})
-            console.log(param)
-        })
-
-        Getui.version((param)=> {
-            this.setState({'version': param})
-        })
-
-        Getui.status((param)=> {
-            let status = ''
-            switch (param){
-                case '0':
-                    status = '正在启动'
-                    break;
-                case '1':
-                    status = '启动'
-                    break;
-                case '2':
-                    status = '停止'
-                    break;
-            }
-            this.setState({'status': status})
-        })
-    }
-
     componentWillUnMount() {
         //记得在此处移除监听
         receiveRemoteNotificationSub.remove()
@@ -82,10 +49,14 @@ export default class Message extends Component{
         resigsteClientIdSub.remove()
     }
     componentDidMount(){
-        var user = this.props.navigation.state.params.user
+         this.list()
+    }
+    list(){
+        user = this.props.navigation.state.params.user
         request_noticelist(user.uuid,user.token,this.message_success)
     }
     message_success(responseText){
+        console.log(responseText)
         this.setState({
             message_list:responseText.data
         })
@@ -100,6 +71,19 @@ export default class Message extends Component{
             return require("../img/share.png")
         }
     }
+    title(item){
+        if(item.content.message_type == 7){
+            return "更新提醒"
+        }else if(item.content.message_type == 6){
+            return "小福助手"
+        }else if(item.content.message_type == 5){
+            return "小福助手"
+        }else if (item.content.message_type == 4) {
+            return "有问必答"
+        }else if(item.content.message_type == 8){
+            return "小福助手"
+        }
+    }
     render(){
         return(
             <View style={{width:width,backgroundColor:"#f2f2f2"}}>
@@ -110,8 +94,10 @@ export default class Message extends Component{
                             <TouchableWithoutFeedback onPress={()=>{
                                 this.props.navigation.navigate("Xfdetailed",{
                                     id:item.content.page_param,
-                                    user:JSON.stringify(this.props.navigation.state.params.user)
+                                    user:JSON.stringify(this.props.navigation.state.params.user),
+                                    list:this.list
                                 })
+                                message(user,{time:item.time})
                             }}>
                                 <View style={{width:width,height:100,marginBottom:15,backgroundColor:"#fff",flexDirection:"row",alignItems:"center",borderTopWidth:1,borderTopColor:"#f2f2f2",paddingRight:10,paddingLeft:10}}>
                                     <View style={{marginRight:10}}>
@@ -119,7 +105,7 @@ export default class Message extends Component{
                                     </View>
                                     <View style={{width:width}}>
                                         <View style={{flexDirection:"row"}}>
-                                            <Text style={{color:"#000",fontSize:14}}>小福助手</Text>
+                                            <Text style={{color:"#000",fontSize:14}}>{this.title(item)}</Text>
                                             <Text style={{color:"#999",fontSize:12,position:"absolute",right:120}}>{this.getLocalTime(item.time)}</Text>
                                         </View>
                                         <View>
@@ -141,20 +127,23 @@ var { NativeAppEventEmitter } = require('react-native');
 
 var receiveRemoteNotificationSub = NativeAppEventEmitter.addListener(
     'receiveRemoteNotification',
-    (notification) => {
+    (msg) => {
         //Android的消息类型为payload 透传消息 或者 cmd消息
-        switch (notification.type) {
+        switch (msg.type) {
             case "cid":
                 //  console.log("receiveRemoteNotification cid = " + notification.cid)
-                Alert.alert('初始化获取到cid',JSON.stringify(notification))
-                console.log(notification)
+                Alert.alert('初始化获取到cid',JSON.stringify(msg))
+                console.log(msg)
                 break;
             case 'payload':
-                Alert.alert('payload 消息通知',JSON.stringify(notification))
-                console.log(notification)
+                message(user,{
+                    time : msg.payload,
+                })
+                Alert.alert('payload 消息通知',JSON.stringify(msg))
+                console.log(msg)
                 break
             case 'cmd':
-                Alert.alert('cmd 消息通知', 'cmd action = ' + notification.cmd)
+                Alert.alert('cmd 消息通知', 'cmd action = ' + msg.cmd)
                 break
             default:
         }
@@ -163,7 +152,7 @@ var receiveRemoteNotificationSub = NativeAppEventEmitter.addListener(
 
 var clickRemoteNotificationSub = NativeAppEventEmitter.addListener(
     'clickRemoteNotification',
-    (notification) => {
-        Alert.alert('点击通知',JSON.stringify(notification))
+    (msg) => {
+        Alert.alert('点击通知',JSON.stringify(msg))
     }
 );
