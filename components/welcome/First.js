@@ -85,7 +85,7 @@ export default class First extends Component {
                 <View style={{width:width,alignItems:"center"}}>
                     <ActivityIndicator
                         animating={this.props.loading}
-                        size={35}
+                        size={0}
                         style={[styles.centering, styles.gray]}
                     />
                 </View>
