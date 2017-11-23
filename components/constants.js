@@ -22,4 +22,5 @@ AsyncStorage.getItem("user",(error,result)=>{
         object.token=result.token;//把token做成公共变量
     }
 });
+
 export default object;
