@@ -3,11 +3,15 @@ package com.awesomeproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.theweflex.react.WeChatPackage;
+
+import com.getui.reactnativegetui.GetuiModule;
+import com.getui.reactnativegetui.GetuiPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.brentvatne.react.ReactVideoPackage;
 
-import com.theweflex.react.WeChatPackage;
+
 
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -30,9 +34,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new WeChatPackage(),
+            new GetuiPackage(true),
             new RNDeviceInfo(),
             new PickerPackage(),
-            new WeChatPackage(),
             new VectorIconsPackage(),
             new ReactVideoPackage()
       );

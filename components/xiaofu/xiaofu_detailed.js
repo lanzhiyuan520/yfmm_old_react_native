@@ -62,6 +62,10 @@ export default class XfDetailed extends Component{
     }
 
     componentDidMount(){
+        if( this.props.navigation.state.params.list){
+            this.props.navigation.state.params.list()
+        }
+
         var id = this.props.navigation.state.params.id
         var user = JSON.parse(this.props.navigation.state.params.user)
         request_article_xiaofu_xiangqing(id,user.uuid,user.token,this.xiaofu_detailed)
