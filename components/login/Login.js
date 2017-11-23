@@ -68,30 +68,36 @@ export default class Login extends Component {
     }
     //手机登录成功回调
     user_success(responseText){
-        this.state.user=responseText.data
-        user_status(responseText.data.id,responseText.data.uuid,responseText.data.token,this.user_information)
-        AsyncStorage.setItem("isPhoneLogin",JSON.stringify(1))
-            .then(()=>{
-                /*console.log("isPhoneLogin存入成功")*/
-            })
-            .catch(()=>{
-                /*console.log("isPhoneLogin存入失败")*/
-            })
-        var user_data = responseText.data
-        if(responseText.code==0){
-            AsyncStorage.setItem("user",JSON.stringify(user_data))
+        if(responseText.code != 0){
+            ToastAndroid.show(responseText.msg, ToastAndroid.SHORT)
+            return false
+        }else{
+            this.state.user=responseText.data
+            user_status(responseText.data.id,responseText.data.uuid,responseText.data.token,this.user_information)
+            AsyncStorage.setItem("isPhoneLogin",JSON.stringify(1))
                 .then(()=>{
-                    /*console.log("user存入成功")*/
+                    /*console.log("isPhoneLogin存入成功")*/
                 })
                 .catch(()=>{
-                    /*console.log("user存入失败")*/
+                    /*console.log("isPhoneLogin存入失败")*/
                 })
-           /* if(responseText.data.user_status != 0){
-                /!*this.props.navigation.navigate("App",{selectedTab:"首页",user:JSON.stringify(user_data)})*!/
-            }else{
-                alert("您还没有登陆过，请填写状态")
-            }*/
+            var user_data = responseText.data
+            if(responseText.code==0){
+                AsyncStorage.setItem("user",JSON.stringify(user_data))
+                    .then(()=>{
+                        /*console.log("user存入成功")*/
+                    })
+                    .catch(()=>{
+                        /*console.log("user存入失败")*/
+                    })
+                /* if(responseText.data.user_status != 0){
+                     /!*this.props.navigation.navigate("App",{selectedTab:"首页",user:JSON.stringify(user_data)})*!/
+                 }else{
+                     alert("您还没有登陆过，请填写状态")
+                 }*/
+            }
         }
+
     }
     //获取用户信息回调
     user_information(responseText){

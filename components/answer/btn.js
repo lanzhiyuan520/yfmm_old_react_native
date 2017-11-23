@@ -17,6 +17,7 @@ export default class Find extends Component{
         }
     }
 
+    //改变按钮的选中状态
     changeBtn(order){
         this.setState({
             checked:order

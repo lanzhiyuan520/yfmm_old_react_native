@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
-var ImagePicker = require('react-native-image-picker');
+import ImagePicker from 'react-native-image-crop-picker';
 const {width,height}=Dimensions.get('window');
 import {
     Platform,
@@ -44,18 +44,27 @@ export default class Home extends Component{
         super(props);
         this.state = {
             loading:false,
-            avatarSource:[],
-            imgFileName:[]
+            camera:false
         }
     }
-
+    //渲染照片
     renderPic(){
         var picArr=[];
-        this.state.avatarSource.map(function (listItem) {
-            picArr.push(
-                <Image source={listItem} style={{width:100,height:100,marginRight:10,marginBottom:10}} />
-            )
-        })
+        if(this.props.camera){
+            this.props.picArr.map(function (listItem) {
+                picArr.push(
+                    <Image source={{uri:listItem.path}} style={{width:100,height:100,marginRight:10,marginBottom:10}} />
+                )
+            })
+        }else{
+            this.props.picArr.map(function (listItem) {
+                listItem=JSON.parse(listItem);
+                picArr.push(
+                    <Image source={{uri:listItem.path}} style={{width:100,height:100,marginRight:10,marginBottom:10}} />
+                )
+            })
+        }
+
         return picArr;
     }
 
@@ -76,38 +85,9 @@ export default class Home extends Component{
     }
 
 
-
+    //显示相册或相机组件
     showImagePicker() {
-        ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
-
-            if (response.didCancel) {
-                console.log('用户点击了取消');
-            }
-            else if (response.error) {
-                console.log('ImagePicker 出错: ', response.error);
-            }
-            else {
-                let source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-                if (Platform.OS === 'ios') {
-                    source = {uri: response.uri.replace('file://', ''), isStatic: true};
-                } else {
-                    source = {uri: response.uri, isStatic: true};
-                }
-                let imageArray = this.state.avatarSource;
-                imageArray.push(source);
-
-                let imgFileNameArray = this.state.imgFileName;
-                if (response.fileName!=null) {
-                    imgFileNameArray.push(response.fileName);
-                }
-                this.setState({
-                    avatarSource:imageArray
-                });
-                this.props.getImg(this.state.avatarSource)
-            }
-        });
-
+        this.props.cameraShow()
     }
 }
 const styles = StyleSheet.create({

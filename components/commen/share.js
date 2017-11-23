@@ -18,7 +18,6 @@ import {
 } from 'react-native';
 const {width,height}=Dimensions.get('window');
 export default class Home extends Component{
-
     constructor(props){
         super(props);
         this.state={
@@ -60,7 +59,7 @@ export default class Home extends Component{
           show:false
         })
     }
-
+    //分享到朋友圈
     shareCircle(){
         WeChat.isWXAppInstalled()
             .then( ( isInstalled ) => {
@@ -82,7 +81,7 @@ export default class Home extends Component{
                 }
             } );
     }
-
+    //分享给朋友
     shareFriend(){
         WeChat.isWXAppInstalled()
             .then( ( isInstalled ) => {

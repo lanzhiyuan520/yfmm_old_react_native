@@ -9,13 +9,14 @@ import {
     View,
     Image,
     ScrollView,
-    Button
+    Button,
+    TouchableWithoutFeedback
 } from 'react-native';
 import {setSpText} from './../UiStyle';
 import {scaleSize} from './../UiStyle';
 import ExpertList from './experts_list';
 import ProblemList from './problem_list'
-
+import PublishProblem from './publish_problem';
 export default class MinePage extends Component {
 
     componentWillMount(){
@@ -30,9 +31,11 @@ export default class MinePage extends Component {
                         <View><Image source={{uri:'http://cdn.ayi800.com/app_wenda/wenda.png'}} style={styles.top_pic}/></View>
                         <View style={{flex:1,alignItems:'center'}}>
                             <View><Text>免费问答，快速提问</Text></View>
+                            <TouchableWithoutFeedback onPress={()=> {this.props.navigate('PublishProblem',{navigate:this.props.navigate})} }>
                             <View style={{width:70,height:24,borderColor:'#ff8080',borderWidth:1,borderRadius:12,marginTop:16}} >
                                 <Text style={{textAlign:'center',lineHeight:18,color:'#ff8080',fontSize:10}}>我要提问</Text>
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                     </View>
                 </View>
