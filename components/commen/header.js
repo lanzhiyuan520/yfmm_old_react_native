@@ -71,7 +71,7 @@ export default class Header extends Component{
                         <TouchableWithoutFeedback onPress={() =>  this.changeHeart()}>
                             {this.renderHeart()}
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.shareWechat()}>
+                        <TouchableWithoutFeedback onPress={() => this.props.shareShow()}>
                              <FontAwesome name="share-alt" style={{fontSize: 15, color: "#ff8080",}}/>
                         </TouchableWithoutFeedback>
                     </View>

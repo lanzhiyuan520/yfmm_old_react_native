@@ -53,7 +53,7 @@ export default class Recommend extends Component{
                     <View>
                         {this.state.list.map(function(listItem){
                                 return(
-                                <TouchableWithoutFeedback onPress={()=>that.props.navigation.navigate('VideoDetail',{id:listItem.id})}>
+                                <TouchableWithoutFeedback onPress={()=>that.props.navigation.navigate('VideoDetail',{id:listItem.id,author:listItem})}>
                                     <View style={{flex:1,flexDirection:'row',padding:15,borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',justifyContent:'space-between'}}>
                                         <View style={{flex:2,paddingRight:10,justifyContent:'space-between'}}>
                                             <View>

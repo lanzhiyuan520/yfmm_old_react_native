@@ -77,7 +77,7 @@ export default class Problem extends Component{
 
     //渲染图片
     renderPic(){
-        if(false){
+        if(this.state.author.images !== null){
             return(
                 <View>
                     <View style={[styles.flex_row,styles.wrap]}>
@@ -95,7 +95,6 @@ export default class Problem extends Component{
             )
         }
     }
-    //渲染列表头部
     renderTop(){
         return (
             <View>
@@ -124,7 +123,7 @@ export default class Problem extends Component{
                 console.error('数据请求失败');
             });
     }
-
+    //控制分享组件显示
     shareShow(){
         this.setState({
             show:true
@@ -153,11 +152,22 @@ export default class Problem extends Component{
                                 </View>
                             </View>
                             {this.renderTop()}
+                            <View style={[styles.flex_row,styles.space_between,styles.p_15]}>
+                                <View>
+                                    <Text style={{fontSize:10}}>{this.state.author.create_at}</Text>
+                                </View>
+                                <View>
+                                    <View style={[styles.flex_row]}>
+                                        <Text style={{fontSize:10,marginRight:5}}>回答 {this.state.author.reply_num}</Text>
+                                        <Text  style={{fontSize:10}}>浏览 {this.state.author.liulan_num}</Text>
+                                    </View>
+                                </View>
+                            </View>
                         </View>
                     </View>
                     <AnserList/>
                 </ScrollView>
-                <Share show={this.state.show}/>
+                <Share show={this.state.show} id={state.params.id} url="problem" title={this.state.author.content}/>
             </View>
         )
     }
@@ -185,6 +195,9 @@ const styles = StyleSheet.create({
     wrap:{
         flexWrap:'wrap',
         height:'auto'
+    },
+    p_15:{
+        paddingHorizontal:15,
+        paddingBottom:15
     }
-
 });

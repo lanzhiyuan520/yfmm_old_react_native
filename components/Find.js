@@ -27,7 +27,7 @@ export default class Find extends Component{
     }
 
     requestData(){
-        fetch(constants.url+"/v1/article?uuid=6e76-933cad1-41a6130-3392c69-0ff2bd7&articleType=4&orderBy=createTimeDesc&limit=5&offset=0")
+        fetch(constants.url+"/v1/article?uuid="+constants.uuid+"&articleType=4&orderBy=createTimeDesc&limit=5&offset=0")
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
@@ -35,8 +35,8 @@ export default class Find extends Component{
                     dataSource:responseJson.data.dataList
                 })
             })
-            .catch(() => {
-                console.error('数据请求失败');
+            .catch((err) => {
+                console.error('数据请求失败:'+err);
             });
     }
 
