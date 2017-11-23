@@ -16,7 +16,6 @@ import {
     Image,
     AsyncStorage,
     ToastAndroid,
-    BackAndroid,
     BackHandler
 } from 'react-native';
 import Home from "./components/Home"
@@ -58,13 +57,13 @@ export default class App extends Component<{}> {
     }
     componentWillMount() {
         if (Platform.OS === 'android') {
-            BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
         }
     }
     onBackAndroid(){
         if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
             //最近2秒内按过back键，可以退出应用。
-            BackAndroid.exitApp();
+            BackHandler.exitApp();
         }
         this.lastBackPressed = Date.now();
         ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);

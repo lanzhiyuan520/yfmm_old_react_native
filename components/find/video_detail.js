@@ -94,7 +94,6 @@ export default class VideoDetail extends Component{
             var value=await AsyncStorage.getItem('userActionList');
             if(value!=null){
                 result=JSON.parse(value);
-                console.log(result);
                 if(result.guanzhu.daren.dataList.indexOf(id) !== -1){
                     this.setState({
                         show:false,

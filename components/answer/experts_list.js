@@ -29,7 +29,6 @@ export default class ExpertList extends Component {
         fetch(constants.url+"/v1/professionals?uuid="+constants.uuid+"&offset=0&limit=4")
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 this.setState({
                     oldAry:responseJson.data
                 })
@@ -42,7 +41,7 @@ export default class ExpertList extends Component {
         var itemAry=[];
         this.state.oldAry.map( (item,index)=> {
             itemAry.push(
-                <TouchableWithoutFeedback onPress={()=> {this.props.navigate('PublishProblem',{navigate:this.props.navigate,user:'lucy'})} }>
+                <TouchableWithoutFeedback key={index} onPress={()=> {this.props.navigate('PublishProblem',{navigate:this.props.navigate,user:'lucy'})} }>
                     <View style={styles.container}>
                         <View>
                             <Image style={{width:scaleSize(100),height:scaleSize(100),borderRadius:scaleSize(50)}} source={{uri:item.img}}/>

@@ -52,7 +52,7 @@ export default class myColumn  extends Component {
         }
         for(var item in newColumn){
             newArr.push (
-                <View>
+                <View key={item}>
                     <TouchableWithoutFeedback onPress = {this._pressRow.bind(this,item)}>
                         <View style={{flex:1,flexDirection:'row',padding:15,borderBottomColor:'#f2f2f2',borderBottomWidth:0.5}}>
                             <View style={{flex:1,marginRight:10}}>

@@ -19,10 +19,6 @@ import ProblemList from './problem_list'
 import PublishProblem from './publish_problem';
 export default class MinePage extends Component {
 
-    componentWillMount(){
-        console.log(this.props.problemLimit)
-    }
-
     render() {
         return (
             <View>

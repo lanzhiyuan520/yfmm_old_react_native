@@ -28,14 +28,12 @@ export default class AnswerList extends Component {
     componentDidMount(){
         const orderby='weight';
         this.requestData(orderby);
-        console.log(this.props)
     }
 
     requestData(){
         fetch(constants.url+"/v1/problem?type=1&orderby=weight&offset=0&limit=4&uuid="+constants.uuid)
             .then((response) => response.json())
             .then((responseJson) => {
-              console.log(responseJson)
                 this.setState({
                     data:responseJson.data,
                 });
@@ -56,9 +54,9 @@ export default class AnswerList extends Component {
                 </View>
                 {
                     <View>
-                        {this.state.data.map(function(listItem){
+                        {this.state.data.map(function(listItem,index){
                             return  (
-                                <View>
+                                <View key={index}>
                                     <TouchableWithoutFeedback>
                                         <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
                                             <View style={{flex:1,flexDirection:'row',height:20,marginBottom:15}}>

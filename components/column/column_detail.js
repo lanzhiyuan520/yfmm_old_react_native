@@ -61,7 +61,6 @@ export default class Problem extends Component{
         try{
             var value=await AsyncStorage.getItem('userActionList');
             if(value!=null){
-                console.log(value);
                 result=JSON.parse(value);
                 if(result.guanzhu.zhuanlan.dataList.indexOf(id) !== -1){
                     this.setState({
