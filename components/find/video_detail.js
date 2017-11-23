@@ -97,10 +97,12 @@ export default class VideoDetail extends Component{
                 console.log(result);
                 if(result.guanzhu.daren.dataList.indexOf(id) !== -1){
                     this.setState({
+                        show:false,
                         attend:'true'
                     })
                 }else {
                     this.setState({
+                        show:false,
                         attend:'false'
                     })
                 }
@@ -115,15 +117,17 @@ export default class VideoDetail extends Component{
 
 
     //监听按钮改变和播放按钮是否播放
-    shouldComponentUpdate(nextProps,nextState){
-        if(this.state.attend !== nextState.attend){
-            return true;
-        }
-        if(this.state.play !== nextState.play){
-            return true;
-        }
-
-    }
+    // shouldComponentUpdate(nextProps,nextState){
+    //     if(this.state.attend !== nextState.attend){
+    //         return true;
+    //     }
+    //     if(this.state.play !== nextState.play){
+    //         return true;
+    //     }
+    //     if(this.state.show !== nextState.show){
+    //         return true;
+    //     }
+    // }
     //显示分享组件
     shareShow(){
         this.setState({
@@ -135,7 +139,7 @@ export default class VideoDetail extends Component{
         const { state } = this.props.navigation;
         return(
             <View>
-                <Header title="视频详情" shareShow={()=>this.shareShow()} back="true" heart="true" navigation={this.props.navigation}/>
+                <Header title="视频详情" back="true" heart="true" navigation={this.props.navigation} shareShow={()=>this.shareShow()}/>
                 <ScrollView>
                     <View style={styles.container}>
                         {this.showVideo()}
@@ -182,7 +186,7 @@ export default class VideoDetail extends Component{
                     </View>
                     <Recommend navigation={this.props.navigation}/>
                 </ScrollView>
-                <Share show={this.state.show}/>
+                <Share show={this.state.show} id={state.params.id} url="article" title={state.params.author.title} type="999" />
             </View>
         )
     }

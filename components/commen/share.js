@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import * as WeChat from 'react-native-wechat';
+import constants from './../constants';
 import {
     Platform,
     StyleSheet,
@@ -14,15 +15,24 @@ import {
     Dimensions,
     FlatList,
     AlertIOS,
-    ToastAndroid
+    ToastAndroid,
+    Clipboard,
+    ScrollView
 } from 'react-native';
 const {width,height}=Dimensions.get('window');
 export default class Home extends Component{
     constructor(props){
         super(props);
         this.state={
-            show:false
-        }
+            show:false,
+            url:constants.PROBLEM_URL
+        };
+        this.shearPlate=this.shearPlate.bind(this);
+        this.getUrl=this.getUrl.bind(this);
+    }
+
+    componentWillMount(){
+        this.getUrl();
     }
 
     componentDidMount(){
@@ -53,23 +63,42 @@ export default class Home extends Component{
     componentWillUnmount(){
         WeChat.removeAllListeners()
     }
-
+    //隐藏组件
     hideItem(){
         this.setState({
           show:false
         })
     }
+
+    //判断分享的url
+    getUrl(){
+        if(this.props.url=='problem'){
+            this.setState({
+                url:constants.PROBLEM_URL+'?problem_id='+this.props.id
+            })
+        }else if(this.props.url=='professional'){
+            this.setState({
+                url:constants.PROFEESIONAL_URL+ '?professional_id=' + this.props.id
+            })
+        }else if(this.props.url=='article'){
+            this.setState({
+                url:constants.ARTICLE_URL+'?article_id='+this.props.id+'&article_type='+this.props.type,
+            })
+        }
+
+    }
+
     //分享到朋友圈
     shareCircle(){
         WeChat.isWXAppInstalled()
             .then( ( isInstalled ) => {
                 if ( isInstalled ) {
                     WeChat.shareToTimeline({
-                        title:'微信朋友圈测试链接',
-                        description:'分享自:江清清的技术专栏(www.lcode.org)',
-                        thumbImage:'http://mta.zttit.com:8080/images/ZTT_1404756641470_image.jpg',
+                        title:this.props.title,
+                        description:'分享自:有福妈妈APP',
+                        thumbImage:'http://cdn.ayi800.com/rn_app/share.png',
                         type:'news',
-                        webpageUrl:'http://www.lcode.org'
+                        webpageUrl:this.state.url
                     })
 
                 } else {
@@ -84,15 +113,18 @@ export default class Home extends Component{
     //分享给朋友
     shareFriend(){
         WeChat.isWXAppInstalled()
-            .then( ( isInstalled ) => {
-                if ( isInstalled ) {
-                    WeChat.shareToSession(data)({
-                        title:'微信朋友圈测试链接',
-                        description:'分享自:江清清的技术专栏(www.lcode.org)',
-                        thumbImage:'http://mta.zttit.com:8080/images/ZTT_1404756641470_image.jpg',
-                        type:'news',
-                        webpageUrl:'http://www.lcode.org'
+            .then((isInstalled) => {
+                if (isInstalled) {
+                    WeChat.shareToSession({
+                        title:this.props.title,
+                        description: '分享自:有福妈妈APP',
+                        thumbImage: 'http://cdn.ayi800.com/rn_app/share.png',
+                        type: 'news',
+                        webpageUrl: this.state.url
                     })
+                        .catch((error) => {
+                            console.log(error.message);
+                        });
                 } else {
                     if (Platform.OS === "android") {
                         ToastAndroid.show('没有安装微信软件，请您安装微信之后再试', ToastAndroid.SHORT);
@@ -100,14 +132,28 @@ export default class Home extends Component{
                         AlertIOS.alert('没有安装微信软件，请您安装微信之后再试');
                     }
                 }
-            } );
+            });
+    }
+
+    //复制剪切板
+    async shearPlate(){
+        Clipboard.setString(this.state.url);
+        try {
+            var content = await Clipboard.getString();
+            ToastAndroid.show('粘贴板的内容为:'+content,ToastAndroid.SHORT);
+        } catch (e) {
+            ToastAndroid.show(e.message,ToastAndroid.SHORT);
+        }
+        this.setState({
+            show:false
+        })
     }
 
     render(){
         if(this.state.show){
             return(
                 <View style={styles.mask}>
-                    <View style={{position:'absolute',bottom:0,left:(width-320)/2,height:220}}>
+                    <View style={{position:'absolute',bottom:0,left:(width-320)/2,height:270}}>
                         <View style={styles.container}>
                             <TouchableWithoutFeedback onPress={()=> this.shareCircle()}>
                                 <View style={[styles.item,styles.boders]}>
@@ -115,14 +161,14 @@ export default class Home extends Component{
                                 </View>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={()=> this.shareFriend()}>
-                            <View style={[styles.item,styles.boders]}>
-                                 <Text style={styles.share}>微信好友</Text>
-                            </View>
+                                <View style={[styles.item,styles.boders]}>
+                                     <Text style={styles.share}>微信好友</Text>
+                                </View>
                             </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback onPress={()=> this.shareCircle()}>
-                            <View style={styles.item}>
-                                <Text style={styles.share}>复制到剪切板</Text>
-                            </View>
+                            <TouchableWithoutFeedback onPress={()=> this.shearPlate()}>
+                                <View style={styles.item}>
+                                    <Text style={styles.share}>复制到剪切板</Text>
+                                </View>
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={{width:320,backgroundColor:'#fff',paddingVertical:10, borderRadius:5,}}>
@@ -164,14 +210,14 @@ const styles = StyleSheet.create({
         fontSize:12,
         color:'#3385ff',
         textAlign:'center',
-        lineHeight:20
+        lineHeight:30
     },
     boders:{
         borderBottomWidth:0.5,
         borderBottomColor:'#f8f8f8'
     },
     item:{
-        height:25
+        height:40
     },
     remove:{
         fontSize:12,

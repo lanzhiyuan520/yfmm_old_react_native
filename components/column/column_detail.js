@@ -29,8 +29,7 @@ export default class Problem extends Component{
         super(props);
         this.state={
             author:{},
-            attend:'false',
-            show:false
+            attend:'false'
         };
         this._loadInitialState=this._loadInitialState.bind(this);
     }
@@ -41,7 +40,7 @@ export default class Problem extends Component{
     }
 
     requestData(id){
-        fetch(constants.url+'/v1/group?rid='+id+'&offset=0&limit=1&uuid=6e76-933cad1-41a6130-3392c69-0ff2bd7')
+        fetch(constants.url+'/v1/group?rid='+id+'&offset=0&limit=1&uuid='+constants.uuid)
             .then((response) => response.json())
             .then((response) => {
                 this.setState({
@@ -57,6 +56,7 @@ export default class Problem extends Component{
         const id=this.props.navigation.state.params.id;
         this._loadInitialState(id);
     }
+    //获取存储的数据，判断是否关注或者收藏
     async _loadInitialState(id){
         try{
             var value=await AsyncStorage.getItem('userActionList');
@@ -76,17 +76,11 @@ export default class Problem extends Component{
         }
     }
 
-    shareShow(){
-        this.setState({
-            show:true
-        })
-    }
-
     render(){
         const { state } = this.props.navigation;
         return(
             <View>
-                <Header title={this.state.author.group_name} shareShow={()=>this.shareShow()} changeBtn={state.params.removeItem} back="true" share='false' navigation={this.props.navigation} />
+                <Header title={this.state.author.group_name} changeBtn={state.params.removeItem} back="true" navigation={this.props.navigation} />
                 <ScrollView>
                     <View style={{marginBottom:10}}>
                         <View style={{flex:1,flexDirection:'row',padding:15,backgroundColor:'#fff'}}>
@@ -113,7 +107,6 @@ export default class Problem extends Component{
                         <ProblemList navigate={this.props.navigate} count={this.state.author.problem_count} id={state.params.id} />
                     </View>
                 </ScrollView>
-                <Share show={this.state.show}/>
             </View>
         )
     }

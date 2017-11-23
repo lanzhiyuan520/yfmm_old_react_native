@@ -9,6 +9,7 @@ import com.getui.reactnativegetui.GetuiModule;
 import com.getui.reactnativegetui.GetuiPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.brentvatne.react.ReactVideoPackage;
 
 
 
@@ -37,7 +38,8 @@ public class MainApplication extends Application implements ReactApplication {
             new GetuiPackage(true),
             new RNDeviceInfo(),
             new PickerPackage(),
-            new VectorIconsPackage()
+            new VectorIconsPackage(),
+            new ReactVideoPackage()
       );
     }
 
