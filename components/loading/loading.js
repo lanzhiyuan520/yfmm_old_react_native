@@ -18,7 +18,7 @@ export default class Loading extends Component{
             <View>
                 <ActivityIndicator
                     animating={this.props.loading}
-                    size={0}
+                    size='large'
                     style={[styles.centering, styles.gray]}
                     color="#6c6c6c"
                 />

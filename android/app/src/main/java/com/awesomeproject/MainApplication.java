@@ -5,6 +5,7 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.brentvatne.react.ReactVideoPackage;
 
 import com.theweflex.react.WeChatPackage;
 
@@ -32,7 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNDeviceInfo(),
             new PickerPackage(),
             new WeChatPackage(),
-            new VectorIconsPackage()
+            new VectorIconsPackage(),
+            new ReactVideoPackage()
       );
     }
 

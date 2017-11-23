@@ -23,7 +23,32 @@ export default class AnswerList extends Component {
             admire:false,
             num:this.props.num
         }
+        this. getActionList=this. getActionList.bind(this);
     }
+
+    componentDidMount(){
+        const id=this.props.id;
+        this. getActionList(id);
+    }
+
+    //获取用户的点赞 - 关注 - 收藏 list
+    getActionList(id){
+        fetch(constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10")
+            .then((response) => response.json())
+            .then((responseJson) => {
+                //获取真实数据后打开
+                // result=responseJson.data;
+                // if(result.dianzan.huida.dataList.indexOf(id) !== -1){
+                //     this.setState({
+                //         admire:true,
+                //     })
+                // }
+            })
+            .catch((err) => {
+                console.error('数据请求失败');
+            });
+    }
+
     //点赞改变颜色
     changeHand(reverse){
             let formData = new FormData();
