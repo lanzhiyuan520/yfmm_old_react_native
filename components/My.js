@@ -8,7 +8,6 @@ import {
     Alert,
     Image,
     Dimensions,
-    BackAndroid,
     AsyncStorage
 } from 'react-native';
 var {width} = Dimensions.get('window')

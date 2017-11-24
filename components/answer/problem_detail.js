@@ -58,7 +58,6 @@ export default class Problem extends Component{
         try{
             var value=await AsyncStorage.getItem('userActionList');
             if(value!=null){
-                console.log(value);
                 result=JSON.parse(value);
                 if(result.shoucang.wenti.dataList.indexOf(id) !== -1){
                     this.setState({
@@ -114,7 +113,6 @@ export default class Problem extends Component{
         fetch(constants.url+"/v1/problem?rid="+id+"&offset=0&limit=3&type=0&uuid="+constants.uuid)
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 this.setState({
                     author:responseJson.data.hash_data
                 })

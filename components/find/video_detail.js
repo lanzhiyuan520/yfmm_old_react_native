@@ -35,7 +35,8 @@ export default class VideoDetail extends Component{
             data:{},
             play:false,
             attend:'false',
-            show:false
+            show:false,
+            heart:true
         };
         this._loadInitialState=this._loadInitialState.bind(this);
     }
@@ -89,13 +90,14 @@ export default class VideoDetail extends Component{
     }
     //关注收藏按钮初始化
     async _loadInitialState(){
-        const id=this.props.navigation.state.params.author.author_id;
+        const author_id=this.props.navigation.state.params.author.author_id;
+        const id=this.props.navigation.state.params.id;
         try{
             var value=await AsyncStorage.getItem('userActionList');
             if(value!=null){
                 result=JSON.parse(value);
-                console.log(result);
-                if(result.guanzhu.daren.dataList.indexOf(id) !== -1){
+                console.log(result.shoucang.yinshi.dataList);
+                if(result.guanzhu.daren.dataList.indexOf(author_id) !== -1){
                     this.setState({
                         show:false,
                         attend:'true'
@@ -106,6 +108,17 @@ export default class VideoDetail extends Component{
                         attend:'false'
                     })
                 }
+                if(result.shoucang.yinshi.dataList.indexOf(id) !== -1){
+                    this.setState({
+                        show:false,
+                        heart:false
+                    })
+                }else {
+                    this.setState({
+                        show:false,
+                        heart:true
+                    })
+                }
             }else{
                 console.log('无数据')
             }
@@ -113,7 +126,6 @@ export default class VideoDetail extends Component{
             this._appendMessage('AsyncStorage错误'+error.message);
         }
     }
-
 
 
     //监听按钮改变和播放按钮是否播放
@@ -139,7 +151,7 @@ export default class VideoDetail extends Component{
         const { state } = this.props.navigation;
         return(
             <View>
-                <Header title="视频详情" back="true" heart="true" navigation={this.props.navigation} shareShow={()=>this.shareShow()}/>
+                <Header title="视频详情" back="true" id={state.params.id} heart={this.state.heart} isheart='true' navigation={this.props.navigation} shareShow={()=>this.shareShow()}/>
                 <ScrollView>
                     <View style={styles.container}>
                         {this.showVideo()}

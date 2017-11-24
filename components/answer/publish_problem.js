@@ -80,7 +80,6 @@ export default class Find extends Component{
             body:data,
         }).then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 if(responseJson.code==0){
                     if (Platform.OS === "android") {
                         ToastAndroid.show('提问成功', ToastAndroid.SHORT);

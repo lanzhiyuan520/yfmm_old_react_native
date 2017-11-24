@@ -32,7 +32,6 @@ export default class OrtherList extends Component{
         fetch(constants.url+'/v1/article?uuid='+constants.uuid+'&limit=5&offset=0&orderBy=created_at desc&authId='+id+'&articleSource=auth')
             .then((response) => response.json())
             .then((responsejson) => {
-               console.log(responsejson);
                this.setState({
                    list:responsejson.data.dataList
                })
@@ -52,9 +51,9 @@ export default class OrtherList extends Component{
                     {
                         <View>
                             {
-                                this.state.list.map(function(listItem){
+                                this.state.list.map(function(listItem,index){
                                     return(
-                                        <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',padding:15,borderBottomWidth:0.5,borderBottomColor:'#f2f2f2'}}>
+                                        <View key={index} style={{flex:1,flexDirection:'row',justifyContent:'space-between',padding:15,borderBottomWidth:0.5,borderBottomColor:'#f2f2f2'}}>
                                             <View style={{flex:2,justifyContent:'space-between',paddingRight:10}}>
                                                 <View>
                                                     <Text style={{fontSize:12}}>{listItem.title}</Text>
