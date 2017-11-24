@@ -37,16 +37,11 @@ export default class RecColumn  extends Component {
         this.setState({attend: nextProps.attend});
     }
 
-    componentWillMount(){
-        this.getActionList();
-    }
-
     //获取用户的点赞 - 关注 - 收藏 list
     getActionList(){
         fetch(constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10")
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson.data);
                 try {
                     AsyncStorage.setItem(
                         'userActionList',
@@ -70,7 +65,6 @@ export default class RecColumn  extends Component {
                 this.setState({
                     data:responseJson.data
                 });
-                console.log(this.state.data);
             })
             .catch((err) => {
                 console.error('数据请求失败');
@@ -90,7 +84,6 @@ export default class RecColumn  extends Component {
             body:formData,
         }).then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 if( reverse == '1' ){
                     if(responseJson.code==0){
                         if (Platform.OS === "android") {
@@ -153,19 +146,6 @@ export default class RecColumn  extends Component {
             </View>
         );
     }
-    //从存储中获取
-    // componentDidMount(){
-    //     AsyncStorage.getItem('userActionList', (error, object) => {
-    //         if (error) {
-    //             console.log('Error:' + error.message);
-    //         } else {
-    //             console.log(object);
-    //             object=JSON.parse(object);
-    //             this.isCollect(object);
-    //         }
-    //     })
-    // }
-
 }
 const styles = StyleSheet.create({
     att_btn:{

@@ -27,10 +27,11 @@ export default class Find extends Component{
     }
 
     requestData(){
-        fetch(constants.url+"/v1/article?uuid="+constants.uuid+"&articleType=4&orderBy=createTimeDesc&limit=5&offset=0")
+        fetch(constants.url+"/v1/article?uuid="+constants.uuid+"&articleType=4&orderBy=createTimeDesc&limit=5&offset=0",{
+            method: 'GET'
+        })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 this.setState({
                     dataSource:responseJson.data.dataList
                 })

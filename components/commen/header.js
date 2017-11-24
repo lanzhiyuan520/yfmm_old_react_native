@@ -7,29 +7,110 @@ import {
     Text,
     View,
     TouchableWithoutFeedback,
+    AlertIOS,
+    ToastAndroid,
+    Platform,
+    AsyncStorage
 } from 'react-native';
 import {Circle,friends} from "../fenxiang/fenxiang"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import *as wechat from 'react-native-wechat';
+import constants from './../constants';
 export default class Header extends Component{
 
     constructor(props){
         super(props);
         this.state={
-            heart:true
+            heart:this.props.heart
         }
     }
 
-    changeHeart(){
-        if(this.state.heart){
-            this.setState({
-                heart:false
+    componentWillMount(){
+        this.getActionList();
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({heart: nextProps.heart});
+    }
+
+    //获取用户的点赞 - 关注 - 收藏 list
+    getActionList(){
+        fetch(constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10")
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson)
+                try {
+                    AsyncStorage.setItem(
+                        'userActionList',
+                        JSON.stringify(responseJson.data),
+                        (error)=>{
+                            console.log(error);
+                            if (error){
+                                console.log(error)
+                            }else{
+                                console.log("存值成功!");
+                            }
+                        }
+                    );
+                } catch (error){
+                    // alert('失败'+error);
+                }
+                this.setState({
+                    data:responseJson.data
+                });
             })
-        }else{
-            this.setState({
-                heart:true
+            .catch((err) => {
+                console.error('数据请求失败');
+            });
+    }
+
+    //改变心形按钮
+    changeHeart(reverse){
+        let formData = new FormData();
+        formData.append('userId',constants.userId);
+        formData.append('operateType','3');
+        formData.append('operateId',this.props.id);
+        formData.append('reverse',reverse);
+        fetch(constants.url+"/v1/userbehavior/collect?uuId="+constants.uuid,{
+            method: "POST",
+            body:formData,
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                if( reverse == '1' ){
+                    if(responseJson.code==0){
+                        if (Platform.OS === "android") {
+                            ToastAndroid.show('关注成功', ToastAndroid.SHORT);
+                        } else if (Platform.OS === "ios") {
+                            AlertIOS.alert('关注成功');
+                        }
+                        this.getActionList();
+                        this.setState({
+                            heart:false
+                        });
+                    }else {
+                        if (Platform.OS === "android") {
+                            ToastAndroid.show('关注失败', ToastAndroid.SHORT);
+                        } else if (Platform.OS === "ios") {
+                            AlertIOS.alert('关注失败');
+                        }
+                    }
+                }else if( reverse == '2' ){
+                    if(responseJson.code==0){
+                        if (Platform.OS === "android") {
+                            ToastAndroid.show('取关成功', ToastAndroid.SHORT);
+                        } else if (Platform.OS === "ios") {
+                            AlertIOS.alert('取关成功');
+                        }
+                        this.getActionList();
+                        this.setState({
+                            heart:true
+                        });
+                    }
+                }
+
             })
-        }
+            .catch((err) => {
+                console.error('数据请求失败');
+            });
     }
 
     componentDidMount (){
@@ -39,23 +120,27 @@ export default class Header extends Component{
     shareWechat(){
         this.props.shareShow();
     }
-
+    //渲染心形按钮
     renderHeart(){
         if(this.state.heart){
             return(
-                <View>
-                    <FontAwesome name="heart-o" style={{fontSize:15,color:"#ff8080",marginRight:8}} />
-                </View>
+                <TouchableWithoutFeedback onPress={() =>  this.changeHeart('1')}>
+                    <View>
+                        <FontAwesome name="heart-o" style={{fontSize:15,color:"#ff8080",marginRight:8}} />
+                    </View>
+                </TouchableWithoutFeedback>
             )
         }else {
             return(
-                <View>
-                    <FontAwesome name="heart" style={{fontSize:15,color:"#ff8080",marginRight:8}} />
-                </View>
+                <TouchableWithoutFeedback onPress={() =>  this.changeHeart('2')}>
+                    <View>
+                        <FontAwesome name="heart" style={{fontSize:15,color:"#ff8080",marginRight:8}} />
+                    </View>
+                </TouchableWithoutFeedback>
             )
         }
     }
-
+    //头部右边渲染
     hasRight() {
         if (this.props.share) {
             return (
@@ -65,12 +150,10 @@ export default class Header extends Component{
                     </View>
                 </TouchableWithoutFeedback>
             )
-        }else if (this.props.heart=="true") {
+        }else if (this.props.isheart) {
             return (
                     <View style={[styles.sub_container, styles.pr]}>
-                        <TouchableWithoutFeedback onPress={() =>  this.changeHeart()}>
-                            {this.renderHeart()}
-                        </TouchableWithoutFeedback>
+                        {this.renderHeart()}
                         <TouchableWithoutFeedback onPress={() => this.props.shareShow()}>
                              <FontAwesome name="share-alt" style={{fontSize: 15, color: "#ff8080",}}/>
                         </TouchableWithoutFeedback>
@@ -85,7 +168,7 @@ export default class Header extends Component{
             )
         }
     }
-
+    //返回按钮
     goBack(){
         if( this.props.changeBtn){
             this.props.changeBtn();
@@ -95,7 +178,7 @@ export default class Header extends Component{
         }
 
     }
-
+    //头部左边渲染
     hasLeft(){
         if (this.props.back=="true") {
             return (
