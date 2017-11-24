@@ -19,6 +19,7 @@ AsyncStorage.getItem("user",(error,result)=>{
         console .log("暂无数据")
     }else{
         result = JSON.parse(result);
+        object.user=result;
         object.token=result.token;//把token做成公共变量
     }
 });

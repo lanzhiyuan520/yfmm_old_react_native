@@ -37,10 +37,6 @@ export default class RecColumn  extends Component {
         this.setState({attend: nextProps.attend});
     }
 
-    componentWillMount(){
-        this.getActionList();
-    }
-
     //获取用户的点赞 - 关注 - 收藏 list
     getActionList(){
         fetch(constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10")

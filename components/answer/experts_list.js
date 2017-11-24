@@ -14,6 +14,8 @@ import {setSpText} from './../UiStyle';
 import {scaleSize} from './../UiStyle';
 import constants from './../constants';
 import PublishProblem from './publish_problem';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import ExpertsList from './../Experts/ExpertsList';
 export default class ExpertList extends Component {
     constructor(props){
         super(props);
@@ -41,7 +43,7 @@ export default class ExpertList extends Component {
         var itemAry=[];
         this.state.oldAry.map( (item,index)=> {
             itemAry.push(
-                <TouchableWithoutFeedback key={index} onPress={()=> {this.props.navigate('PublishProblem',{navigate:this.props.navigate,user:'lucy'})} }>
+                <TouchableWithoutFeedback key={index} onPress={()=> {this.props.navigate('PublishProblem',{navigate:this.props.navigate})} }>
                     <View style={styles.container}>
                         <View>
                             <Image style={{width:scaleSize(100),height:scaleSize(100),borderRadius:scaleSize(50)}} source={{uri:item.img}}/>
@@ -65,8 +67,12 @@ export default class ExpertList extends Component {
         return (
             <View style={[styles.scroll_box]}>
                 <View style={styles.article_item}>
-                    <View><Text style={styles.font_12}>专家推荐</Text></View>
-                    <View><Text style={styles.font_10}>＞</Text></View>
+                    <View style={{flex:1}}><Text style={styles.font_12}>专家推荐</Text></View>
+                    <View style={{flex:1}}>
+                        <TouchableWithoutFeedback onPress={()=>this.props.navigate('ExpertsList', {navigate: this.props.navigate, user: constants.user})}>
+                            <FontAwesome name="angle-right" style={styles.font_10} />
+                        </TouchableWithoutFeedback>
+                    </View>
                 </View>
                 <ScrollView style={styles.scroll_pic} horizontal>
                     {this.renderItem()}
@@ -98,7 +104,8 @@ const styles = StyleSheet.create({
     },
     font_10:{
         fontSize:18,
-        lineHeight:13
+        lineHeight:13,
+        textAlign:'right'
     },
     font_12:{
         fontSize:12
