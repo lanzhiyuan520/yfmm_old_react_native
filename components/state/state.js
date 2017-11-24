@@ -12,9 +12,10 @@ import {
     AsyncStorage
 } from 'react-native';
 var {width} = Dimensions.get('window')
-import {request_user_status} from "../api"
+import {request_user_status,user_status} from "../api"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 var selectTableWarp = {}
+var user
 export default class State extends Component{
     static navigationOptions = ({navigation}) => ({
         title: "我的状态",
@@ -37,13 +38,15 @@ export default class State extends Component{
             production:require("../../img/yuchanl.png"),
             birth:require("../../img/chusheng2.png"),
             Sta:false,
-            state:true,
+            state:null,
             Text:"宝宝生日",
         }
         this.production=this.production.bind(this)
         this.birth=this.birth.bind(this)
         this.submit=this.submit.bind(this)
         this.showPicker=this.showPicker.bind(this)
+        this.state_success=this.state_success.bind(this)
+        this.user=this.user.bind(this)
     }
     async showPicker(options) {
         try {
@@ -52,8 +55,9 @@ export default class State extends Component{
             });
             if (action !== DatePickerAndroid.dismissedAction) {
                /* alert(`你选择的时间是${year}年${month+1}月${day}日`)*/
-                selectTableWarp.confinementDate=year+"-"+month+"-"+day
+                selectTableWarp.confinementDate=/*year+"-"+month+"-"+day*/`${year}-${month+1}-${day}`
             }
+            console.log(selectTableWarp.confinementDate)
         } catch ({code, message}) {
             console.warn('Cannot open date picker', message);
         }
@@ -63,14 +67,20 @@ export default class State extends Component{
 
     }
     submit(){
-        var user = this.props.navigation.state.params.user
-        if(this.state.state){
-               selectTableWarp.userStatus=1
-        }else{
-            selectTableWarp.userStatus=3
-        }
+         user = this.props.navigation.state.params.user
+
         AsyncStorage.getItem("user_data",(error,result)=>{
-            request_user_status(user,this.state.selectTableWarp,this.state_success)
+            if(this.state.state){
+                selectTableWarp.userStatus=1
+            }else{
+                selectTableWarp.userStatus=3
+            }
+            console.log(selectTableWarp)
+            if(!selectTableWarp.confinementDate){
+                alert("请选择时间")
+                return false
+            }
+            request_user_status(user,selectTableWarp,this.state_success)
         })
         console.log(selectTableWarp)
         /*this.props.navigation.navigate("App",{
@@ -79,24 +89,45 @@ export default class State extends Component{
     }
     state_success(responseText){
         console.log(responseText)
+        if(responseText.code != 0){
+            alert(responseText.msg)
+        }else{
+            user_status(user.id,user.uuid,user.token,this.user)
+            /*AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))*/
+           /* AsyncStorage.setItem("user_data","")*/
+
+            /*this.props.navigation.navigate("App",{selectedTab:"我的",user:JSON.stringify(user)})*/
+        }
+    }
+    user(responseText){
+        AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))
+            .then(()=>{
+                this.props.navigation.navigate("App",{selectedTab:"我的",user:JSON.stringify(user)})
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+
     }
     production(){
             this.setState({
                 production:require("../../img/yuchan2.png"),
                 birth:require("../../img/chusheng.png"),
                 Sta:true,
-                state:false,
                 Text:"我的预产期"
             })
+        this.state.state=true,
+        console.log(this.state.state)
     }
     birth(){
         this.setState({
             production:require("../../img/yuchanl.png"),
             birth:require("../../img/chusheng2.png"),
             Sta:false,
-            state:true,
             Text:"宝宝生日"
         })
+        this.state.state=false
+        console.log(this.state.state)
     }
     disabled(){
         this.setState({

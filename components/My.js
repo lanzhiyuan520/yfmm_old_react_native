@@ -22,6 +22,7 @@ export default class My extends Component{
             user_status:{}
         }
         this.disabled=this.disabled.bind(this)
+        this.status=this.status.bind(this)
     }
     componentDidMount(){
         const dismissKeyboard = require('dismissKeyboard');
@@ -32,16 +33,6 @@ export default class My extends Component{
                 user_status:result
             })
         })
-        /*if(this.props.user){
-            this.setState({
-                user:JSON.parse(this.props.user)
-            })
-        }else{
-            this.setState({
-                user:this.props.navigation.state.params.user
-            })
-        }*/
-
         this.setState({
             user:JSON.parse(this.props.user)
         })
@@ -53,6 +44,15 @@ export default class My extends Component{
         setTimeout(()=>{
             this.setState({disabled:false})
         },500)
+    }
+    status(){
+        if(this.state.user_status.status == 1){
+            return "怀孕"
+        }else if(this.state.user_status.status == 2){
+            return "月子"
+        }else if(this.state.user_status.status == 3){
+            return "育儿"
+        }
     }
     render(){
         var img = "http://cdn.ayi800.com/1491981237"
@@ -152,7 +152,7 @@ export default class My extends Component{
                                 <Text style={{color:"#333"}}>我的状态</Text>
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
-                                <Text style={{color:"#ff8089"}}>育儿</Text>
+                                <Text style={{color:"#ff8089"}}>{this.status()}</Text>
                                 <Image source={require("../img/you.png")} style={{width:22,height:22}} />
                             </View>
                         </View>

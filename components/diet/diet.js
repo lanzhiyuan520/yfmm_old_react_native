@@ -90,7 +90,7 @@ export default class Diet extends Component{
                                                     this.props.disabled_fun()
                                                 }}>
                                                 <View>
-                                                    <View style={{opacity:.8,backgroundColor:"#000"}}>
+                                                    <View style={{}}>
                                                         <Image source={{uri:item.banner}} style={{width:190,height:120}}/>
                                                     </View>
                                                     <View style={{

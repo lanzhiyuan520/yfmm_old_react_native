@@ -25,6 +25,7 @@ export default class RequiredList extends Component{
         var user = this.props.user
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
+            console.log(user,result)
             requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
         })
 
@@ -45,7 +46,7 @@ export default class RequiredList extends Component{
                                 <Text style={{fontSize:14,color:"#000"}}>{this.state.suggest_data.title}</Text>
                             </View>
                             <View style={{flexDirection:"row"}}>
-                                <Text style={{fontSize:12,color:"#999",marginRight:10}}>{this.state.suggest_data.created_at}</Text>
+                                <Text style={{fontSize:12,color:"#999",marginRight:10}}>{/*{this.state.suggest_data.created_at}*/}</Text>
                                 <Text style={{fontSize:12,color:"#999"}}>阅读 {this.state.suggest_data.created_at}</Text>
                             </View>
                         </View>
