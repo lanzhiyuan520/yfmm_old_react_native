@@ -77,6 +77,11 @@ export default class App extends Component<{}> {
         dismissKeyboard();
     }
     behavior(responseText){
+        if(responseText.code == 3){
+            ToastAndroid.show('账号已过期，请重新登录', ToastAndroid.SHORT);
+            this.props.navigation.navigate("Login")
+            return false
+        }
         AsyncStorage.setItem("user_behavior",JSON.stringify(responseText.data))
     }
 

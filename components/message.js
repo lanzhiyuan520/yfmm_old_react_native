@@ -14,6 +14,14 @@ var {width} = Dimensions.get('window')
 import {request_noticelist,message} from "./api"
 import Getui from 'react-native-getui'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+var LIKE = 1 ;
+var COLLECTION = 2 ;
+var CARE = 3 ;
+var REPLY= 4 ;
+var MARKTING= 5 ;
+var SYSTEM  = 6 ;
+var UPDATE  = 7 ;
+var TODAY = 8 ;
 var user
 export default class Message extends Component{
     static navigationOptions = ({navigation}) => ({
@@ -50,6 +58,7 @@ export default class Message extends Component{
     }
     componentDidMount(){
          this.list()
+        /*this.props.navigation.state.params.message_list()*/
     }
     list(){
         user = this.props.navigation.state.params.user
@@ -123,27 +132,43 @@ export default class Message extends Component{
     }
 }
 //订阅消息通知
+/*
 var { NativeAppEventEmitter } = require('react-native');
 
 var receiveRemoteNotificationSub = NativeAppEventEmitter.addListener(
     'receiveRemoteNotification',
     (msg) => {
         //Android的消息类型为payload 透传消息 或者 cmd消息
-        switch (msg.type) {
-            case "cid":
-                //  console.log("receiveRemoteNotification cid = " + notification.cid)
-                Alert.alert('初始化获取到cid',JSON.stringify(msg))
-                console.log(msg)
+        var param   = JSON.parse( msg.payload.payload ) ;
+        var content = param.content ;
+        var message_type = content.message_type ;
+        switch (message_type) {
+            case SYSTEM:
+
                 break;
             case 'payload':
-                message(user,{
+                /!*message(user,{
                     time : msg.payload,
-                })
-                Alert.alert('payload 消息通知',JSON.stringify(msg))
+                })*!/
+                Alert.alert('payload 消息通知',JSON.stringify(msg),[
+                    {text:'取消',onPress:()=>{}},
+                    {text:'确定',onPress:()=>{
+
+                    }}
+                ])
                 console.log(msg)
                 break
-            case 'cmd':
-                Alert.alert('cmd 消息通知', 'cmd action = ' + msg.cmd)
+            case MARKTING:
+                console.log(msg)
+                break
+            case REPLY:
+                console.log(msg)
+                break
+            case UPDATE:
+                console.log(msg)
+                break
+            case TODAY:
+                console.log(msg)
                 break
             default:
         }
@@ -155,4 +180,4 @@ var clickRemoteNotificationSub = NativeAppEventEmitter.addListener(
     (msg) => {
         Alert.alert('点击通知',JSON.stringify(msg))
     }
-);
+);*/

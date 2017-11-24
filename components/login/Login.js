@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry,Alert,Platform,AsyncStorage,Dimensions,ActivityIndicator,ToastAndroid, Button,TextInput ,TouchableOpacity,TouchableNativeFeedback,TouchableHighlight,Image , StyleSheet, Text, View ,ScrollView} from 'react-native';
-import *as wechat from 'react-native-wechat'
+var WeChat=require('react-native-wechat');
 import DeviceInfo from 'react-native-device-info'
 
 var {width} = Dimensions.get('window')
@@ -41,7 +41,7 @@ export default class Login extends Component {
         this.user_information = this.user_information.bind(this)
     }
     componentDidMount(){
-        wechat.registerApp('wx825ecd9a849eef9d')
+        WeChat.registerApp('wx4185c118f9757414')
     }
     //手机号登录
     click(){
@@ -122,12 +122,13 @@ export default class Login extends Component {
     //微信登录
     social(){
         this.disabled(1)
-        wechat.isWXAppInstalled()
+        WeChat.isWXAppInstalled()
             .then( ( isInstalled ) => {
                 if ( isInstalled ) {
-                    wechat.sendAuthRequest("snsapi_userinfo", "123")
+                    WeChat.sendAuthRequest("snsapi_userinfo", "123")
                         .then(responseCode => {
                             //返回code码，通过code获取access_token
+                            alert(responseCode)
                             this.getAccessToken(responseCode.code);
                         })
                         .catch(err => {

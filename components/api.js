@@ -206,6 +206,7 @@ export function request_professionals_list(offset, limit, uuid, token, successCa
 export function requestTodayView(rid, userstatus, uuid, token, successCallback){
     var url = URI + API_VERSION + "advice?rid=" + rid + "&userStatus=" + userstatus + "&uuid=" + uuid;
     var urlSigned = getSingedUrl(url, uuid);
+    console.log(url)
     fetch(urlSigned,{
         method:"GET",
         headers:{
