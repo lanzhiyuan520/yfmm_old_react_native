@@ -7,7 +7,8 @@ import {
     TouchableWithoutFeedback,
     Alert,
     Image,
-    Button
+    Button,
+    AsyncStorage
 } from 'react-native';
 import RequiredList from "../requiredList/requiredList"
 import ScrollableTabView,{ScrollableTabBar,DefaultTabBar} from "react-native-scrollable-tab-view"
@@ -33,19 +34,38 @@ export default class Required extends Component{
             backgroundColor:"#f5f5f5"
         },
         headerRight: <TouchableWithoutFeedback onPress={()=>{navigation.state.params.navigatePress()}}><FontAwesome name="share-alt" style={{fontSize: 20, color: "#ff8080",marginRight:10}}/></TouchableWithoutFeedback>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 30, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
     });
     constructor(props){
         super(props)
         this.state = {
-            index:1
+            index:null,
+            status:null,
+            yuezi:["月1天","月2天","月3天","月4天","月5天","月6天","月7天","月8天","月9天","月10天","月11天","月12天","月13天","月14天","月15天","月16天","月17天","月18天","月19天","月20天","月21天","月22天","月23天","月24天","月25天","月26天","月27天","月28天","月29天","月30天","月31天","月32天","月33天","月34天","月35天","月36天","月37天","月38天","月39天","月40天","月41天","月42天",],
+            yuer:["育2月","育3月","育4月","育5月","育6月","育7月","育8月","育9月","育10月","育11月","育12月",],
+            yunqi:["孕1周","孕2周","孕3周","孕4周","孕5周","孕6周","孕7周","孕8周","孕9周","孕10周","孕11周","孕12周","孕13周","孕14周","孕15周","孕16周","孕17周","孕18周","孕19周","孕20周","孕21周","孕22周","孕23周","孕24周","孕25周","孕26周","孕27周","孕28周","孕29周","孕30周","孕31周","孕32周","孕33周","孕34周","孕35周","孕36周","孕37周","孕38周","孕39周","孕40周",],
+            sta:null
         }
         this.fun=this.fun.bind(this)
         this.handlePress = this.handlePress.bind(this)
         this.showActionSheet = this.showActionSheet.bind(this)
         this.nav_list = this.nav_list.bind(this)
     }
+    componentWillMount(){
+            if(this.props.navigation.state.params.status == 1){
+                    this.state.sta=this.state.yunqi
+                this.state.index = 1
+            }else if(this.props.navigation.state.params.status == 2){
+                this.state.sta=this.state.yuezi
+                this.state.index = 1
+            }else if(this.props.navigation.state.params.status == 3){
+                this.state.sta=this.state.yuer
+                this.state.index = 2
+            }
+
+    }
     componentDidMount(){
+
         this.nav_list()
     }
     nav_list(){
@@ -69,19 +89,25 @@ export default class Required extends Component{
 
     }
     fun(obj){
-        this.setState({
-            index:obj.i+1
-        })
+        if(this.props.navigation.state.params.status ==3){
+            this.setState({
+                index:obj.i+2
+            })
+        }else{
+            this.setState({
+                index:obj.i+1
+            })
+        }
+
     }
     render(){
         return(
             <View style={{flex:1}}>
-
                 <ScrollableTabView
                     initialPage={0}
                     scrollWithoutAnimation={true}
-                    tabBarPosition='top'
                     renderTabBar={() => <ScrollableTabBar/>}
+                    tabBarPosition='top'
                     tabBarUnderlineStyle={{backgroundColor:'transparent'}}
                     tabBarActiveTextColor="#333"
                     tabBarInactiveTextColor="#666"
@@ -90,19 +116,17 @@ export default class Required extends Component{
                         this.fun(obj)
                     }}
                 >
-                    <RequiredList tabLabel="孕1月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕2月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕3月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕4月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕5月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕6月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕7月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕8月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕9月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕10月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕11月" user={this.props.navigation.state.params.user} index={this.state.index}/>
-                    <RequiredList tabLabel="孕12月" user={this.props.navigation.state.params.user} index={this.state.index}/>
+                   {
+                       this.state.sta.map((tab,i)=>{
+                           return (
+                               <RequiredList key={i} tabLabel={tab} user={this.props.navigation.state.params.user} index={this.state.index}/>
+                           )
+                       })
+                    }
+
+
                 </ScrollableTabView>
+
                 <ActionSheet
                     ref={o => this.ActionSheet = o}
                     options={Variable.options}
@@ -114,3 +138,4 @@ export default class Required extends Component{
         )
     }
 }
+

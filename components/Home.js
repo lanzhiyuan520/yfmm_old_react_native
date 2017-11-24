@@ -23,7 +23,7 @@ import Diet from "./diet/diet"
 import Video from "./video_list/video_list"
 var {width} = Dimensions.get('window')
 var {height} = Dimensions.get('window')
-import {request_professionals_list,requestTodayView} from "./api"
+import {request_professionals_list,requestTodayView,request_noticelist} from "./api"
 import {PullView} from 'react-native-pull';
 export default class Home extends Component{
     constructor(props){
@@ -42,7 +42,9 @@ export default class Home extends Component{
             experts:{},
             suggest:{},
             read:"每周必读",
-            data:{}
+            data:{},
+            message:false,
+            sta:null
         }
         this.loading=this.loading.bind(this)
         this.disabled=this.disabled.bind(this)
@@ -50,6 +52,8 @@ export default class Home extends Component{
         this.onPullRelease=this.onPullRelease.bind(this)
         this.answer_success=this.answer_success.bind(this)
         this.suggest_success=this.suggest_success.bind(this)
+        /*this.message_success=this.message_success.bind(this)
+        this.message_list=this.message_list.bind(this)*/
     }
     clear(){
         /*try {
@@ -75,6 +79,7 @@ export default class Home extends Component{
         AsyncStorage.getItem("user_data",(error,result)=>{
              result = JSON.parse(result)
             this.state.status=result.statusCon
+            this.state.sta = result.status
             if(result.status == 3){
                 this.state.status_img=require("../img/yuerqi.png")
             }else if(result.status == 2){
@@ -91,13 +96,20 @@ export default class Home extends Component{
                     read:"每月必读"
                 })
             }
+            //首页有问必答
             request_professionals_list(0, 1, this.state.user.uuid, this.state.user.token, this.answer_success)
+            //首页今日建议
             requestTodayView(result.period,result.status,this.state.user.uuid,this.state.user.token,this.suggest_success)
         })
 
     }
+   /* message_list(){
+        //首页消息列表
+        request_noticelist(this.state.user.uuid,this.state.user.token,this.message_success)
+    }*/
     //必读成功回调
     suggest_success(responseText){
+        console.log(responseText)
         this.setState({
             suggest:responseText.data.articleData
         })
@@ -120,6 +132,25 @@ export default class Home extends Component{
         }
 
     }
+    //消息列表成功回调
+   /* message_success(responseText){
+        console.log(responseText)
+        var flag = 0
+        for (var i = 0; i < responseText.data.length; i++) {
+            if(!responseText.data.is_read){
+                flag += 1
+            }
+        }
+        if (flag > 0){
+            this.setState({
+                message:false
+            })
+        }else{
+            this.setState({
+                message:true
+            })
+        }
+    }*/
     onPullRelease(resolve){
         /*setTimeout(()=>{
             resolve();
@@ -177,7 +208,8 @@ export default class Home extends Component{
                             disabled={this.state.disabled}
                             onPress={()=>{
                                 this.props.navigate('Message',{
-                                    user:this.state.user
+                                    user:this.state.user,
+                                   /* message_list:this.message_list*/
                                 })
                                 this.setState({disabled:true})
                                 setTimeout(()=>{
@@ -210,7 +242,8 @@ export default class Home extends Component{
                                     disabled={this.state.disabled}
                                     onPress={()=>{
                                         this.props.navigate('Required',{
-                                            user:this.state.user
+                                            user:this.state.user,
+                                            status:this.state.sta
                                         })
                                         this.setState({disabled:true})
                                         setTimeout(()=>{
