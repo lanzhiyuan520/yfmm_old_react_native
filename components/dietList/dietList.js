@@ -88,6 +88,7 @@ export default class DietList extends Component{
                {/* <Loading loading={this.state.loading} />*/}
                 <ScrollableTabView
                     initialPage={0}
+                    locked={true}
                     scrollWithoutAnimation={true}
                     tabBarPosition='top'
                     renderTabBar={() => <ScrollableTabBar/>}
