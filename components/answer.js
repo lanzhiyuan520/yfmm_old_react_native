@@ -9,7 +9,8 @@ import {
     FlatList,
     RefreshControl,
     Button,
-    ScrollView
+    ScrollView,
+    StatusBar
 } from 'react-native';
 
 import Header from './answer/answer_top';

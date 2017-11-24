@@ -16,7 +16,8 @@ import {
     Image,
     AsyncStorage,
     ToastAndroid,
-    BackHandler
+    BackHandler,
+    StatusBar
 } from 'react-native';
 import Home from "./components/Home"
 import Answer from "./components/answer"
@@ -101,6 +102,7 @@ export default class App extends Component<{}> {
       const { navigate } = this.props.navigation;
     return (
       <View  style={styles.container}>
+          <StatusBar hidden={false} />
           <TabNavigator>
               {this._renderTabarItems('首页',require('./img/home2.png'),require('./img/home.png'),Home,navigate,this.find,this.props.navigation.state.params.user,this.props.navigation)}
               {this._renderTabarItems('问答',require('./img/answer2.png'),require('./img/answer.png'),Answer,navigate,this.find,this.props.navigation.state.params.user,this.props.navigation)}
