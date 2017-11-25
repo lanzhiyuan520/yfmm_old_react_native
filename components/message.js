@@ -60,16 +60,17 @@ export default class Message extends Component{
          this.list()
         /*this.props.navigation.state.params.message_list()*/
     }
+    //获取消息列表
     list(){
         user = this.props.navigation.state.params.user
         request_noticelist(user.uuid,user.token,this.message_success)
     }
     message_success(responseText){
-        console.log(responseText)
         this.setState({
             message_list:responseText.data
         })
     }
+    //格式化日期格式
     getLocalTime(nS) {
         return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
     }
@@ -80,6 +81,7 @@ export default class Message extends Component{
             return require("../img/share.png")
         }
     }
+    //判断消息类型，显示文本
     title(item){
         if(item.content.message_type == 7){
             return "更新提醒"

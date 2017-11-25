@@ -28,34 +28,38 @@ export default class First extends Component {
             count:null,
             user_information:{}
         }
-        /*this.user_success=this.user_success.bind(this)*/
+        this.user_success=this.user_success.bind(this)
     };
     componentDidMount(){
         setTimeout(()=>{
             try {
+                //第一次打开页面先去获取isPhoneLogin字段
                 AsyncStorage.getItem(
                     'isPhoneLogin',
                     (error,result)=>{
+                        //判断如果没有则跳转欢迎页面
                         if (result==null || result==""){
-                            /*alert('取值失败:'+error+"用户第一次打开app");*/
-                            /*AsyncStorage.setItem("first","first")*/
                             this.setState({
                                 loading:false
                             })
                             this.props.navigation.navigate("Welcome")
                             return false
                         }else{
+                            //如果有说明不是第一次登录，再去获取用户信息
                             AsyncStorage.getItem("user",(error,result)=>{
+                                //如果没有则说明已经退出登录或者没有登录过，跳转到登录页面
                                 if(result==null || result==""){
                                     this.setState({
                                         loading:false
                                     })
                                     this.props.navigation.navigate("Login")
                                 }else{
+                                    //如果有用户信息则跳转到首页
                                     this.setState({
                                         loading:false
                                     })
                                     var user = JSON.parse(result)
+                                        //获取用户状态
                                     user_status(user.id,user.uuid,user.token,this.user_success)
                                     this.props.navigation.navigate("App",{
                                         selectedTab:"首页",
@@ -74,7 +78,14 @@ export default class First extends Component {
 
     }
     user_success(responseText){
-        AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))
+        if (responseText.code != 0){
+            ToastAndroid.show('账号已过期，请重新登录', ToastAndroid.SHORT);
+            this.props.navigation.navigate("Login")
+            return false
+        }else{
+            AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))
+        }
+
     }
     render() {
         return (

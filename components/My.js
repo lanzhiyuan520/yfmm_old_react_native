@@ -26,6 +26,7 @@ export default class My extends Component{
     componentDidMount(){
         const dismissKeyboard = require('dismissKeyboard');
         dismissKeyboard();
+        //获取用户状态
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
             this.setState({
@@ -45,6 +46,7 @@ export default class My extends Component{
         },500)
     }
     status(){
+        //根据用户状态来判断显示的文本
         if(this.state.user_status.status == 1){
             return "怀孕"
         }else if(this.state.user_status.status == 2){

@@ -52,6 +52,7 @@ export default class Required extends Component{
         this.nav_list = this.nav_list.bind(this)
     }
     componentWillMount(){
+        //判断用户状态改变导航
             if(this.props.navigation.state.params.status == 1){
                     this.state.sta=this.state.yunqi
                 this.state.index = 1
@@ -65,7 +66,6 @@ export default class Required extends Component{
 
     }
     componentDidMount(){
-
         this.nav_list()
     }
     nav_list(){
@@ -88,6 +88,7 @@ export default class Required extends Component{
         }
 
     }
+    //切换导航获取不同的数据
     fun(obj){
         if(this.props.navigation.state.params.status ==3){
             this.setState({

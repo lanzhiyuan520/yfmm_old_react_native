@@ -46,6 +46,7 @@ export default class Expertsdetails extends Component{
     }
     componentDidMount(){
         var user = this.props.navigation.state.params.user
+        //获取专家详情
         request_professionals_content(user.uuid,user.token,this.props.navigation.state.params.id,this.experts_success)
         this.props.navigation.setParams({navigatePress:this.showActionSheet})
     }
@@ -55,8 +56,6 @@ export default class Expertsdetails extends Component{
             reply_num:responseText.data.reply_num,
             care_num:responseText.data.care_num
         })
-        console.log(responseText)
-        console.log(this.state.experts_data)
     }
     showActionSheet() {
         this.ActionSheet.show()

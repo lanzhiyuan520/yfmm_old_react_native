@@ -26,6 +26,7 @@ export default class RequiredList extends Component{
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
             console.log(user,result)
+            //获取今日建议的文章
             requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
         })
 
@@ -34,7 +35,6 @@ export default class RequiredList extends Component{
         this.setState({
             suggest_data:responseText.data.articleData
         })
-        console.log(responseText)
     }
     render(){
         return(

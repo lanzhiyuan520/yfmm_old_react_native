@@ -62,12 +62,14 @@ export default class XfDetailed extends Component{
     }
 
     componentDidMount(){
+        //判断有没有传这个值过来，有传的话说明是从消息页面跳转过来的，则从新刷新消息列表
         if( this.props.navigation.state.params.list){
             this.props.navigation.state.params.list()
         }
 
         var id = this.props.navigation.state.params.id
         var user = JSON.parse(this.props.navigation.state.params.user)
+        //获取小福精选详情页
         request_article_xiaofu_xiangqing(id,user.uuid,user.token,this.xiaofu_detailed)
         this.props.navigation.setParams({navigatePress:this.showActionSheet,collect:this.collect})
     }
@@ -75,7 +77,6 @@ export default class XfDetailed extends Component{
         this.setState({
             xiaofu:responseText.data
         })
-        console.log(this.state.xiaofu)
     }
     showActionSheet() {
         this.ActionSheet.show()

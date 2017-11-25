@@ -31,8 +31,10 @@ export default class Diet extends Component{
         this.request_article_yinshi_successCallBack=this.request_article_yinshi_successCallBack.bind(this)
     }
     componentDidMount(){
+        //获取用户状态
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
+            //获取首页的饮食推荐
             request_article_yinshi(this.state.user.uuid,result.status,"weightDesc",0,5,this.state.user.token,this.request_article_yinshi_successCallBack)
         })
         this.state.user=JSON.parse(this.props.user)
