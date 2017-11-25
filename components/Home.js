@@ -76,10 +76,12 @@ export default class Home extends Component{
                 months:moment().month(),
                 day:moment().dates(),
             })
+        //获取用户状态
         AsyncStorage.getItem("user_data",(error,result)=>{
              result = JSON.parse(result)
             this.state.status=result.statusCon
             this.state.sta = result.status
+            //根据用户状态判断显示的图片
             if(result.status == 3){
                 this.state.status_img=require("../img/yuerqi.png")
             }else if(result.status == 2){
@@ -87,6 +89,7 @@ export default class Home extends Component{
             }else if(result.status == 1){
                 this.state.status_img=require("../img/yunqi.png")
             }
+            //判断今日建议的文本
             if(result.status == 2){
                 this.setState({
                     read:"每日必读"
@@ -120,6 +123,7 @@ export default class Home extends Component{
             experts:responseText.data[0]
         })
     }
+    //控制loading的显示与隐藏
     loading(num){
         if(num==1){
             this.setState({
@@ -151,6 +155,7 @@ export default class Home extends Component{
             })
         }
     }*/
+   //下拉刷新
     onPullRelease(resolve){
         /*setTimeout(()=>{
             resolve();

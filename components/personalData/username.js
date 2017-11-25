@@ -47,13 +47,14 @@ export default class Username extends Component{
             return false
         }
         var user = this.props.navigation.state.params.user
-
+        //更改用户名
         username(user,postData,this.username_success)
 
            }
     username_success(responseText){
         var user = this.props.navigation.state.params.user
         user.nickname = this.state.text
+        //从新存入
         AsyncStorage.setItem("user",JSON.stringify(user))
         this.props.navigation.navigate("App",{
             selectedTab:"我的",

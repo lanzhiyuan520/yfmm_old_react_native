@@ -53,9 +53,6 @@ export default class PersonalData extends Component{
     }
 
     go(){
-       /* this.props.navigation.state.params.navigate("App",{
-            selectedTab:"我的"
-        })*/
        this.props.navigation.goBack()
     }
     showActionSheet() {
@@ -81,7 +78,6 @@ export default class PersonalData extends Component{
                 showCropGuidelines:false
             }).then(image => {
                 console.log(image)
-                alert("hello")
                 var user = this.props.navigation.state.params.user
                 postData.head_img=image.path
                 user_img(user.uuid,user.token,{head_img:image.path},this.user_image)
@@ -99,8 +95,6 @@ export default class PersonalData extends Component{
     }
     address(text){
         this.state.add=text
-        console.log(text)
-        console.log(this.state.add)
     }
     disabled(){
         this.setState({

@@ -37,6 +37,7 @@ export default class ExpertsList extends Component{
     componentDidMount(){
 
     }
+    //切换导航来显示不同的专家列表
     index(obj){
         this.setState({
             index:obj.i+1

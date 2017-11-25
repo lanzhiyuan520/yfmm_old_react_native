@@ -97,7 +97,7 @@ export function request_login_by_phone(uuid,post_params,successcallback){
             console.log(error)
         })
 }
-//获取用户信息
+//获取用户状态信息
 export function user_status(id,uuid,token,successcallback){
     var url = URI + API_VERSION + "user?rid=" + id + "&uuid=" + uuid;
     var urlSigned = getSingedUrl(url, uuid);
@@ -684,6 +684,101 @@ export function message(user, post_params){
             console.log(responseText)
         })
         .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//获取微信access_token
+export function access_token(code,appid,secret,successCallback){
+    var url =  `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${appid}&secret=${secret}&code=${code}&grant_type=authorization_code`
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//获取微信用户信息
+export function weixin_user(access_token,openid,successCallback){
+    var url =  `https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}`
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//微信登录
+export function wx_login(uuid,data,access_token,refresh_token,successCallback){
+    var url = URI + API_VERSION + 'login/thirdcallback?uuid=' + uuid;
+    var urlSigned = getSingedUrl(url, uuid);
+    var wx_data = {
+        thirdType: data.support,
+        openid: data.openid,
+        nickname: data.nickname,
+        sex: data.sex,
+        province: "暂时获取不到",
+        city: data.city,
+        country: data.country,
+        headimgurl: data.headimgurl,
+        privilege: "这个字段没有",
+        unionid: data.openid,
+        access_token: access_token,
+        refresh_token: refresh_token,
+        expires_in: 7200,
+    };
+    var error = JSON.stringify(wx_data)
+    var url = `http://test.www.ayi800.com/test/demodemo?content=${error}`
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+    var dataEncrypt = getEncryptParam(wx_data);
+    fetch(urlSigned,{
+        method:"POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body:`param=${dataEncrypt.param}`
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            var error = JSON.stringify(error)
+            var url = `http://test.www.ayi800.com/test/demodemo?content=${error}`
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((responseText) => {
+
+                })
+                .catch((error)=>{
+                    console.log(error)
+                    ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+                })
             console.log(error)
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })

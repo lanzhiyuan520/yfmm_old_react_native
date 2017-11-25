@@ -48,6 +48,7 @@ export default class State extends Component{
         this.state_success=this.state_success.bind(this)
         this.user=this.user.bind(this)
     }
+    //时间插件
     async showPicker(options) {
         try {
             const {action, year, month, day} = await DatePickerAndroid.open({
@@ -57,46 +58,35 @@ export default class State extends Component{
                /* alert(`你选择的时间是${year}年${month+1}月${day}日`)*/
                 selectTableWarp.confinementDate=/*year+"-"+month+"-"+day*/`${year}-${month+1}-${day}`
             }
-            console.log(selectTableWarp.confinementDate)
         } catch ({code, message}) {
             console.warn('Cannot open date picker', message);
         }
     }
     componentDidMount(){
         this.props.navigation.setParams({submit:this.submit})
-
     }
     submit(){
          user = this.props.navigation.state.params.user
-
         AsyncStorage.getItem("user_data",(error,result)=>{
             if(this.state.state){
                 selectTableWarp.userStatus=1
             }else{
                 selectTableWarp.userStatus=3
             }
-            console.log(selectTableWarp)
             if(!selectTableWarp.confinementDate){
                 alert("请选择时间")
                 return false
             }
+            //更改用户状态
             request_user_status(user,selectTableWarp,this.state_success)
         })
-        console.log(selectTableWarp)
-        /*this.props.navigation.navigate("App",{
-            selectedTab:"我的"
-        })*/
     }
     state_success(responseText){
-        console.log(responseText)
         if(responseText.code != 0){
             alert(responseText.msg)
         }else{
+            //用户状态更改成功的话从新获取用户状态并存储
             user_status(user.id,user.uuid,user.token,this.user)
-            /*AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))*/
-           /* AsyncStorage.setItem("user_data","")*/
-
-            /*this.props.navigation.navigate("App",{selectedTab:"我的",user:JSON.stringify(user)})*/
         }
     }
     user(responseText){
