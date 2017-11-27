@@ -59,7 +59,6 @@ import {getSingedUrl,getEncryptParam,decrypt} from "./tools/tools"
 export function request_code_in_phone(get_params,success){
     var url = URI + API_VERSION + "verifycode/getlogincode?uuid=" + get_params.uuid + "&phone=" + get_params.phone + "&type=" + get_params.type;
     var urlSigned = getSingedUrl(url,get_params.uuid)
-    console.log(urlSigned)
     fetch(urlSigned)
         .then((response) => {
             return response.json();
@@ -557,9 +556,6 @@ export function request_user_status(user, selectTableWarp, successCallback){
     var url = URI + API_VERSION + 'user?uuid=' + user.uuid;
     var urlSigned = getSingedUrl(url, user.uuid);
     var dataEncrypt = getEncryptParam(selectTableWarp);
-    console.log(urlSigned)
-    console.log(url)
-    console.log(dataEncrypt)
     fetch(urlSigned,{
         method:"PUT",
         headers: {
@@ -737,19 +733,6 @@ export function wx_login(uuid,data,access_token,refresh_token,successCallback){
         refresh_token: refresh_token,
         expires_in: 7200,
     };
-    var error = JSON.stringify(wx_data)
-    var url = `http://test.www.ayi800.com/test/demodemo?content=${error}`
-    fetch(url)
-        .then((response) => {
-            return response.json();
-        })
-        .then((responseText) => {
-
-        })
-        .catch((error)=>{
-            console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
-        })
     var dataEncrypt = getEncryptParam(wx_data);
     fetch(urlSigned,{
         method:"POST",
@@ -766,19 +749,6 @@ export function wx_login(uuid,data,access_token,refresh_token,successCallback){
             successCallback(responseText)
         })
         .catch((error)=>{
-            var error = JSON.stringify(error)
-            var url = `http://test.www.ayi800.com/test/demodemo?content=${error}`
-            fetch(url)
-                .then((response) => {
-                    return response.json();
-                })
-                .then((responseText) => {
-
-                })
-                .catch((error)=>{
-                    console.log(error)
-                    ToastAndroid.show('网络错误', ToastAndroid.SHORT)
-                })
             console.log(error)
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })

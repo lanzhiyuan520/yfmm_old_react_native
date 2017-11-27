@@ -48,11 +48,11 @@ export default class Login extends Component {
         this.success = this.success.bind(this)
         this.user_success = this.user_success.bind(this)
         this.user_information = this.user_information.bind(this)
-        this.hello = this.hello.bind(this)
         this.wx_access_token = this.wx_access_token.bind(this)
         this.wx_access_token_success = this.wx_access_token_success.bind(this)
         this.wx_user = this.wx_user.bind(this)
         this.wx_user_success = this.wx_user_success.bind(this)
+        this.wx_login_success = this.wx_login_success.bind(this)
     }
     componentDidMount(){
         WeChat.registerApp('wx4185c118f9757414')
@@ -78,7 +78,11 @@ export default class Login extends Component {
                 return false
             }
             //手机登录接口
-            request_login_by_phone(this.state.uuid,{phone:phone_val,code:code_val,type:codeDomain},this.user_success)
+            AsyncStorage.getItem("uuid",(error,result)=>{
+                var uuid = JSON.parse(result)
+                request_login_by_phone(uuid,{phone:phone_val,code:code_val,type:codeDomain},this.user_success)
+
+            })
         }
     }
     //手机登录成功回调
@@ -88,36 +92,23 @@ export default class Login extends Component {
             return false
         }else{
             this.state.user=responseText.data
-            //获取用户信息
+            //获取用户状态
             user_status(responseText.data.id,responseText.data.uuid,responseText.data.token,this.user_information)
-            //存入isPhoneLogin字段说明不是第一次打开了
-            AsyncStorage.setItem("isPhoneLogin",JSON.stringify(1))
-                .then(()=>{
-                    /*console.log("isPhoneLogin存入成功")*/
-                })
-                .catch(()=>{
-                    /*console.log("isPhoneLogin存入失败")*/
-                })
             var user_data = responseText.data
             if(responseText.code==0){
-                //存入用户信息
+               //存入用户信息
                 AsyncStorage.setItem("user",JSON.stringify(user_data))
                     .then(()=>{
-                        /*console.log("user存入成功")*/
+
                     })
                     .catch(()=>{
-                        /*console.log("user存入失败")*/
+                        console.log("user存入失败")
                     })
-                /* if(responseText.data.user_status != 0){
-                     /!*this.props.navigation.navigate("App",{selectedTab:"首页",user:JSON.stringify(user_data)})*!/
-                 }else{
-                     alert("您还没有登陆过，请填写状态")
-                 }*/
             }
         }
 
     }
-    //获取用户信息回调
+    //获取用户状态回调
     user_information(responseText){
         //存入用户状态
         AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))
@@ -144,9 +135,9 @@ export default class Login extends Component {
     //获取微信access_token成功回调
     wx_access_token_success(responseText){
         wx_user_access_token = responseText.access_token
-         openid = responseText.openid
+        openid = responseText.openid
         refresh_token=responseText.refresh_token
-        this.wx_user(access_token,openid)
+        this.wx_user(wx_user_access_token,openid)
     }
     //获取微信用户信息
     wx_user(wx_user_access_token,openid){
@@ -157,11 +148,16 @@ export default class Login extends Component {
         var responseText = responseText
         responseText.support = 1
         let wx_data = responseText
-        wx_login(this.state.uuid,wx_data,wx_user_access_token,refresh_token,this.wx_login_success)
+        AsyncStorage.getItem("uuid",(error,result)=>{
+            var uuid = JSON.parse(result)
+            wx_login(uuid,wx_data,wx_user_access_token,refresh_token,this.wx_login_success)
+        })
+
     }
+    //微信登录成功回调
     wx_login_success(responseText){
-        var responseText = JSON.stringify(responseText)
-        var url = `http://test.www.ayi800.com/test/demodemo?content=${responseText}`
+        var data = JSON.stringify(responseText)
+        var url = `http://test.www.ayi800.com/test/demodemo?content=${data}`
         fetch(url)
             .then((response) => {
                 return response.json();
@@ -173,6 +169,7 @@ export default class Login extends Component {
                 console.log(error)
                 ToastAndroid.show('网络错误', ToastAndroid.SHORT)
             })
+        this.user_success(responseText)
     }
     //微信登录
     social(){
@@ -189,7 +186,6 @@ export default class Login extends Component {
                             this.wx_access_token(code,appid,secret)
                         })
                         .catch(err => {
-                            alert("hello")
                             Alert.alert('登录授权发生错误：', err.message, [
                                 {text: '确定'}
                             ]);
@@ -236,7 +232,10 @@ export default class Login extends Component {
             return false;
         }else {
             if(this.state.count==60){
-                request_code_in_phone({phone:phone_val,type:codeDomain,uuid:"3454-e74532d-4c2f292-5d2488e-75c7049"},this.success)
+                AsyncStorage.getItem("uuid",(error,result)=>{
+                    var uuid = JSON.parse(result)
+                    request_code_in_phone({phone:phone_val,type:codeDomain,uuid:uuid},this.success)
+                })
             }else{
                 ToastAndroid.show('请稍后再次发送', ToastAndroid.SHORT)
             }
@@ -254,22 +253,6 @@ export default class Login extends Component {
                 this.setState({disabled2:false})
             },500)
         }
-    }
-    hello(){
-        alert("hello")
-       var content = "1111"
-         var url = `http://test.www.ayi800.com/test/demodemo?content=${content}`
-        fetch(url)
-            .then((response) => {
-                return response.json();
-            })
-            .then((responseText) => {
-                console.log(responseText)
-            })
-            .catch((error)=>{
-                ToastAndroid.show('网络错误', ToastAndroid.SHORT)
-                console.log(error)
-            })
     }
     render() {
         let check = !this.state.check?require("../../img/checkbox.png"):require("../../img/checked2.png")
@@ -378,13 +361,6 @@ export default class Login extends Component {
                         </View>
                     </View>
                 </View>
-                <TouchableNativeFeedback onPress={this.hello}>
-                    <View style={{width:100,height:100,backgroundColor:"red"}}>
-                        <Text>点我</Text>
-                    </View>
-                </TouchableNativeFeedback>
-
-
             </View>
         );
     }

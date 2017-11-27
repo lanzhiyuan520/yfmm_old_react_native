@@ -14,7 +14,9 @@ import {
 
 var {width} = Dimensions.get('window')
 var {height} = Dimensions.get('window')
+import DeviceInfo from 'react-native-device-info'
 import {user_status} from "../api"
+import CryptoJS from "crypto-js"
 export default class First extends Component {
     static navigationOptions = {
         title: 'Welcome',
@@ -31,6 +33,13 @@ export default class First extends Component {
         this.user_success=this.user_success.bind(this)
     };
     componentDidMount(){
+        var uuid = DeviceInfo.getUniqueID()
+        console.log(uuid)
+        if(uuid != 36){
+            uuid = CryptoJS.MD5(uuid).toString();
+            uuid = uuid.replace(/(\S)(?=((\S{7})+)$)/g,'$1-');
+        }
+        AsyncStorage.setItem("uuid",JSON.stringify(uuid))
         setTimeout(()=>{
             try {
                 //第一次打开页面先去获取isPhoneLogin字段
@@ -42,6 +51,8 @@ export default class First extends Component {
                             this.setState({
                                 loading:false
                             })
+                            //存入isPhoneLogin字段说明不是第一次打开了
+                            AsyncStorage.setItem("isPhoneLogin",JSON.stringify(1))
                             this.props.navigation.navigate("Welcome")
                             return false
                         }else{
