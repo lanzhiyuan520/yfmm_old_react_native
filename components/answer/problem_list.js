@@ -25,21 +25,40 @@ export default class ProblemList extends Component {
             sort:true,
             limit:this.props.problemLimit,
             orderby:'weight',
-            more_title:'点击加载更多数据'
+            more_title:'点击加载更多数据',
+            actionNum:0
         }
+        this.requestData=this.requestData.bind(this);
     }
     componentDidMount(){
         const orderby='weight';
         this.requestData(orderby);
     }
 
-    requestData(orderby){
-        fetch(constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset=0&limit="+this.state.limit+"&uuid="+constants.uuid)
+    componentWillReceiveProps(nextProps) {
+        this.setState({actionNum: nextProps.actionNum});
+        let offset=(this.state.actionNum+1)*5;
+        this.requestData(this.state.orderby,offset);
+    }
+
+    requestData(orderby,offset){
+        let that=this;
+        fetch(constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset="+offset+"&limit="+this.state.limit+"&uuid="+constants.uuid)
             .then((response) => response.json())
             .then((responseJson) => {
-                this.setState({
-                    data:responseJson.data,
-                });
+                let oldArr=this.state.data;
+                let newArr=responseJson.data;
+                if(newArr.length<=0){
+                    that.props.isDown();
+                    this.setState({
+                        actionNum:this.state.actionNum-1
+                    })
+                }else {
+                    allArr=[...oldArr,...newArr];
+                    this.setState({
+                        data:allArr
+                    });
+                }
             })
             .catch(() => {
                 console.error('数据请求失败');

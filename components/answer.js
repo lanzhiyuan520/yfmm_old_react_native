@@ -26,8 +26,13 @@ export default class MinePage extends Component {
             isRefreshing: false,
             loadMore:false,
             requestDate:true,
-            problemLimit:4
+            problemLimit:4,
+            replyOffset:0,
+            columnOffset:0,
+            actionNum:0,
+            finish:false
         };
+        this.isDown=this.isDown.bind(this);
     }
 
     changestate(newState){
@@ -35,41 +40,38 @@ export default class MinePage extends Component {
             changePage:newState
         });
     }
+    //监听列表滚到底部
     _onScroll(event) {
-        // if(this.state.loadMore){
-        //     return;
-        // }
         let y = event.nativeEvent.contentOffset.y;
         let height = event.nativeEvent.layoutMeasurement.height;
         let contentHeight = event.nativeEvent.contentSize.height;
         if(y+height>=contentHeight-20){
             this.setState({
-                loadMore:true
+                loadMore:true,
+                actionNum:this.state.actionNum+1
             });
         }
     }
-
+    //刷新函数
     _onRefresh(){
         alert('刷新成功')
     }
+    //数据全部加载完成执行
+    isDown(){
+        console.log(5);
+        // this.setState({
+        //     finish:true
+        // })
+    }
 
+    //加载更多
     _renderLoadMore() {
-        // if (this.state.baseDatas == null || this.state.baseDatas.recommondMerchant == null) {
-        //     return;
-        // }
-        let that=this;
-        this.timer = setTimeout(
-            () => {},
-            1000
-        );
-        if(this.state.requestDate){
-
-        }
         return (
             <LoadingMore
+                finish={this.state.finish}
                 isLoading={this.state.loadMore}
                 onLoading={()=>{
-                    alert('fdfdfd');
+                    alert('正在加载...');
                 }}
             />
         );
@@ -96,9 +98,9 @@ export default class MinePage extends Component {
                 >
                 {
                     this.state.changePage == 'true' ? (
-                        <Wenda problemLimit={this.state.problemLimit} navigate={this.props.navigate}/>
+                        <Wenda isDown={this.isDown} actionNum={this.state.actionNum} replyOffset={this.state.replyOffset} problemLimit={this.state.problemLimit} navigate={this.props.navigate}/>
                     ) : (
-                        <Column navigate={this.props.navigate}/>
+                        <Column columnOffset={this.state.columnOffset} navigate={this.props.navigate}/>
                     )
                 }
                     {this._renderLoadMore()}

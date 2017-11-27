@@ -26,45 +26,61 @@ export default class LoadingMore extends Component {
     }
 
     render() {
-        if (this.state.isLoading) {
+        if(!this.props.finish){
+            if (this.state.isLoading) {
+                return (
+                    <View
+                        style={{flexDirection:'row',alignSelf:'center',alignItems:'center'}}>
+                        <ActivityIndicator
+                            size={'small'}
+                            color={'#999'}
+                            animating={true}
+                            style={{width:ScreenUtils.scaleSize(15),height:ScreenUtils.scaleSize(15)}}
+                        />
+                        <Text style={{
+                            color:'#999',
+                            fontSize:10,
+                            marginLeft:ScreenUtils.scaleSize(15)
+                        }}>
+                            正在加载...
+                        </Text>
+                    </View>
+                );
+            } else if(this.props.onLoading){
+                return (
+                    <TouchableOpacity
+                        onPress={()=>{
+                            this.setState({
+                                isLoading:true
+                            });
+                            this.props.onLoading&&this.props.onLoading()
+                        }}
+                    >
+                        <Text style={{
+                            color:'#999',
+                            fontSize:10,
+                            alignSelf:'center',
+                        }}>
+                            点击加载更多...
+                        </Text>
+                    </TouchableOpacity>
+                );
+            }
+        }else {
             return (
                 <View
                     style={{flexDirection:'row',alignSelf:'center',alignItems:'center'}}>
-                    <ActivityIndicator
-                        size={'small'}
-                        color={'#999'}
-                        animating={true}
-                        style={{width:ScreenUtils.scaleSize(15),height:ScreenUtils.scaleSize(15)}}
-                    />
                     <Text style={{
                         color:'#999',
                         fontSize:10,
                         marginLeft:ScreenUtils.scaleSize(15)
                     }}>
-                        正在加载...
+                        没有更多数据了...
                     </Text>
                 </View>
             );
-        } else if(this.props.onLoading){
-            return (
-                <TouchableOpacity
-                    onPress={()=>{
-                        this.setState({
-                            isLoading:true
-                        });
-                        this.props.onLoading&&this.props.onLoading()
-                    }}
-                >
-                    <Text style={{
-                        color:'#999',
-                        fontSize:10,
-                        alignSelf:'center',
-                    }}>
-                        点击加载更多...
-                    </Text>
-                </TouchableOpacity>
-            );
         }
+
     }
 
     componentWillReceiveProps(nextProps) {

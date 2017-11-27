@@ -190,7 +190,7 @@ export default class Header extends Component{
             )
         }else {
             return (
-                <TouchableWithoutFeedback onPress={() => alert(4)}>
+                <TouchableWithoutFeedback>
                     <View style={[styles.sub_container, styles.pr]}>
                     </View>
                 </TouchableWithoutFeedback>
@@ -198,9 +198,7 @@ export default class Header extends Component{
         }
     }
     render(){
-
         return(
-
             <View style={styles.container}>
                 <View style={{flex:1,flexDirection:'row',height:40}}>
                     {this.hasLeft()}
@@ -217,7 +215,8 @@ const styles = StyleSheet.create({
         height:40,
         backgroundColor:'rgba(255, 255, 255, 0.6)',
         borderBottomColor:'#f2f2f2',
-        borderBottomWidth:1
+        borderBottomWidth:1,
+        marginTop:(Platform.OS === 'ios' ? 20 : 0)
     },
     sub_container:{
         flex:1,

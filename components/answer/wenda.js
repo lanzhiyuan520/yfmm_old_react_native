@@ -36,7 +36,7 @@ export default class MinePage extends Component {
                     </View>
                 </View>
                 <ExpertList navigate={this.props.navigate}/>
-                <ProblemList problemLimit={this.props.problemLimit} navigate={this.props.navigate} />
+                <ProblemList isDown={this.props.isDown} actionNum={this.props.actionNum} problemLimit={this.props.problemLimit} navigate={this.props.navigate} />
             </View>
         );
     }
