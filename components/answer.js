@@ -62,6 +62,7 @@ export default class MinePage extends Component {
         // this.setState({
         //     finish:true
         // })
+        
     }
 
     //加载更多
