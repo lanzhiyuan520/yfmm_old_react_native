@@ -33,10 +33,10 @@ export default class ExpertsList extends Component{
         this.experts_list=this.experts_list.bind(this)
     }
     componentDidMount(){
+        //获取用户状态来获取不同类型的专家列表
         InteractionManager.runAfterInteractions(()=>{
             AsyncStorage.getItem("user_data",(error,result)=>{
                 result = JSON.parse(result)
-                /* this.state.status=result.statusCon*/
                 request_page_content_by_caregory(this.state.user.uuid, this.state.user.token,{offset:0,limit:4,category:this.props.index,action_num:0}, this.experts_list)
             })
         })

@@ -49,20 +49,21 @@ export default class App extends Component<{}> {
   }
 
     componentDidMount(){
-        console.log(this.props.navigation);
         WeChat.registerApp('wx825ecd9a849eef9d');
     }
-
+    //更改底部导航位置
     find () {
         this.setState({
             selectedTab: "发现"
         })
     }
     componentWillMount() {
+        //判断机型并监听物理返回键
         if (Platform.OS === 'android') {
             BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
         }
     }
+    //双击退出应用
     onBackAndroid(){
         if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
             //最近2秒内按过back键，可以退出应用。
@@ -73,11 +74,15 @@ export default class App extends Component<{}> {
         return true;
     }
     componentDidMount() {
+        //获取用户信息
         var user = JSON.parse(this.props.navigation.state.params.user)
+        //获取用户行为
         init_user_behavior(user,this.behavior)
+        //隐藏键盘
         const dismissKeyboard = require('dismissKeyboard');
         dismissKeyboard();
     }
+    //用户行为获取成功并存储
     behavior(responseText){
         AsyncStorage.setItem("user_behavior",JSON.stringify(responseText.data))
     }

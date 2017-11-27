@@ -28,6 +28,7 @@ export default class Video extends Component{
         this.setState({
             user:JSON.parse(this.props.user)
         })
+        //获取用户状态，获取首页视频列表
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
             request_article_shipin(this.state.user.uuid,this.state.user.token,0,5,"weight",this.video_success)
