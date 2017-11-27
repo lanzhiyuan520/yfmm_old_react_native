@@ -4,6 +4,8 @@ var API_VERSION = "v1/";
 //生产：
 var URI = "https://api.youfumama.com/";
 
+const VERSION = 'v1';
+const DOMAIN = 'https://api.youfumama.com';
 //文章分享url
 var ARTICLE_URL = "http://nf.youfumama.com/article/show-article";
 
@@ -631,16 +633,19 @@ export function address(userData, postData, successCallback){
 }
 //上传图片
 export function user_img(uuid,token,path,successCallback){
-    var url = DOMAIN+'/'+API_VERSION+'/'+'upload?uuid='+uuid;
+    var url = DOMAIN+'/'+VERSION+'/'+'upload?uuid='+uuid;
+    let formData = new FormData();
+    let file = {uri: path, type: 'multipart/form-data', name: 'image.jpg'};
+    formData.append("headImg",file);
     var urlSigned = getSingedUrl(url,uuid);
+    console.log(urlSigned)
     fetch(urlSigned,{
         method:"POST",
         headers: {
             "Http-App-Token": token,
-            'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+            'Content-Type':'multipart/form-data'
         },
-        body:`${path}`
+        body:formData
     })
         .then((response) => {
             return response.json();
@@ -653,7 +658,32 @@ export function user_img(uuid,token,path,successCallback){
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })
 }
-
+//修改头像更新用户数据
+export function update_information(userData, postData,successCallback){
+    var url = URI + API_VERSION + "user?uuid=" + userData.uuid;
+    var urlSigned = getSingedUrl(url, userData.uuid);
+    postData.id = userData.id;
+    var dataEncrypt = getEncryptParam(postData);
+    fetch(urlSigned,{
+        method:"POST",
+        headers: {
+            "Http-App-Token": userData.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body:`param=${dataEncrypt.param}`
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
 //修改信箱数据
 export function message(user, post_params){
     var url = URI + API_VERSION + "push?uuid=" + user.uuid;
