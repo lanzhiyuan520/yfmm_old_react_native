@@ -3787,6 +3787,10 @@ react-native-refreshable-listview@^2.0.0-beta4:
   dependencies:
     is-promise "^2.0.0"
 
+react-native-refreshlist@^1.0.3:
+  version "1.0.3"
+  resolved "http://registry.npm.taobao.org/react-native-refreshlist/download/react-native-refreshlist-1.0.3.tgz#04d18fd5e5d45869d4d5f0c5a836ab92b83edac1"
+
 react-native-scrollable-tab-view@^0.8.0:
   version "0.8.0"
   resolved "http://registry.npm.taobao.org/react-native-scrollable-tab-view/download/react-native-scrollable-tab-view-0.8.0.tgz#5cb1fcfce07bf530a3c81ab51fc5071144edac5c"

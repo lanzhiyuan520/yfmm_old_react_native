@@ -16,7 +16,7 @@ import Problem from './problem_detail';
 //Question
 var QUESTIONLIST = "problem?";
 var API_VERSION = "v1/";
-
+import LoadingMore from './../loading_more'
 export default class ProblemList extends Component {
     constructor(props){
         super(props);
@@ -25,21 +25,42 @@ export default class ProblemList extends Component {
             sort:true,
             limit:this.props.problemLimit,
             orderby:'weight',
-            more_title:'点击加载更多数据'
+            more_title:'点击加载更多数据',
+            actionNum:0,
+            offset:0,
+            finish:false
         }
+        this.requestData=this.requestData.bind(this);
     }
     componentDidMount(){
         const orderby='weight';
-        this.requestData(orderby);
+        const offset=0;
+        this.requestData(orderby,offset);
     }
 
-    requestData(orderby){
-        fetch(constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset=0&limit="+this.state.limit+"&uuid="+constants.uuid)
+    componentWillReceiveProps(nextProps) {
+        this.setState({actionNum: nextProps.actionNum});
+        let offset=(this.state.actionNum+1)*5;
+        this.requestData(this.state.orderby,offset);
+    }
+
+    requestData(orderby,offset){
+        fetch(constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset="+offset+"&limit="+this.state.limit+"&uuid="+constants.uuid)
             .then((response) => response.json())
             .then((responseJson) => {
-                this.setState({
-                    data:responseJson.data,
-                });
+                let oldArr=this.state.data;
+                let newArr=responseJson.data;
+                if(newArr.length<=0){
+                    this.setState({
+                        finish:true,
+                        actionNum:this.state.actionNum-1
+                    })
+                }else {
+                    allArr=[...oldArr,...newArr];
+                    this.setState({
+                        data:allArr
+                    });
+                }
             })
             .catch(() => {
                 console.error('数据请求失败');
@@ -65,6 +86,7 @@ export default class ProblemList extends Component {
     render() {
         var that=this;
         return (
+        <View>
             <View style={{backgroundColor:'#fff',paddingTop:15,marginBottom:10}}>
                 <View style={{flex:1,flexDirection:'row',alignItems:'center',paddingLeft:15}}>
                     <View>
@@ -109,6 +131,14 @@ export default class ProblemList extends Component {
                     </View>
                 }
             </View>
+            <LoadingMore
+                finish={this.state.finish}
+                isLoading={this.props.isLoading}
+                onLoading={()=>{
+                    alert('正在加载...');
+                }}
+            />
+        </View>
         );
     }
 }
