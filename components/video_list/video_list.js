@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import {request_article_shipin} from "../api"
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default class Video extends Component{
     constructor(props){
         super(props)
@@ -48,7 +49,7 @@ export default class Video extends Component{
                             <Text style={styles.text}>热门视频</Text>
                         </View>
                         <View>
-                            <Image source={require("../../img/youjiantou.png")} style={styles.title_img}/>
+                            <FontAwesome name="angle-right" style={{fontSize: 18, color: "#000",marginLeft:10}}/>
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
@@ -63,23 +64,30 @@ export default class Video extends Component{
                         data={this.state.video}
                         renderItem={({item,index})=>{
                             return(
-                                <View style={[styles.img_line,index==this.state.count-1&&styles.img_last]}>
-                                    <View>
-                                        <View style={{opacity:.8,backgroundColor:"#000"}}>
-                                            <Image source={{uri:item.banner}} style={{width:190,height:120}}/>
-                                        </View>
-                                        <View style={{
-                                            position:"absolute",
-                                            top:50,
-                                            left:0,
-                                            paddingLeft:10,
-                                            paddingRight:10,
-                                        }}>
-                                            <Text style={{color:"#fff",fontSize:12}}>#{item.tags_name}</Text>
-                                            <Text style={{color:"#fff",fontSize:12}}>{item.title}</Text>
+                                <TouchableWithoutFeedback onPress={()=>{
+                                    this.props.navigate("VideoDetail",{
+                                        id:item.id,
+                                        author:item
+                                    })
+                                }}>
+                                    <View style={[styles.img_line,index==this.state.count-1&&styles.img_last]}>
+                                        <View>
+                                            <View style={{opacity:.8,backgroundColor:"#000"}}>
+                                                <Image source={{uri:item.banner}} style={{width:190,height:120}}/>
+                                            </View>
+                                            <View style={{
+                                                position:"absolute",
+                                                top:50,
+                                                left:0,
+                                                paddingLeft:10,
+                                                paddingRight:10,
+                                            }}>
+                                                <Text style={{color:"#fff",fontSize:12}}>#{item.tags_name}</Text>
+                                                <Text style={{color:"#fff",fontSize:12}}>{item.title}</Text>
+                                            </View>
                                         </View>
                                     </View>
-                                </View>
+                                </TouchableWithoutFeedback>
                             )
                         }}
                     />

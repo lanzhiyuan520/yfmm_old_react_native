@@ -2,6 +2,7 @@ import {
     ToastAndroid
 } from 'react-native';
 var WeChat=require('react-native-wechat');
+import {bounces} from "../bounces/bounces"
 export function Circle(obj){
     WeChat.isWXAppInstalled()
         .then((isInstalled) => {
@@ -11,7 +12,7 @@ export function Circle(obj){
                         ToastAndroid(error.message);
                     });
             } else {
-                ToastAndroid('没有安装微信软件，请您安装微信之后再试');
+                bounces('没有安装微信软件，请您安装微信之后再试');
             }
         });
 }
@@ -24,7 +25,7 @@ export function friends(obj){
                         console.log(error)
                     });
             } else {
-                console.log('没有安装微信软件，请您安装微信之后再试');
+                bounces('没有安装微信软件，请您安装微信之后再试');
             }
         });
 }

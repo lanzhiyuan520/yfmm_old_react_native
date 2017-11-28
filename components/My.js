@@ -11,6 +11,7 @@ import {
     AsyncStorage
 } from 'react-native';
 var {width} = Dimensions.get('window')
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {user_status} from "./api"
 export default class My extends Component{
     constructor(props){
@@ -78,7 +79,7 @@ export default class My extends Component{
                             user:this.state.user
                         });this.disabled()}}>
                         <View style={{position:"absolute",right:10}}>
-                            <Text style={{color:"#666",fontSize:17}}>消息</Text>
+                            <FontAwesome name="bell-o" style={{fontSize: 20, color: "#999",marginLeft:10}}/>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
@@ -109,7 +110,7 @@ export default class My extends Component{
                                 </View>
                             </View>
                             <View style={{height:80,justifyContent:"center",position:"absolute",right:10}}>
-                                <Image source={require("../img/you.png")} style={{width:40,height:40}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 50, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </View>
@@ -120,7 +121,7 @@ export default class My extends Component{
                         disabled={this.state.disabled}
                         onPress={()=>{this.props.navigate('Questions');this.disabled()}}>
                         <View style={{height:120,flex:1,justifyContent:"center",alignItems:"center"}}>
-                            <Image source={require("../img/tiwen.png")} style={{width:40,height:40}} />
+                            <FontAwesome name="telegram" style={{fontSize: 40, color: "#ff8089"}}/>
                             <Text style={{color:"#000",marginTop:5}}>提问</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -128,7 +129,7 @@ export default class My extends Component{
                         disabled={this.state.disabled}
                         onPress={()=>{this.props.navigate('Attention',{user:this.state.user});this.disabled()}}>
                         <View style={{height:120,flex:1,justifyContent:"center",alignItems:"center"}}>
-                            <Image source={require("../img/tiwen.png")} style={{width:40,height:40}} />
+                            <FontAwesome name="plus-circle" style={{fontSize: 40, color: "#ff8089"}}/>
                             <Text style={{color:"#000",marginTop:5}}>关注</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -136,7 +137,7 @@ export default class My extends Component{
                         disabled={this.state.disabled}
                         onPress={()=>{this.props.navigate('Collect',{user:this.state.user});this.disabled()}}>
                         <View style={{height:120,flex:1,justifyContent:"center",alignItems:"center"}}>
-                            <Image source={require("../img/tiwen.png")} style={{width:40,height:40}} />
+                            <FontAwesome name="gittip" style={{fontSize: 40, color: "#ff8089"}}/>
                             <Text style={{color:"#000",marginTop:5}}>收藏</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -154,19 +155,21 @@ export default class My extends Component{
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
                                 <Text style={{color:"#ff8089"}}>{this.status()}</Text>
-                                <Image source={require("../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback
                         disabled={this.state.disabled}
-                        onPress={()=>{this.props.navigate('Opinion');this.disabled()}}>
+                        onPress={()=>{this.props.navigate('Opinion',{
+                            user:this.state.user
+                        });this.disabled()}}>
                         <View style={{width:width,height:45,borderBottomColor:"#f2f2f2",borderBottomWidth:1,flexDirection:"row",alignItems:"center",paddingLeft:10,paddingRight:10,position:"relative"}}>
                             <View>
                                 <Text style={{color:"#333"}}>意见反馈</Text>
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
-                                <Image source={require("../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -180,7 +183,7 @@ export default class My extends Component{
                                 <Text style={{color:"#333"}}>关于我们</Text>
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
-                                <Image source={require("../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -194,7 +197,7 @@ export default class My extends Component{
                                 <Text style={{color:"#333"}}>系统设置</Text>
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
-                                <Image source={require("../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>

@@ -33,6 +33,8 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 import TabNavigator from 'react-native-tab-navigator';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {bounces} from "./components/bounces/bounces"
 export default class App extends Component<{}> {
     static navigationOptions = {
         title: 'Welcome',
@@ -70,7 +72,7 @@ export default class App extends Component<{}> {
             BackHandler.exitApp();
         }
         this.lastBackPressed = Date.now();
-        ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
+        bounces('再按一次退出应用');
         return true;
     }
     componentDidMount() {
@@ -103,7 +105,6 @@ export default class App extends Component<{}> {
         )
 
     }
-
   render() {
       const { navigate } = this.props.navigation;
     return (
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
         fontSize:10
     },
     selectedTabText:{
-        color:'#D81E06'
+        color:'#ff8089'
     },
     icon:{
         width:20,

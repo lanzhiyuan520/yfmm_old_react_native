@@ -44,7 +44,6 @@ export default class Smallfu extends Component{
     }
 
     xiaofu_list(){
-        this.props.loading(1)
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
             this.setState({
@@ -57,7 +56,6 @@ export default class Smallfu extends Component{
 
     }
     xiaofu(responseText){
-        this.props.loading(2)
         this.setState({
             xiaofu_list:responseText.data.dataList,
             num:responseText.data.count
@@ -73,7 +71,6 @@ export default class Smallfu extends Component{
         }
     }
     render_list(){
-        this.props.loading(1)
         if(this.state.list_num >= this.state.num){
             this.setState({
                 count:this.state.num,
@@ -89,7 +86,6 @@ export default class Smallfu extends Component{
         this.xiaofu_list()
     }
     render(){
-        let img = "http://cdn.ayi800.com/1504086833"
         return(
             <View style={{width:width}}>
                 <View style={styles.title}>
@@ -140,7 +136,7 @@ export default class Smallfu extends Component{
                                                 </View>
                                             </View>
                                             <View>
-                                                <Image source={{uri:item.banner}} style={styles.xiaofu_banner} />
+                                                <Image source={{uri:item.id==169?"http://cdn.ayi800.com/image/jpg/app_dengdeng2.jpg":item.banner}} style={styles.xiaofu_banner} />
                                             </View>
                                         </View>
                                     </View>

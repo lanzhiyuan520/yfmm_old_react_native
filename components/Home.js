@@ -25,6 +25,7 @@ var {width} = Dimensions.get('window')
 var {height} = Dimensions.get('window')
 import {request_professionals_list,requestTodayView,request_noticelist} from "./api"
 import {PullView} from 'react-native-pull';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default class Home extends Component{
     constructor(props){
         super(props)
@@ -83,11 +84,11 @@ export default class Home extends Component{
             this.state.sta = result.status
             //根据用户状态判断显示的图片
             if(result.status == 3){
-                this.state.status_img=require("../img/yuerqi.png")
+                this.state.status_img="http://cdn.ayi800.com/image/jpg/app_yueryuerqi.png"
             }else if(result.status == 2){
-                this.state.status_img=require("../img/yueziqi.png")
+                this.state.status_img="http://cdn.ayi800.com/image/jpg/app_yueziyueziqi.png"
             }else if(result.status == 1){
-                this.state.status_img=require("../img/yunqi.png")
+                this.state.status_img="http://cdn.ayi800.com/image/jpg/app_yunqiyunqi.png"
             }
             //判断今日建议的文本
             if(result.status == 2){
@@ -174,11 +175,10 @@ export default class Home extends Component{
         return(
             <PullView onPullRelease={this.onPullRelease}>
             <View style={{position:"relative"}}>
-                <Loading loading={this.state.loading}/>
                 <ScrollView>
                 <View style={{marginTop:-1,position:"relative"}}>
-                    <ImageBackground  source={require("../img/bgc.png")} style={{width:width,height:220}}/>
-                    <ImageBackground  source={require("../img/top_white.png")} style={{width:width,height:20,position:"absolute",bottom:0}}/>
+                    <ImageBackground  source={{uri:"http://cdn.ayi800.com/image/jpg/app_bgcbgc.png"}} style={{width:width,height:220}}/>
+                    <ImageBackground  source={{uri:"http://cdn.ayi800.com/image/jpg/app_toptop_white.png"}} style={{width:width,height:20,position:"absolute",bottom:0}}/>
                     <View style={{
                         width:width,
                         height:200,
@@ -189,7 +189,7 @@ export default class Home extends Component{
                         alignItems:"center",
                         justifyContent:"center"
                     }}>
-                        <Image source={this.state.status_img} style={{
+                        <Image source={{uri:this.state.status_img}} style={{
                             width:80,
                             height:80,
 
@@ -225,10 +225,7 @@ export default class Home extends Component{
                                 position:"absolute",
                                 right:10
                             }}>
-                                <Text style={{
-                                    color:"#fff",
-                                    fontSize: 16
-                                }}>消息</Text>
+                                <FontAwesome name="bell-o" style={{fontSize: 20, color: "#fff",marginLeft:10}}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -262,7 +259,7 @@ export default class Home extends Component{
                                                 <Text style={styles.text}>{this.state.read}</Text>
                                             </View>
                                             <View>
-                                                <Image source={require("../img/youjiantou.png")} style={styles.title_img}/>
+                                                <FontAwesome name="angle-right" style={{fontSize: 18, color: "#000",marginLeft:10}}/>
                                             </View>
                                         </View>
                                         <View style={{
@@ -297,7 +294,7 @@ export default class Home extends Component{
                 <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
                     <Diet navigate={this.props.navigate} user={this.props.user} disabled={this.state.disabled} disabled_fun={this.disabled}/>
                 <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
-                   <Video find={this.props.find} user={this.props.user} />
+                   <Video navigate={this.props.navigate} find={this.props.find} user={this.props.user} />
                     <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
                     <View style={{width:width,height:100}}>
                         <TouchableWithoutFeedback
@@ -317,7 +314,7 @@ export default class Home extends Component{
                                     <Text style={styles.text}>有问必答</Text>
                                 </View>
                                 <View>
-                                    <Image source={require("../img/youjiantou.png")} style={styles.title_img}/>
+                                    <FontAwesome name="angle-right" style={{fontSize: 18, color: "#000",marginLeft:10}}/>
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>

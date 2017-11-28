@@ -35,8 +35,8 @@ export default class State extends Component{
         super(props)
         this.state={
             disabled:false,
-            production:require("../../img/yuchanl.png"),
-            birth:require("../../img/chusheng2.png"),
+            production:"http://cdn.ayi800.com/image/jpg/app_yuchan2yuchanl.png",
+            birth:"http://cdn.ayi800.com/image/jpg/app_chushengchusheng2.png",
             Sta:false,
             state:null,
             Text:"宝宝生日",
@@ -101,23 +101,21 @@ export default class State extends Component{
     }
     production(){
             this.setState({
-                production:require("../../img/yuchan2.png"),
-                birth:require("../../img/chusheng.png"),
+                production:"http://cdn.ayi800.com/image/jpg/app_yuchanyuchan2.png",
+                birth:"http://cdn.ayi800.com/image/jpg/app_chusheng2chusheng.png",
                 Sta:true,
                 Text:"我的预产期"
             })
-        this.state.state=true,
-        console.log(this.state.state)
+        this.state.state=true
     }
     birth(){
         this.setState({
-            production:require("../../img/yuchanl.png"),
-            birth:require("../../img/chusheng2.png"),
+            production:"http://cdn.ayi800.com/image/jpg/app_yuchan2yuchanl.png",
+            birth:"http://cdn.ayi800.com/image/jpg/app_chushengchusheng2.png",
             Sta:false,
             Text:"宝宝生日"
         })
         this.state.state=false
-        console.log(this.state.state)
     }
     disabled(){
         this.setState({
@@ -139,13 +137,13 @@ export default class State extends Component{
                     <View style={{width:width*0.9,flexDirection:"row",justifyContent:"space-around"}}>
                         <TouchableWithoutFeedback onPress={this.production}>
                             <View style={{alignItems:"center"}}>
-                                <Image source={this.state.production} style={{width:150,height:150}} />
+                                <Image source={{uri:this.state.production}} style={{width:150,height:150}} />
                                 <Text style={statetext}>我怀孕了</Text>
                             </View>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={this.birth}>
                             <View style={{alignItems:"center"}}>
-                               <Image source={this.state.birth} style={{width:150,height:150}}/>
+                               <Image source={{uri:this.state.birth}} style={{width:150,height:150}}/>
                                 <Text style={text}>宝宝已出生</Text>
                             </View>
                         </TouchableWithoutFeedback>

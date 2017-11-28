@@ -17,6 +17,7 @@ import ActionSheet from 'react-native-actionsheet'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Circle,friends} from "../fenxiang/fenxiang"
 import {request_article_yinshi_xiangqing,request_user_action,user_behavior} from "../api"
+import {bounces} from "../bounces/bounces"
 export default class DietList extends Component{
     static navigationOptions = ({navigation}) => ({
         title: navigation.state.params.title,
@@ -116,7 +117,7 @@ export default class DietList extends Component{
     }
     //取消关注成功回调
     cancel_care_success(responseText){
-        ToastAndroid.show('取关成功', ToastAndroid.SHORT)
+        bounces("取关成功")
         this.setState({
             attention:false
         })
@@ -127,7 +128,7 @@ export default class DietList extends Component{
     }
     //关注成功回调
     care_success(responseText){
-        ToastAndroid.show('关注成功', ToastAndroid.SHORT)
+        bounces('关注成功')
         this.setState({
             attention:true
         })

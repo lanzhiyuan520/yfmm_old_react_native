@@ -17,6 +17,7 @@ import Variable from "../Variable/Variable"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {request_professionals_content} from "../api"
 import {Circle,friends} from "../fenxiang/fenxiang"
+import {bounces} from "../bounces/bounces"
 export default class Expertsdetails extends Component{
     static navigationOptions = ({navigation}) => ({
 
@@ -75,10 +76,10 @@ export default class Expertsdetails extends Component{
     }
     attention(){
         if(this.state.attention){
-            ToastAndroid.show('取关成功', ToastAndroid.SHORT)
+            bounces('取关成功')
 
         }else{
-            ToastAndroid.show('关注成功', ToastAndroid.SHORT)
+            bounces('关注成功')
         }
         this.setState({
             attention:!this.state.attention

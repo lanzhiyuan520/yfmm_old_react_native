@@ -11,7 +11,10 @@ import {
     Dimensions
 } from 'react-native';
 var {width} = Dimensions.get('window')
+import {user_opinion} from "../api"
+var user
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {bounces} from "../bounces/bounces"
 export default class Opinion extends Component{
     static navigationOptions = ({navigation}) => ({
 
@@ -38,11 +41,27 @@ export default class Opinion extends Component{
 
     componentDidMount(){
         this.props.navigation.setParams({submit:this.submit})
+        user = this.props.navigation.state.params.user
     }
     submit(){
+        if(!this.state.text){
+            bounces("请输入内容")
+            return false
+        }
+        var data = {data:this.state.text}
+        user_opinion(user,data,this.opinion_success)
         this.props.navigation.navigate("App",{
-            selectedTab:"我的"
+            selectedTab:"我的",
+            user:JSON.stringify(user)
         })
+    }
+    //意见反馈成功回调
+    opinion_success(responseText){
+        if(responseText.code==36){
+            bounces("意见反馈成功")
+        }else if (responseText.code==35){
+            bounces("您已经反馈过了哦,请稍后再试")
+        }
     }
     render(){
         return(

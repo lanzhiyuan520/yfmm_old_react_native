@@ -53,7 +53,7 @@ export default class PersonalData extends Component{
                                 <Text style={{color:"#333"}}>服务条款</Text>
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
-                                <Image source={require("../../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -65,7 +65,7 @@ export default class PersonalData extends Component{
                                 <Text style={{color:"#333"}}>免责声明</Text>
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
-                                <Image source={require("../../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -77,7 +77,7 @@ export default class PersonalData extends Component{
                                 <Text style={{color:"#333"}}>关于我们</Text>
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
-                                <Image source={require("../../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
