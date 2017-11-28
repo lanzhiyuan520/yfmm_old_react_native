@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import {request_article_yinshi,request_article_yinshi_list} from "../api"
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default class Diet extends Component{
     constructor(props){
         super(props)
@@ -39,6 +40,7 @@ export default class Diet extends Component{
         })
         this.state.user=JSON.parse(this.props.user)
     }
+    //饮食推荐获取成功回调
     request_article_yinshi_successCallBack(responseText){
         this.setState({
             diet_list:responseText.data.dataList,
@@ -65,7 +67,7 @@ export default class Diet extends Component{
                             <Text style={styles.text}>饮食推荐</Text>
                         </View>
                         <View>
-                            <Image source={require("../../img/youjiantou.png")} style={styles.title_img}/>
+                            <FontAwesome name="angle-right" style={{fontSize: 18, color: "#000",marginLeft:10}}/>
                         </View>
                     </View>
                 </TouchableWithoutFeedback>

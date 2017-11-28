@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {bounces} from "../bounces/bounces"
 export default class Setting extends Component{
     static navigationOptions = ({navigation}) => ({
 
@@ -52,7 +53,7 @@ export default class Setting extends Component{
                             if(!error){
                                 this.setState({show:false});
                                 this.setState({flag:false});
-                                ToastAndroid.show('退出成功', ToastAndroid.SHORT)
+                                bounces('退出成功')
                                 this.props.navigation.navigate("Login")
                             }
                         })

@@ -17,7 +17,25 @@ export default class RequiredList extends Component{
         super(props)
         this.state={
             index:1,
-            suggest_data:{}
+            suggest_data:{
+                adapter:1,
+                author_id:57,
+                author_img:"http://cdn.ayi800.com/1504855038",
+                author_name:"有福妈妈",
+                author_title:"有福妈妈",
+                banner:"http://cdn.ayi800.com/1504691922",
+                better_num:0,
+                care_num:0,
+                collect_num:0,
+                created_at:"2017-07-24 22:16:25",
+                id:208,
+                tags_ids:44,
+                tags_name:"好好坐月子",
+                title:"产后恢复操（上）",
+                type:2,
+                visit_num:1428,
+                weight:0
+            }
         }
         this.suggest_success=this.suggest_success.bind(this)
     }
@@ -25,16 +43,22 @@ export default class RequiredList extends Component{
         var user = this.props.user
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
-            console.log(user,result)
             //获取今日建议的文章
             requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
         })
 
     }
     suggest_success(responseText){
-        this.setState({
-            suggest_data:responseText.data.articleData
-        })
+        if(responseText.code != 0){
+            this.setState({
+                suggest_data:this.state.suggest_data
+            })
+        }else{
+            this.setState({
+                suggest_data:responseText.data.articleData
+            })
+        }
+
     }
     render(){
         return(

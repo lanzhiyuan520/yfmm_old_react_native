@@ -44,7 +44,6 @@ export default class ExpertsList extends Component{
         this.setState({
             user:this.props.user
         })
-
     }
 
     experts_list(responseText){

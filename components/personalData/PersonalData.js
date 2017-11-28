@@ -71,9 +71,14 @@ export default class PersonalData extends Component{
             ImagePicker.openCamera({
                 width: 300,
                 height: 400,
-                cropping: true
+                cropping: true,
+                cropperCircleOverlay:true,
+                showCropGuidelines:false
             }).then(image => {
-                console.log(image)
+                this.setState({
+                    img:image.path
+                })
+                user_img(user.uuid,user.token,image.path,this.user_image)
             });
         }  else if(i==2){
             ImagePicker.openPicker({
@@ -83,7 +88,6 @@ export default class PersonalData extends Component{
                 cropperCircleOverlay:true,
                 showCropGuidelines:false
             }).then(image => {
-                console.log(user)
                 this.setState({
                     img:image.path
                 })
@@ -98,11 +102,13 @@ export default class PersonalData extends Component{
         user.head_img = `http://${head_img}`
         AsyncStorage.setItem("user",JSON.stringify(user))
         update_information(user,postData,this.update_information_success)
-
     }
     //用户资料更新成功回调
     update_information_success(responseText){
-        console.log(responseText)
+        this.props.navigation.navigate("App",{
+            selectedTab:"我的",
+            user:JSON.stringify(user)
+        })
     }
     user(user){
         this.setState({
@@ -132,7 +138,7 @@ export default class PersonalData extends Component{
                                 <TouchableWithoutFeedback onPress={()=>{this.showActionSheet()}}>
                                     <Image source={{uri:this.state.img}} style={{width:80,height:80,borderRadius:40}} />
                                 </TouchableWithoutFeedback>
-                                <Image source={require("../../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </View>
@@ -149,20 +155,22 @@ export default class PersonalData extends Component{
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
                                 <Text style={{color:"#666"}}>{this.props.navigation.state.params.name?this.props.navigation.state.params.name:"未设置"}</Text>
-                                <Image source={require("../../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback
                         disabled={this.state.disabled}
-                        onPress={()=>{this.props.navigation.state.params.navigate("Phone");this.disabled()}}>
+                        onPress={()=>{this.props.navigation.state.params.navigate("Phone",{
+                            user:this.props.navigation.state.params.user
+                        });this.disabled()}}>
                         <View style={{width:width,height:45,borderBottomColor:"#f2f2f2",borderBottomWidth:1,flexDirection:"row",alignItems:"center",paddingLeft:10,paddingRight:10,position:"relative"}}>
                             <View>
                                 <Text style={{color:"#333"}}>手机号</Text>
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
                                 <Text style={{color:"#666"}}>{this.props.navigation.state.params.phone?this.props.navigation.state.params.phone:"未绑定"}</Text>
-                                <Image source={require("../../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -181,7 +189,7 @@ export default class PersonalData extends Component{
                             </View>
                             <View style={{position:"absolute",right:10,flexDirection:"row"}}>
                                 <Text style={{color:"#666"}}>{this.props.navigation.state.params.address?this.props.navigation.state.params.address:"未设置"}</Text>
-                                <Image source={require("../../img/you.png")} style={{width:22,height:22}} />
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>

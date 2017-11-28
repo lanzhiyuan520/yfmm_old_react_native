@@ -9,7 +9,9 @@ import {
     View,
     AsyncStorage,
     ActivityIndicator,
-    ToastAndroid
+    ToastAndroid,
+    AlertIOS,
+    Platform
 } from 'react-native';
 
 var {width} = Dimensions.get('window')
@@ -17,6 +19,7 @@ var {height} = Dimensions.get('window')
 import DeviceInfo from 'react-native-device-info'
 import {user_status} from "../api"
 import CryptoJS from "crypto-js"
+import {bounces} from "../bounces/bounces"
 export default class First extends Component {
     static navigationOptions = {
         title: 'Welcome',
@@ -90,7 +93,7 @@ export default class First extends Component {
     }
     user_success(responseText){
         if (responseText.code != 0){
-            ToastAndroid.show('账号已过期，请重新登录', ToastAndroid.SHORT);
+            bounces("账号已过期，请重新登录")
             this.props.navigation.navigate("Login")
             return false
         }else{

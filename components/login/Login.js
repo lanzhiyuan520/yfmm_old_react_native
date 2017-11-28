@@ -16,6 +16,7 @@ import {
 var wx_user_access_token
 var openid
 var refresh_token
+import {bounces} from "../bounces/bounces"
 export default class Login extends Component {
     static navigationOptions = ({navigation}) => ({
         header:null
@@ -61,7 +62,7 @@ export default class Login extends Component {
     click(){
         this.disabled(2)
         if(!this.state.text){
-             ToastAndroid.show('请输入手机号', ToastAndroid.SHORT)
+            bounces('请输入手机号')
             return false
         }else{
             var codeDomain= 0 ;
@@ -69,12 +70,12 @@ export default class Login extends Component {
             var code_val  = this.state.validation
             //判断是否同意服务条款
             if(!this.state.check){
-                ToastAndroid.show('请同意服务条款', ToastAndroid.SHORT)
+                bounces('请同意服务条款')
                 return false
             }
             //判断是否输入验证码
             if(!code_val){
-                ToastAndroid.show('请输入验证码', ToastAndroid.SHORT)
+                bounces('请输入验证码')
                 return false
             }
             //手机登录接口
@@ -88,7 +89,7 @@ export default class Login extends Component {
     //手机登录成功回调
     user_success(responseText){
         if(responseText.code != 0){
-            ToastAndroid.show(responseText.msg, ToastAndroid.SHORT)
+            bounces(responseText.msg)
             return false
         }else{
             this.state.user=responseText.data
@@ -106,7 +107,6 @@ export default class Login extends Component {
                     })
             }
         }
-
     }
     //获取用户状态回调
     user_information(responseText){
@@ -126,7 +126,7 @@ export default class Login extends Component {
     }
     service(){
         this.disabled(1)
-        ToastAndroid.show('暂时还没有服务条款', ToastAndroid.SHORT)
+        bounces('暂时还没有服务条款')
     }
     //获取微信access_token
     wx_access_token(code,appid,secret){
@@ -206,7 +206,7 @@ export default class Login extends Component {
     //验证码发送成功回调
     success(responseText){
         if(responseText.code==0 && responseText.msg=="success"){
-            ToastAndroid.show('验证码已发出', ToastAndroid.SHORT)
+            bounces('验证码已发出')
             this.setState({clear:false,liked:true})
             this.time = setInterval(()=>{
                 this.setState({verify:`${this.state.count}${this.state.countText}`})
@@ -217,7 +217,7 @@ export default class Login extends Component {
                 }
             },1000)
         }else{
-            ToastAndroid.show(responseText.msg, ToastAndroid.SHORT)
+            bounces(responseText.msg)
         }
     }
 
@@ -228,7 +228,7 @@ export default class Login extends Component {
         var codeDomain= 0 ;
         var phone_val = this.state.text
         if(!(/^1[34578]\d{9}$/.test(this.state.text))){
-            ToastAndroid.show('手机号有误请重新填写', ToastAndroid.SHORT)
+            bounces('手机号有误请重新填写')
             return false;
         }else {
             if(this.state.count==60){
@@ -237,7 +237,7 @@ export default class Login extends Component {
                     request_code_in_phone({phone:phone_val,type:codeDomain,uuid:uuid},this.success)
                 })
             }else{
-                ToastAndroid.show('请稍后再次发送', ToastAndroid.SHORT)
+                bounces('请稍后再次发送')
             }
         }
     }

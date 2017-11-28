@@ -41,7 +41,6 @@ export default class Collect extends Component{
         collect_user_list(user.id,user.uuid,user.token,this.collect_success)
     }
     collect_success(responseText){
-        console.log(responseText)
         this.setState({
             collect_list:responseText.data.dataList
         })

@@ -23,7 +23,6 @@ export default class Attention extends Component{
         this.attention_list=this.attention_list.bind(this)
     }
     componentDidMount(){
-        console.log(this.props)
         this.setState({
             user:this.props.user
         })

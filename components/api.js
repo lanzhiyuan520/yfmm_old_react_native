@@ -691,9 +691,7 @@ export function message(user, post_params){
     var data = {
         time: post_params.time,
     };
-    console.log(data.time)
     var dataEncrypt = getEncryptParam(data);
-    console.log(dataEncrypt)
     fetch(urlSigned,{
         method:"POST",
         headers: {
@@ -782,4 +780,70 @@ export function wx_login(uuid,data,access_token,refresh_token,successCallback){
             console.log(error)
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })
+}
+//意见反馈
+export function user_opinion(user,data,successCallback){
+    var url = URI + API_VERSION + 'problem/suggestion?uuid=' + user.uuid;
+    var urlSigned = getSingedUrl(url, user.uuid);
+    var dataEncrypt = getEncryptParam(data);
+    fetch(urlSigned,{
+        method:"POST",
+        headers: {
+            "Http-App-Token": user.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body:`param=${dataEncrypt.param}`
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//绑定手机中的发送验证码
+export function send_code(data,successCallback){
+    var url = DOMAIN+'/'+VERSION+'/verifycode/getlogincode?'+'uuid='+data.uuid+'&phone='+data.phone+'&type='+data.type;
+    var urlSigned = getSingedUrl(url, data.uuid);
+    fetch(urlSigned)
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}
+//绑定手机号
+export function bind_phone(data,successCallback){
+    var url = DOMAIN+'/'+VERSION+'/login/loginbyphone?uuid='+data.uuid;
+    var urlSigned = getSingedUrl(url, data.uuid);
+    var dataEncrypt = getEncryptParam(data);
+    fetch(urlSigned,{
+        method:"POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body:`param=${dataEncrypt.param}`
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+
 }

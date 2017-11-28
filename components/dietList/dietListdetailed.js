@@ -53,8 +53,6 @@ export default class DietListdetailed extends Component{
         this.setState({
             food_list:this.props.diet_list
         })
-        console.log(this.props)
-        console.log(this.state.food_list)
     }
 
     hidden_btn(){
@@ -79,8 +77,7 @@ export default class DietListdetailed extends Component{
         }
     }
     hello(){
-        console.log(this.props);
-        console.log(this.state.food_list)
+
     }
     render(){
         return(
