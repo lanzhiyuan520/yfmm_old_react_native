@@ -10,12 +10,7 @@ import {
 }from 'react-native';
 import * as ScreenUtils from './UiStyle';
 export default class LoadingMore extends Component {
-    // static propTypes = {
-    //     isLoading: PropTypes.bool
-    // }
-    // static defaultProps = {
-    //     isLoading: false
-    // }
+
     // 构造
     constructor(props) {
         super(props);
@@ -80,7 +75,6 @@ export default class LoadingMore extends Component {
                 </View>
             );
         }
-
     }
 
     componentWillReceiveProps(nextProps) {

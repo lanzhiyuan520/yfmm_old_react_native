@@ -60,6 +60,7 @@ export default class RecColumn  extends Component {
                 newColumn[item]=column[item];
             }
         }
+        console.log(newColumn);
         for(var item in newColumn){
             newArr.push (
                 <View key={item}>

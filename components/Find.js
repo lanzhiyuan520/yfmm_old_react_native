@@ -113,7 +113,7 @@ export default class Find extends Component{
                     refreshing={this.state.refreshing}
                     onRefresh={() => {
                         this.setState({refreshing: true});
-
+                        alert('刷新成功~')
                     }}
                     renderItem={({item}) => this.renderItem(item)}
                     style={{marginBottom:40}}
