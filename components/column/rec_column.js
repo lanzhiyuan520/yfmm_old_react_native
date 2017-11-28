@@ -58,8 +58,10 @@ export default class RecColumn  extends Component {
         for( var item in column ){
             if(this.props.list.indexOf(item)==-1){
                 newColumn[item]=column[item];
+                
             }
         }
+        console.log(newColumn);
         for(var item in newColumn){
             newArr.push (
                 <View key={item}>
