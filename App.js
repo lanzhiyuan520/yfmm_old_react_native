@@ -9,6 +9,7 @@ import * as WeChat from 'react-native-wechat';
 import {
   Platform,
   StyleSheet,
+    Dimensions,
   Text,
   View,
     TouchableWithoutFeedback,
@@ -19,6 +20,7 @@ import {
     BackHandler,
     StatusBar
 } from 'react-native';
+var {width} = Dimensions.get('window')
 import Home from "./components/Home"
 import Answer from "./components/answer"
 import Find from "./components/Find"
@@ -102,12 +104,11 @@ export default class App extends Component<{}> {
 
     }
 
-
   render() {
       const { navigate } = this.props.navigation;
     return (
       <View  style={styles.container}>
-          <StatusBar hidden={false} />
+          <StatusBar hidden={false} style={{height:40}} />
           <TabNavigator>
               {this._renderTabarItems('首页',require('./img/home2.png'),require('./img/home.png'),Home,navigate,this.find,this.props.navigation.state.params.user,this.props.navigation)}
               {this._renderTabarItems('问答',require('./img/answer2.png'),require('./img/answer.png'),Answer,navigate,this.find,this.props.navigation.state.params.user,this.props.navigation)}
@@ -122,7 +123,8 @@ export default class App extends Component<{}> {
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:'#f8f8f8'
+        backgroundColor:'#f8f8f8',
+        paddingTop:(Platform.OS === 'ios' ? 20 : 0)
     },
     tabText:{
         color:'#000000',
@@ -133,6 +135,9 @@ const styles = StyleSheet.create({
     },
     icon:{
         width:20,
+        height:20
+    },
+    statusBar: {
         height:20
     }
 })

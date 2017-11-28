@@ -14,26 +14,36 @@ import Header from './commen/header';
 import constants from './constants';
 import VideoDetail from './find/video_detail';
 var {width} = Dimensions.get('window');
+import RefrshList from 'react-native-refreshlist'
 export default class Find extends Component{
     constructor(props){
         super(props);
         this.state={
-            dataSource:[]
+            dataSource:[],
+            refreshing: false,
+            limit:5,
+            offset:0
         }
+        this._onload=this._onload.bind(this);
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.requestData();
     }
 
     requestData(){
-        fetch(constants.url+"/v1/article?uuid="+constants.uuid+"&articleType=4&orderBy=createTimeDesc&limit=5&offset=0",{
+        fetch(constants.url+"/v1/article?uuid="+constants.uuid+"&articleType=4&orderBy=createTimeDesc&limit="+this.state.limit+"&offset="+this.state.offset,{
             method: 'GET'
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                let oldArr=this.state.dataSource;
+                let newArr=responseJson.data.dataList;
+                allArr=[...oldArr,...newArr];
+                console.log(allArr);
                 this.setState({
-                    dataSource:responseJson.data.dataList
+                    dataSource:allArr,
+                    refreshing: false
                 })
             })
             .catch((err) => {
@@ -79,12 +89,32 @@ export default class Find extends Component{
         )
     }
 
+    _onload(){
+        let timer =  setTimeout(()=>{
+            this.setState({
+                offset:this.state.offset+1
+            });
+            this.requestData();
+            clearTimeout(timer);
+        },1500)
+    }
+    _extraUniqueKey(item ,index){ return "index"+index+item; }
+
     render(){
         return(
-            <View>
+            <View style={{marginTop:(Platform.OS === 'ios' ? -20 : 0)}}>
                 <Header title="发现" back="false" />
                 <FlatList
+                    keyExtractor = {this._extraUniqueKey}
                     data={this.state.dataSource}
+                    getItemLayout={(data, index) => ( {length: 100, offset: 100 * index, index} )}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={this._onload}
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => {
+                        this.setState({refreshing: true});
+
+                    }}
                     renderItem={({item}) => this.renderItem(item)}
                     style={{marginBottom:40}}
                 />
