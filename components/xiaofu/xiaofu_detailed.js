@@ -19,6 +19,7 @@ const DESTRUCTIVE_INDEX = 4
 const options = [ '取消', '微信朋友圈', '微信好友', '复制到剪切板']
 var WeChat=require('react-native-wechat');
 var {width} = Dimensions.get('window')
+var user
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {request_article_xiaofu_xiangqing} from "../api"
 export default class XfDetailed extends Component{
@@ -44,14 +45,15 @@ export default class XfDetailed extends Component{
            </View>
         )
         ,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 30, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
     })
     constructor(props){
         super(props)
         this.state = {
-            collect:false,
-            attention:false,
-            xiaofu:{}
+            collect: false,
+            attention: false,
+            xiaofu: {},
+            user_behavior: null
         }
         WeChat.registerApp('wx825ecd9a849eef9d')
         this.showActionSheet = this.showActionSheet.bind(this)
@@ -66,9 +68,16 @@ export default class XfDetailed extends Component{
         if( this.props.navigation.state.params.list){
             this.props.navigation.state.params.list()
         }
-
+        //首次获取用户行为
+                AsyncStorage.getItem("user_behavior",(error,result)=>{
+                    if(result!=null || result!=""){
+                        this.setState({
+                            user_behavior:JSON.parse(result)
+                        })
+                    }
+                })
         var id = this.props.navigation.state.params.id
-        var user = JSON.parse(this.props.navigation.state.params.user)
+         user = JSON.parse(this.props.navigation.state.params.user)
         //获取小福精选详情页
         request_article_xiaofu_xiangqing(id,user.uuid,user.token,this.xiaofu_detailed)
         this.props.navigation.setParams({navigatePress:this.showActionSheet,collect:this.collect})

@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import {request_article_xiaofujingxuan} from "../api"
 var {width} = Dimensions.get('window')
-
+import LoadingMore from '../loading_more'
 export default class Smallfu extends Component{
     constructor(props){
         super(props)
@@ -27,23 +27,25 @@ export default class Smallfu extends Component{
             disabled:false,
             user:{},
             status:null,
-            list_num:5
+            list_num:5,
+            finish:false,
+            data:[],
+            actionNum:0
         }
-        this.render_list=this.render_list.bind(this)
         this.xiaofu_list=this.xiaofu_list.bind(this)
         this.xiaofu=this.xiaofu.bind(this)
+        this.more=this.more.bind(this)
     }
     componentDidMount(){
+        let offset = 0
         InteractionManager.runAfterInteractions(()=>{
-            this.xiaofu_list()
+            this.xiaofu_list(offset)
         })
         this.setState({
             user:JSON.parse(this.props.user)
         })
-
     }
-
-    xiaofu_list(){
+    xiaofu_list(offset){
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
             this.setState({
@@ -51,39 +53,33 @@ export default class Smallfu extends Component{
             })
              this.state.status=result.statusCon
             //获取首页小福精选列表
-            request_article_xiaofujingxuan(this.state.user.uuid,this.state.user.status,"weightDesc", 2, this.state.list_num,  this.state.user.token, this.xiaofu)
+            request_article_xiaofujingxuan(this.state.user.uuid,this.state.user.status,"weightDesc", offset, this.state.list_num,  this.state.user.token, this.xiaofu)
         })
 
     }
-    xiaofu(responseText){
+    more(){
         this.setState({
-            xiaofu_list:responseText.data.dataList,
-            num:responseText.data.count
+            actionNum:this.state.actionNum+1,
+            btn:"加载中..."
         })
-        if(this.state.list_num>=this.state.num){
-            this.setState({
-                btn:"没有更多了"
-            })
-        }else{
-            this.setState({
-                btn:"加载更多"
-            })
-        }
+        let offset = (this.state.actionNum+1)*5
+        this.xiaofu_list(offset)
     }
-    render_list(){
-        if(this.state.list_num >= this.state.num){
+    xiaofu(responseText){
+        let oldArr= this.state.xiaofu_list
+        let newArr=responseText.data.dataList;
+        if(!newArr){
             this.setState({
-                count:this.state.num,
-                btn:"没有更多了"
+                actionNum:this.state.actionNum-1,
+                btn:"没有更多了~~"
             })
-            return false
-        }else{
+        }else {
+            allArr =[...oldArr,...newArr];
             this.setState({
-                count:this.state.list_num+=5,
-                btn:"加载中..."
-            })
+                xiaofu_list:allArr,
+                btn:"加载更多"
+            });
         }
-        this.xiaofu_list()
     }
     render(){
         return(
@@ -147,27 +143,16 @@ export default class Smallfu extends Component{
 
                     }
                 />
-                <TouchableWithoutFeedback
-                    disabled={this.state.disabled}
-                    onPress={()=>{
-                        this.render_list()
-                        this.setState({
-                            disabled:true
-                        })
-                        setTimeout(()=>{
-                            this.setState({
-                                disabled:false
-                            })
-                        },500)
-                    }}>
+                <TouchableWithoutFeedback onPress={()=>{
+                    this.more()
+                }}>
                     <View style={{
                         width:width,
-                        height:45,
-                        backgroundColor:"#fcfcfc",
-                        flexDirection:"row",
+                        height:40,
+                        backgroundColor:"#fff",
                         justifyContent:"center",
                         alignItems:"center"
-                    }} >
+                    }}>
                         <Text>{this.state.btn}</Text>
                     </View>
                 </TouchableWithoutFeedback>

@@ -34,7 +34,7 @@ export default class DietList extends Component{
             backgroundColor:"#fff"
         },
         headerRight: <View></View>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 30, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
     });
     constructor(props){
         super(props)
@@ -46,15 +46,13 @@ export default class DietList extends Component{
         }
         this.load=this.load.bind(this)
         this.success=this.success.bind(this)
-        this.list=this.list.bind(this)
         this.fun=this.fun.bind(this)
     }
     componentWillMount(){
         InteractionManager.runAfterInteractions(()=>{
             AsyncStorage.getItem("user_data",(error,result)=>{
                 result = JSON.parse(result)
-                console.log(this.state.user)
-                request_article_yinshi_list(this.state.user.uuid,this.state.index,"weightDesc", 0, 5,this.state.user.token,this.success)
+                request_article_yinshi_list(this.state.user.uuid,this.state.index,"weightDesc", 0,100,this.state.user.token,this.success)
             })
         })
         this.state.user=this.props.navigation.state.params.user
@@ -65,9 +63,7 @@ export default class DietList extends Component{
             diet_list:responseText.data.dataList
         })
     }
-    list(){
 
-    }
     load(num){
         if(num==1){
             this.setState({
@@ -80,7 +76,7 @@ export default class DietList extends Component{
         }
     }
     fun(obj){
-        request_article_yinshi_list(this.state.user.uuid,obj.i+1,"weightDesc", 0, 5,this.state.user.token,this.success)
+        request_article_yinshi_list(this.state.user.uuid,obj.i+1,"weightDesc", 0, 100,this.state.user.token,this.success)
     }
     render(){
         return(

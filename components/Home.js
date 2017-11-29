@@ -11,7 +11,8 @@ import {
     FlatList,
     AsyncStorage,
     ImageBackground,
-    ScrollView
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 import moment from 'moment';
 import {setSpText,scaleSize} from "../font"
@@ -45,7 +46,10 @@ export default class Home extends Component{
             read:"每周必读",
             data:{},
             message:false,
-            sta:null
+            sta:null,
+            isRefreshing: false,
+            loadMore:false,
+            actionNum:0
         }
         this.loading=this.loading.bind(this)
         this.disabled=this.disabled.bind(this)
@@ -113,13 +117,13 @@ export default class Home extends Component{
     }*/
     //必读成功回调
     suggest_success(responseText){
-        console.log(responseText)
         this.setState({
             suggest:responseText.data.articleData
         })
     }
     //问答成功回调
     answer_success(responseText){
+        console.log(responseText)
         this.setState({
             experts:responseText.data[0]
         })
@@ -162,7 +166,9 @@ export default class Home extends Component{
             resolve();
         },3000)*/
     }
-
+    _onRefresh(){
+        alert("hello")
+    }
     disabled(){
         this.setState({
             disabled:true
@@ -173,9 +179,20 @@ export default class Home extends Component{
     }
     render(){
         return(
-            <PullView onPullRelease={this.onPullRelease}>
             <View style={{position:"relative"}}>
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={()=>this._onRefresh()}
+                            tintColor="#ff0000"
+                            title="加载中..."
+                            titleColor="#00ff00"
+                            colors={['#999', '#999', '#999']}
+                            progressBackgroundColor="#ffffff"
+                        />
+                    }
+                >
                 <View style={{marginTop:-1,position:"relative"}}>
                     <ImageBackground  source={{uri:"http://cdn.ayi800.com/image/jpg/app_bgcbgc.png"}} style={{width:width,height:220}}/>
                     <ImageBackground  source={{uri:"http://cdn.ayi800.com/image/jpg/app_toptop_white.png"}} style={{width:width,height:20,position:"absolute",bottom:0}}/>
@@ -371,14 +388,11 @@ export default class Home extends Component{
                                 </TouchableWithoutFeedback>
                             </View>:<View></View>
                         }
-
-
                     </View>
                     <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
-                    <Smallfu loading={this.loading} user={this.props.user} navigate={this.props.navigate} disabled={this.state.disabled} disabled_fun={this.disabled}/>
+                    <Smallfu loading={this.loading}  user={this.props.user} navigate={this.props.navigate} disabled={this.state.disabled} disabled_fun={this.disabled}/>
                 </ScrollView>
             </View>
-            </PullView>
         )
     }
 }
