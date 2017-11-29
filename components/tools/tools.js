@@ -74,18 +74,3 @@ export function getEncryptParam(json){
     var param = {param: aes};
     return param;
 }
-//映射导航
-export function getKeywordsByUserStatus( status ) {
-
-    if ( !status ) {
-        return ["无","无"] ;
-    }else{
-        var KeyWords = ["孕","月","育"] ;
-        var UnitKeyWords = ["周","天","月"] ;
-        var MinDay = [1,1,2] ;
-        var MaxDay = [40,42,12] ;
-        var status = (status*1)-1 ;
-        return [KeyWords[status] , UnitKeyWords[status] , MinDay[status] , MaxDay[status]] ;
-    }
-
-}

@@ -34,8 +34,12 @@ import My from "./components/My"
 import First from "./components/welcome/First"
 import TalentDetailed from "./components/attention/talent_detailed"
 import ColumnDetailed from "./components/attention/column_detailed"
+import Userstate from "./components/state/user_state"
+import Usertime from "./components/state/userTime"
 const  SimpleApp = StackNavigator({
     First:{screen:First},
+    Userstate:{screen:Userstate},
+    Usertime:{screen:Usertime},
     App:{
         screen:App
     },

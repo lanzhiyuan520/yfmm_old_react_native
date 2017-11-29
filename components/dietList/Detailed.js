@@ -33,7 +33,7 @@ export default class DietList extends Component{
         headerRight:  <TouchableWithoutFeedback onPress={()=>{navigation.state.params.navigatePress()}}>
             <FontAwesome name="share-alt" style={{fontSize: 20, color: "#ff8080",marginRight:10}}/>
         </TouchableWithoutFeedback>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 30, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
     });
     constructor(props){
         super(props)

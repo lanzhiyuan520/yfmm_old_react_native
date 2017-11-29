@@ -88,24 +88,34 @@ export default class Login extends Component {
     }
     //手机登录成功回调
     user_success(responseText){
+        console.log(responseText)
         if(responseText.code != 0){
             bounces(responseText.msg)
             return false
         }else{
             this.state.user=responseText.data
-            //获取用户状态
-            user_status(responseText.data.id,responseText.data.uuid,responseText.data.token,this.user_information)
-            var user_data = responseText.data
-            if(responseText.code==0){
-               //存入用户信息
-                AsyncStorage.setItem("user",JSON.stringify(user_data))
-                    .then(()=>{
+            if (responseText.data.status != 0){
+                //获取用户状态
+                user_status(responseText.data.id,responseText.data.uuid,responseText.data.token,this.user_information)
+                var user_data = responseText.data
+                if(responseText.code==0){
+                    //存入用户信息
+                    AsyncStorage.setItem("user",JSON.stringify(user_data))
+                        .then(()=>{
 
-                    })
-                    .catch(()=>{
-                        console.log("user存入失败")
-                    })
+                        })
+                        .catch(()=>{
+                            console.log("user存入失败")
+                        })
+                }
+            }else {
+                this.props.navigation.navigate("Userstate",{
+                    user:JSON.stringify(this.state.user),
+                    navigate:this.props.navigation.navigate
+                })
             }
+
+
         }
     }
     //获取用户状态回调
@@ -113,11 +123,7 @@ export default class Login extends Component {
         //存入用户状态
         AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))
             .then(()=>{
-                if(this.state.user_status != 0){
                     this.props.navigation.navigate("App",{selectedTab:"首页",user:JSON.stringify(this.state.user)})
-                }else{
-                    alert("您还没有登陆过，请填写状态")
-                }
             })
             .catch(()=>{
 
@@ -156,7 +162,7 @@ export default class Login extends Component {
     }
     //微信登录成功回调
     wx_login_success(responseText){
-        var data = JSON.stringify(responseText)
+       /* var data = JSON.stringify(responseText)
         var url = `http://test.www.ayi800.com/test/demodemo?content=${data}`
         fetch(url)
             .then((response) => {
@@ -168,7 +174,7 @@ export default class Login extends Component {
             .catch((error)=>{
                 console.log(error)
                 ToastAndroid.show('网络错误', ToastAndroid.SHORT)
-            })
+            })*/
         this.user_success(responseText)
     }
     //微信登录

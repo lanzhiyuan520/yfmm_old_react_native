@@ -29,7 +29,7 @@ export default class State extends Component{
             backgroundColor:"#fff"
         },
         headerRight: <TouchableWithoutFeedback onPress={()=>{navigation.state.params.submit()}}><View style={{marginRight:10}}><Text style={{color:"#ff8089",fontSize:14}}>提交</Text></View></TouchableWithoutFeedback>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 30, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
     });
     constructor(props){
         super(props)
@@ -40,6 +40,7 @@ export default class State extends Component{
             Sta:false,
             state:null,
             Text:"宝宝生日",
+            text_color:true
         }
         this.production=this.production.bind(this)
         this.birth=this.birth.bind(this)
@@ -104,7 +105,8 @@ export default class State extends Component{
                 production:"http://cdn.ayi800.com/image/jpg/app_yuchanyuchan2.png",
                 birth:"http://cdn.ayi800.com/image/jpg/app_chusheng2chusheng.png",
                 Sta:true,
-                Text:"我的预产期"
+                Text:"我的预产期",
+                text_color:false
             })
         this.state.state=true
     }
@@ -113,7 +115,8 @@ export default class State extends Component{
             production:"http://cdn.ayi800.com/image/jpg/app_yuchan2yuchanl.png",
             birth:"http://cdn.ayi800.com/image/jpg/app_chushengchusheng2.png",
             Sta:false,
-            Text:"宝宝生日"
+            Text:"宝宝生日",
+            text_color:true
         })
         this.state.state=false
     }
@@ -127,7 +130,7 @@ export default class State extends Component{
     }
     render(){
         let text = this.state.Sta?styles.text:styles.pinkText;
-        let statetext = this.state.state?styles.text:styles.pinkText;
+        let statetext = this.state.text_color?styles.text:styles.pinkText;
         return(
             <View style={{flex:1,backgroundColor:"#fff",borderTopColor:"#f2f2f2",borderTopWidth:1}}>
                 <View style={{width:width,height:45,justifyContent:"center",alignItems:"center"}}>
