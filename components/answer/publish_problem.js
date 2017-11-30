@@ -24,6 +24,7 @@ import Camera from './../commen/camera';
 import constants from './../constants';
 // import queryString from 'query-string';
 import qs from 'qs';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class Find extends Component{
     static navigationOptions = {
         header:null
@@ -68,18 +69,32 @@ export default class Find extends Component{
 
     //提交数据
     postData(){
-        let img=JSON.stringify([]);
-        let data={'author_id':constants.userId,'content':this.state.text,'service_groups':'1','service_id':this.state.service,'anonymous':'0','adapter':'1'};
-        data=qs.stringify(data);
-        fetch(constants.url+"/v1/problem?uuId="+constants.uuid,{
-            method: "patch",
-            mode: 'same-origin',
+        let img=null;
+        if(this.state.picArr.length==0){
+          console.log('没有上传照片')
+        } else {
+            img=[];
+            for(var i = 0;i<this.state.picArr.length;i++){
+                var uri = this.state.picArr[i].path;
+                img.push(uri)
+            }
+        }
+        let post_params={author_id:constants.userId,content:this.state.text,service_groups:'1',service_id:this.state.service,anonymous:'0',adapter:'1',images:img};
+        let url=constants.url+"/v1/problem?uuid="+constants.uuid;
+        let urlSigned = getSingedUrl(url, constants.uuid);
+        var dataEncrypt = getEncryptParam(post_params);
+        console.log(post_params);
+        fetch(urlSigned,{
+            method:"PATCH",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Http-App-Token": constants.token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
             },
-            body:data,
+            body:`param=${dataEncrypt.param}`
         }).then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson);
                 if(responseJson.code==0){
                     if (Platform.OS === "android") {
                         ToastAndroid.show('提问成功', ToastAndroid.SHORT);

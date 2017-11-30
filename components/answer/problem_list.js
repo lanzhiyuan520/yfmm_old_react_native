@@ -56,6 +56,7 @@ export default class ProblemList extends Component {
             })
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
                 let oldArr=this.state.data;
                 let newArr=responseJson.data;
                 if(newArr.length<=0){

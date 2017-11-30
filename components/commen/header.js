@@ -45,6 +45,7 @@ export default class Header extends Component{
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
                 try {
                     AsyncStorage.setItem(
                         'userActionList',
@@ -74,7 +75,7 @@ export default class Header extends Component{
     changeHeart(reverse){
         let post_params={
             userId:constants.userId,
-            operateType:this.props.operateType,
+            operateType:'3',
             operateId:this.props.id,
             reverse:reverse
         };
