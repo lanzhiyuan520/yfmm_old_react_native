@@ -15,15 +15,14 @@ import {
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import ScrollableTabView,{ScrollableTabBar} from "react-native-scrollable-tab-view"
-import DietListdetailed from "./dietListdetailed"
-import DetailedYuezi from "./detailed_yuezi"
-import DetailedYuer from "./detailed_yuer"
-import Loading from "../loading/loading"
+import Load from "../loading/loading"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {request_article_yinshi_list} from "../api"
+import Header from './../commen/header';
 export default class DietList extends Component{
     static navigationOptions = ({navigation}) => ({
-        title: "饮食推荐",
+        header:null
+        /*title: "饮食推荐",
         headerTitleStyle:{
             alignSelf:'center',
             color:"#333",
@@ -34,7 +33,7 @@ export default class DietList extends Component{
             backgroundColor:"#fff"
         },
         headerRight: <View></View>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,*/
     });
     constructor(props){
         super(props)
@@ -59,11 +58,11 @@ export default class DietList extends Component{
 
     }
     success(responseText){
+        this.load(2)
         this.setState({
             diet_list:responseText.data.dataList
         })
     }
-
     load(num){
         if(num==1){
             this.setState({
@@ -76,12 +75,16 @@ export default class DietList extends Component{
         }
     }
     fun(obj){
+        this.load(1)
         request_article_yinshi_list(this.state.user.uuid,obj.i+1,"weightDesc", 0, 100,this.state.user.token,this.success)
     }
     render(){
         return(
             <View style={{flex:1}}>
-               {/* <Loading loading={this.state.loading} />*/}
+                <View>
+                    <Load loading={this.state.loading}/>
+                </View>
+                <Header title="饮食推荐" back="true" navigation={this.props.navigation} />
                 <ScrollableTabView
                     initialPage={0}
                     locked={true}

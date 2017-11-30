@@ -92,7 +92,6 @@ export default class First extends Component {
 
     }
     user_success(responseText){
-        console.log(responseText)
         if (responseText.code != 0){
             bounces("账号已过期，请重新登录")
             this.props.navigation.navigate("Login")

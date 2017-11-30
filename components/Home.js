@@ -27,6 +27,7 @@ var {height} = Dimensions.get('window')
 import {request_professionals_list,requestTodayView,request_noticelist} from "./api"
 import {PullView} from 'react-native-pull';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Load from "./loading/loading"
 export default class Home extends Component{
     constructor(props){
         super(props)
@@ -53,26 +54,10 @@ export default class Home extends Component{
         }
         this.loading=this.loading.bind(this)
         this.disabled=this.disabled.bind(this)
-        this.clear=this.clear.bind(this)
-        this.onPullRelease=this.onPullRelease.bind(this)
         this.answer_success=this.answer_success.bind(this)
         this.suggest_success=this.suggest_success.bind(this)
         /*this.message_success=this.message_success.bind(this)
         this.message_list=this.message_list.bind(this)*/
-    }
-    clear(){
-        /*try {
-            AsyncStorage.removeItem(
-                "isPhoneLogin",
-                (error)=>{
-                    if(!error){
-                        alert('数据清除成功');
-                    }
-                }
-            )
-        }catch (error){
-            alert('失败',+error);
-        }*/
     }
     componentDidMount(){
             this.setState({
@@ -123,7 +108,6 @@ export default class Home extends Component{
     }
     //问答成功回调
     answer_success(responseText){
-        console.log(responseText)
         this.setState({
             experts:responseText.data[0]
         })
@@ -160,12 +144,6 @@ export default class Home extends Component{
             })
         }
     }*/
-   //下拉刷新
-    onPullRelease(resolve){
-        /*setTimeout(()=>{
-            resolve();
-        },3000)*/
-    }
     _onRefresh(){
         alert("hello")
     }
@@ -180,6 +158,9 @@ export default class Home extends Component{
     render(){
         return(
             <View style={{position:"relative"}}>
+                <View>
+                    <Load loading={this.state.loading}/>
+                </View>
                 <ScrollView
                     refreshControl={
                         <RefreshControl
@@ -268,7 +249,6 @@ export default class Home extends Component{
                                         setTimeout(()=>{
                                             this.setState({disabled:false})
                                         },500)
-                                        this.clear()
                                     }}>
                                     <View style={{width:width,height:100,backgroundColor:"#fff"}}>
                                         <View style={styles.title}>
