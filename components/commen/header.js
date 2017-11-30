@@ -12,7 +12,8 @@ import {
     Platform,
     AsyncStorage
 } from 'react-native';
-import {Circle,friends} from "../fenxiang/fenxiang"
+import {Circle,friends} from "../fenxiang/fenxiang";
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import *as wechat from 'react-native-wechat';
 import constants from './../constants';
@@ -34,10 +35,16 @@ export default class Header extends Component{
 
     //获取用户的点赞 - 关注 - 收藏 list
     getActionList(){
-        fetch(constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10")
+        const url=constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10";
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 try {
                     AsyncStorage.setItem(
                         'userActionList',
@@ -65,14 +72,23 @@ export default class Header extends Component{
 
     //改变心形按钮
     changeHeart(reverse){
-        let formData = new FormData();
-        formData.append('userId',constants.userId);
-        formData.append('operateType','3');
-        formData.append('operateId',this.props.id);
-        formData.append('reverse',reverse);
-        fetch(constants.url+"/v1/userbehavior/collect?uuId="+constants.uuid,{
+        let post_params={
+            userId:constants.userId,
+            operateType:this.props.operateType,
+            operateId:this.props.id,
+            reverse:reverse
+        };
+        const url=constants.url+"/v1/userbehavior/collect?uuid="+constants.uuid;
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        const dataEncrypt = getEncryptParam(post_params);
+        fetch(urlSigned,{
             method: "POST",
-            body:formData,
+            headers: {
+                "Http-App-Token": constants.token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+            body:`param=${dataEncrypt.param}`,
         }).then((response) => response.json())
             .then((responseJson) => {
                 if( reverse == '1' ){

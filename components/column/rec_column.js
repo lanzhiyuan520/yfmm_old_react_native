@@ -27,7 +27,7 @@ export default class RecColumn  extends Component {
         this.removeItem=this.removeItem.bind(this);
     }
 
-
+    //点击关注时，删除该项，重新渲染列表
     changeitem(id){
         var obj={};
         let column=this.state.data;
@@ -40,12 +40,12 @@ export default class RecColumn  extends Component {
           data:obj
       })
     }
-
+    //跳转到详情页执行
     _pressRow(item){
         this.props.navigate('ColumnDetail',{id:item,removeItem:this.removeItem})
     }
 
-
+    //给子组件传值
     removeItem(){
         this.props.change()
     }
@@ -58,10 +58,8 @@ export default class RecColumn  extends Component {
         for( var item in column ){
             if(this.props.list.indexOf(item)==-1){
                 newColumn[item]=column[item];
-                
             }
         }
-        console.log(newColumn);
         for(var item in newColumn){
             newArr.push (
                 <View key={item}>

@@ -14,6 +14,8 @@ import {
     FlatList
 } from 'react-native';
 import constants from './../constants';
+import LoadingMore from './../loading_more';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class OrtherList extends Component{
 
     constructor(props){
@@ -25,16 +27,43 @@ export default class OrtherList extends Component{
 
     componentWillMount(){
         const id=this.props.id;
-        this.requestData(id)
+        const offset=0;
+        this.requestData(id,offset)
     }
 
-    requestData(id){
-        fetch(constants.url+'/v1/article?uuid='+constants.uuid+'&limit=5&offset=0&orderBy=created_at desc&authId='+id+'&articleSource=auth')
+    componentWillReceiveProps(nextProps) {
+        this.setState({actionNum: nextProps.actionNum});
+        let offset=this.state.actionNum;
+        this.requestData(this.props.id,offset);
+    }
+
+    requestData(id,offset){
+        const url=constants.url+'/v1/article?uuid='+constants.uuid+'&limit=10&offset=0&orderBy=created_at desc&authId='+id+'&articleSource=auth';
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((responsejson) => {
                this.setState({
                    list:responsejson.data.dataList
                })
+               //  let oldArr=this.state.list;
+               //  let newArr=responsejson.data.dataList;
+               //  if(newArr.length<=0){
+               //      this.setState({
+               //          finish:true,
+               //          actionNum:this.state.actionNum-1
+               //      })
+               //  }else {
+               //      allArr=[...oldArr,...newArr];
+               //      this.setState({
+               //          list:allArr
+               //      });
+               //  }
             })
             .catch(() => {
                 console.error('数据请求失败！');
@@ -43,38 +72,50 @@ export default class OrtherList extends Component{
 
     render(){
         return(
-            <View style={styles.container}>
-                <View style={{paddingLeft:15}}>
-                    <Text style={{fontSize:12,color:'#262626'}}>TA的动态</Text>
-                </View>
-                <View>
-                    {
-                        <View>
-                            {
-                                this.state.list.map(function(listItem,index){
-                                    return(
-                                        <View key={index} style={{flex:1,flexDirection:'row',justifyContent:'space-between',padding:15,borderBottomWidth:0.5,borderBottomColor:'#f2f2f2'}}>
-                                            <View style={{flex:2,justifyContent:'space-between',paddingRight:10}}>
-                                                <View>
-                                                    <Text style={{fontSize:12}}>{listItem.title}</Text>
-                                                </View>
-                                                <View>
-                                                    <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
-                                                        <Text style={{color:'#999',fontSize:10,lineHeight:15}}>{listItem.created_at}</Text>
-                                                        <Text style={{fontSize:10,color:'#999'}}>阅读{listItem.visit_num}</Text>
+            <View style={{marginBottom:50}}>
+                <View style={styles.container}>
+                    <View style={{paddingLeft:15}}>
+                        <Text style={{fontSize:12,color:'#262626'}}>TA的动态</Text>
+                    </View>
+                    <View>
+                        {
+                            <View>
+                                {
+                                    this.state.list.map(function(listItem,index){
+                                        return(
+                                            <View key={index} style={{flex:1,flexDirection:'row',justifyContent:'space-between',padding:15,borderBottomWidth:0.5,borderBottomColor:'#f2f2f2'}}>
+                                                <View style={{flex:2,justifyContent:'space-between',paddingRight:10}}>
+                                                    <View>
+                                                        <Text style={{fontSize:12}}>{listItem.title}</Text>
+                                                    </View>
+                                                    <View>
+                                                        <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
+                                                            <Text style={{color:'#999',fontSize:10,lineHeight:15}}>{listItem.created_at}</Text>
+                                                            <Text style={{fontSize:10,color:'#999'}}>阅读{listItem.visit_num}</Text>
+                                                        </View>
                                                     </View>
                                                 </View>
+                                                <View style={{flex:1,alignItems:'flex-end'}}>
+                                                    <Image style={{width:90,height:65}} source={{uri:listItem.banner}}/>
+                                                </View>
                                             </View>
-                                            <View style={{flex:1,alignItems:'flex-end'}}>
-                                                <Image style={{width:90,height:65}} source={{uri:listItem.banner}}/>
-                                            </View>
-                                        </View>
-                                    )
-                                })
-                            }
-                        </View>
-                    }
+                                        )
+                                    })
+                                }
+                            </View>
+                        }
 
+                    </View>
+                </View>
+                <View style={{marginTop:10}}>
+                    <LoadingMore
+                        finish={this.state.finish}
+                        isLoading={this.props.isLoading}
+                        onLoading={()=>{
+                            let offset=(this.state.actionNum+1)*5;
+                            this.requestData(this.state.orderby,offset);
+                        }}
+                    />
                 </View>
             </View>
         )
@@ -84,6 +125,5 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor:'#fff',
         paddingTop:15,
-        marginBottom:50
     }
 })

@@ -14,7 +14,7 @@ import Header from './commen/header';
 import constants from './constants';
 import VideoDetail from './find/video_detail';
 var {width} = Dimensions.get('window');
-import RefrshList from 'react-native-refreshlist'
+import {getSingedUrl,getEncryptParam,decrypt} from "./tools/tools";
 export default class Find extends Component{
     constructor(props){
         super(props);
@@ -32,8 +32,13 @@ export default class Find extends Component{
     }
 
     requestData(){
-        fetch(constants.url+"/v1/article?uuid="+constants.uuid+"&articleType=4&orderBy=createTimeDesc&limit="+this.state.limit+"&offset="+this.state.offset,{
-            method: 'GET'
+        const url=constants.url+"/v1/article?uuid="+constants.uuid+"&articleType=4&orderBy=createTimeDesc&limit="+this.state.limit+"&offset="+this.state.offset;
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
         })
             .then((response) => response.json())
             .then((responseJson) => {
