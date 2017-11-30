@@ -15,17 +15,10 @@ import {
 import Header from './../commen/header';
 import Btn from './../column/att_btn';
 import constants from './../constants';
-import AnserList from './answer_list'
-import Storage from 'react-native-storage';
+import AnserList from './answer_list';
 import { AsyncStorage } from 'react-native';
 import Share from './../commen/share';
-var storage = new Storage({
-    size: 1000,
-    storageBackend: AsyncStorage,
-    defaultExpires: 'null',
-    enableCache: true
-});
-var QMStorage ={};
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class Problem extends Component{
 
     static navigationOptions = {
@@ -46,8 +39,6 @@ export default class Problem extends Component{
         const id=this.props.navigation.state.params.id;
         this.requestData(id);
     }
-
-
 
     componentDidMount(){
         const id=this.props.navigation.state.params.id;
@@ -110,7 +101,14 @@ export default class Problem extends Component{
     }
     //请求数据
     requestData(id){
-        fetch(constants.url+"/v1/problem?rid="+id+"&offset=0&limit=3&type=0&uuid="+constants.uuid)
+        const url=constants.url+"/v1/problem?rid="+id+"&offset=0&limit=3&type=0&uuid="+constants.uuid;
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({

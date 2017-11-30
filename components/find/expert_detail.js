@@ -10,12 +10,14 @@ import {
     TouchableWithoutFeedback,
     Image,
     ScrollView,
-    AsyncStorage
+    AsyncStorage,
+    RefreshControl
 } from 'react-native';
 import Header from './../commen/header';
 import Btn from './../column/att_btn';
 import OrtherList from './orther_dongtai';
 import constants from './../constants';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class Expert extends Component{
 
     static navigationOptions = {
@@ -27,7 +29,10 @@ export default class Expert extends Component{
         this.state={
             author:{},
             num:'',
-            attend:'false'
+            attend:'false',
+            isRefreshing: false,
+            loadMore:false,
+            actionNum:0
         };
         this._loadInitialState=this._loadInitialState.bind(this);
     }
@@ -60,7 +65,14 @@ export default class Expert extends Component{
     }
 
     requestData(id){
-        fetch(constants.url+'/v1/professionals?uuid='+constants.uuid+'&rid='+id)
+        const url=constants.url+'/v1/professionals?uuid='+constants.uuid+'&rid='+id;
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((responsejson) => {
                 this.setState({
@@ -73,13 +85,44 @@ export default class Expert extends Component{
             });
     }
 
+    //监听列表滚到底部
+    _onScroll(event) {
+        let y = event.nativeEvent.contentOffset.y;
+        let height = event.nativeEvent.layoutMeasurement.height;
+        let contentHeight = event.nativeEvent.contentSize.height;
+        if(y+height>=contentHeight-20){
+            this.setState({
+                loadMore:true,
+                actionNum:this.state.actionNum+1
+            });
+        }
+    }
+    //刷新函数
+    _onRefresh(){
+
+        alert('刷新成功')
+    }
 
     render(){
         const {state}=this.props.navigation;
         return(
             <View>
                 <Header title={this.state.author.name} attend={this.state.attend} back="true" changeBtn={state.params.changeBtn}  navigation={this.props.navigation} />
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={()=>this._onRefresh()}
+                            tintColor="#ff0000"
+                            title="加载中..."
+                            titleColor="#00ff00"
+                            colors={['#999', '#999', '#999']}
+                            progressBackgroundColor="#ffffff"
+                        />
+                    }
+                    onScroll={this._onScroll.bind(this)}
+                    scrollEventThrottle={50}
+                >
                     <View style={styles.container}>
                         <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginBottom:10}}>
                             <View style={{flex:1,flexDirection:'row'}}>
@@ -95,7 +138,7 @@ export default class Expert extends Component{
                         </View>
                         <View><Text style={{fontSize:12,color:'#262626'}}>{this.state.author.content}</Text></View>
                     </View>
-                    <OrtherList id={state.params.id}/>
+                    <OrtherList isLoading={this.state.loadMore} actionNum={this.state.actionNum} id={state.params.id}/>
                 </ScrollView>
             </View>
         )

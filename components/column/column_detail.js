@@ -18,7 +18,7 @@ import Header from './../commen/header';
 import Att from './att_btn'
 import constants from './../constants';
 import ProblemList from './column_problem';
-import Share from './../commen/share';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class Problem extends Component{
 
     static navigationOptions = {
@@ -40,7 +40,14 @@ export default class Problem extends Component{
     }
 
     requestData(id){
-        fetch(constants.url+'/v1/group?rid='+id+'&offset=0&limit=1&uuid='+constants.uuid)
+        const url=constants.url+'/v1/group?rid='+id+'&offset=0&limit=1&uuid='+constants.uuid;
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((response) => {
                 this.setState({

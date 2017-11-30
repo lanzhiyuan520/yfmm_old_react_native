@@ -20,7 +20,7 @@ import {
 import {setSpText} from './../UiStyle';
 import {scaleSize} from './../UiStyle';
 import constants from './../constants';
-
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class RecColumn  extends Component {
 
     constructor(props){
@@ -39,7 +39,14 @@ export default class RecColumn  extends Component {
 
     //获取用户的点赞 - 关注 - 收藏 list
     getActionList(){
-        fetch(constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10")
+        const url=constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10";
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((responseJson) => {
                 try {
@@ -74,14 +81,23 @@ export default class RecColumn  extends Component {
 
     //关注、收藏、点赞
     changeBtn(reverse){
-        let formData = new FormData();
-        formData.append('userId',constants.userId);
-        formData.append('operateType',this.props.operateType);
-        formData.append('operateId',this.props.id);
-        formData.append('reverse',reverse);
-        fetch(constants.url+"/v1/userbehavior/"+this.props.collect+"?uuId="+constants.uuid,{
+        let post_params={
+            userId:constants.userId,
+            operateType:this.props.operateType,
+            operateId:this.props.id,
+            reverse:reverse
+        };
+        const url=constants.url+"/v1/userbehavior/"+this.props.collect+"?uuid="+constants.uuid;
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        const dataEncrypt = getEncryptParam(post_params);
+        fetch(urlSigned,{
             method: "POST",
-            body:formData,
+            headers: {
+                "Http-App-Token": constants.token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+            body:`param=${dataEncrypt.param}`,
         }).then((response) => response.json())
             .then((responseJson) => {
                 if( reverse == '1' ){

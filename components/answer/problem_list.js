@@ -16,7 +16,8 @@ import Problem from './problem_detail';
 //Question
 var QUESTIONLIST = "problem?";
 var API_VERSION = "v1/";
-import LoadingMore from './../loading_more'
+import LoadingMore from './../loading_more';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class ProblemList extends Component {
     constructor(props){
         super(props);
@@ -45,7 +46,14 @@ export default class ProblemList extends Component {
     }
 
     requestData(orderby,offset){
-        fetch(constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset="+offset+"&limit="+this.state.limit+"&uuid="+constants.uuid)
+        const url=constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset="+offset+"&limit="+this.state.limit+"&uuid="+constants.uuid;
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+                }
+            })
             .then((response) => response.json())
             .then((responseJson) => {
                 let oldArr=this.state.data;
@@ -66,21 +74,24 @@ export default class ProblemList extends Component {
                 console.error('数据请求失败');
             });
     }
-
+    //最热最新按钮切换
     changeSort(orderby){
         if(orderby=='weight'){
             this.setState({
+                data:[],
                 sort:true,
                 orderby:'weight'
             });
         }
         if(orderby=='create'){
             this.setState({
+                data:[],
                 sort:false,
                 orderby:'create'
             });
         }
-        this.requestData(orderby)
+        var offset=0;
+        this.requestData(orderby,offset)
     }
 
     render() {
@@ -135,7 +146,8 @@ export default class ProblemList extends Component {
                 finish={this.state.finish}
                 isLoading={this.props.isLoading}
                 onLoading={()=>{
-                    alert('正在加载...');
+                    let offset=(this.state.actionNum+1)*5;
+                    this.requestData(this.state.orderby,offset);
                 }}
             />
         </View>

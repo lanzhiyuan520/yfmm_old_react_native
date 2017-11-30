@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import constants from './../constants';
 // import Problem from './problem_detail';
-
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class ProblemList extends Component {
     constructor(props){
         super(props);
@@ -31,7 +31,14 @@ export default class ProblemList extends Component {
     }
 
     requestData(orderby){
-        fetch(constants.url+"/v1/problem?uuid="+constants.uuid+"&support=1&group_id="+this.props.id+"&orderby="+orderby+"&offset=0&limit=5")
+        const url=constants.url+"/v1/problem?uuid="+constants.uuid+"&support=1&group_id="+this.props.id+"&orderby="+orderby+"&offset=0&limit=5";
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({

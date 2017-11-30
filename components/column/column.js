@@ -19,6 +19,7 @@ import Recommend from './rec_column';
 import constants from './../constants';
 import LoadingMore from './../loading_more';
 var {width} = Dimensions.get('window');
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class Column  extends Component {
 
     constructor(props){
@@ -90,12 +91,19 @@ export default class Column  extends Component {
                 console.log('无数据')
             }
         }catch(error){
-            this._appendMessage('AsyncStorage错误'+error.message);
+            console.log('AsyncStorage错误'+error.message);
         }
     }
     //请求数据
     requestData(offset){
-        fetch(constants.url+'/v1/group?type=12312&offset='+offset+'&limit=4&orderby=weight&uuid='+constants.uuid+'&action_num=1')
+        const url=constants.url+'/v1/group?type=12312&offset='+offset+'&limit=4&orderby=weight&uuid='+constants.uuid+'&action_num=1';
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((response) => {
                 let oldArr=this.state.data;
@@ -112,7 +120,6 @@ export default class Column  extends Component {
                     })
                 }else {
                     Object.assign(allArr,oldArr,newArr);
-                    console.log(allArr);
                     this.setState({
                         data:allArr
                     });

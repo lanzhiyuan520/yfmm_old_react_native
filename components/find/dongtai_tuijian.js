@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import constants from './../constants';
 import VideoDetail from './video_detail';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class Recommend extends Component{
 
     constructor(props){
@@ -29,7 +30,14 @@ export default class Recommend extends Component{
     }
 
     requestData(){
-        fetch(constants.url+'/v1/article?uuid='+constants.uuid+'&articleType=4&orderBy=createTimeDesc&limit=5&offset=0')
+        const url=constants.url+'/v1/article?uuid='+constants.uuid+'&articleType=4&orderBy=createTimeDesc&limit=5&offset=0';
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((response) => {
                 this.setState({

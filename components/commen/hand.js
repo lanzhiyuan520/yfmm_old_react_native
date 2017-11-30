@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import constants from './../constants';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class AnswerList extends Component {
     constructor(props){
         super(props);
@@ -33,16 +34,22 @@ export default class AnswerList extends Component {
 
     //获取用户的点赞 - 关注 - 收藏 list
     getActionList(id){
-        fetch(constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10")
+        const url=constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10";
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
             .then((response) => response.json())
             .then((responseJson) => {
-                //获取真实数据后打开
-                // result=responseJson.data;
-                // if(result.dianzan.huida.dataList.indexOf(id) !== -1){
-                //     this.setState({
-                //         admire:true,
-                //     })
-                // }
+                result=responseJson.data;
+                if(result.dianzan.huida.dataList.indexOf(id) !== -1){
+                    this.setState({
+                        admire:true,
+                    })
+                }
             })
             .catch((err) => {
                 console.error('数据请求失败');
@@ -51,53 +58,62 @@ export default class AnswerList extends Component {
 
     //点赞改变颜色
     changeHand(reverse){
-            let formData = new FormData();
-            formData.append('userId',constants.userId);
-            formData.append('operateType','1');
-            formData.append('operateId',this.props.id);
-            formData.append('reverse',reverse);
-            fetch(constants.url+"/v1/userbehavior/like?uuId="+constants.uuid,{
-                method: "POST",
-                body:formData,
-            }).then((response) => response.json())
-                .then((responseJson) => {
-                    console.log(responseJson);
-                    if( reverse == '1' ){
-                        if(responseJson.code==0){
-                            if (Platform.OS === "android") {
-                                ToastAndroid.show('点赞成功', ToastAndroid.SHORT);
-                            } else if (Platform.OS === "ios") {
-                                AlertIOS.alert('点赞成功');
-                            }
-                            this.setState({
-                                admire:true,
-                                num:parseInt(this.state.num)+1
-                            })
-                        }else {
-                            if (Platform.OS === "android") {
-                                ToastAndroid.show('点赞失败', ToastAndroid.SHORT);
-                            } else if (Platform.OS === "ios") {
-                                AlertIOS.alert('点赞失败');
-                            }
+        let post_params={
+            userId:constants.userId,
+            operateType:this.props.operateType,
+            operateId:this.props.id,
+            reverse:reverse
+        };
+        const url=constants.url+"/v1/userbehavior/like?uuId="+constants.uuid;
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        const dataEncrypt = getEncryptParam(post_params);
+        fetch(urlSigned,{
+            method: "POST",
+            headers: {
+                "Http-App-Token": constants.token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+            body:`param=${dataEncrypt.param}`,
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                if( reverse == '1' ){
+                    if(responseJson.code==0){
+                        if (Platform.OS === "android") {
+                            ToastAndroid.show('点赞成功', ToastAndroid.SHORT);
+                        } else if (Platform.OS === "ios") {
+                            AlertIOS.alert('点赞成功');
                         }
-                    }else if( reverse == '2' ){
-                        if(responseJson.code==0){
-                            if (Platform.OS === "android") {
-                                ToastAndroid.show('取关成功', ToastAndroid.SHORT);
-                            } else if (Platform.OS === "ios") {
-                                AlertIOS.alert('取关成功');
-                            }
-                            this.setState({
-                                admire:false,
-                                num:parseInt(this.state.num)-1
-                            })
+                        this.setState({
+                            admire:true,
+                            num:parseInt(this.state.num)+1
+                        })
+                    }else {
+                        if (Platform.OS === "android") {
+                            ToastAndroid.show('点赞失败', ToastAndroid.SHORT);
+                        } else if (Platform.OS === "ios") {
+                            AlertIOS.alert('点赞失败');
                         }
                     }
+                }else if( reverse == '2' ){
+                    if(responseJson.code==0){
+                        if (Platform.OS === "android") {
+                            ToastAndroid.show('取关成功', ToastAndroid.SHORT);
+                        } else if (Platform.OS === "ios") {
+                            AlertIOS.alert('取关成功');
+                        }
+                        this.setState({
+                            admire:false,
+                            num:parseInt(this.state.num)-1
+                        })
+                    }
+                }
 
-                })
-                .catch((err) => {
-                    console.error('数据请求失败');
-                });
+            })
+            .catch((err) => {
+                console.error('数据请求失败');
+            });
     }
     render() {
         if(this.state.admire){

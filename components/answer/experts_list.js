@@ -16,6 +16,7 @@ import constants from './../constants';
 import PublishProblem from './publish_problem';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ExpertsList from './../Experts/ExpertsList';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class ExpertList extends Component {
     constructor(props){
         super(props);
@@ -28,7 +29,14 @@ export default class ExpertList extends Component {
         this.requestData()
     }
     requestData(){
-        fetch(constants.url+"/v1/professionals?uuid="+constants.uuid+"&offset=0&limit=4")
+        const url=constants.url+"/v1/professionals?uuid="+constants.uuid+"&offset=0&limit=4";
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers:{
+                "Http-App-Token":constants.token
+            }
+        })
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
