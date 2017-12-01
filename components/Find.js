@@ -26,11 +26,9 @@ export default class Find extends Component{
         }
         this._onload=this._onload.bind(this);
     }
-
     componentDidMount(){
         this.requestData();
     }
-
     requestData(){
         const url=constants.url+"/v1/article?uuid="+constants.uuid+"&articleType=4&orderBy=createTimeDesc&limit="+this.state.limit+"&offset="+this.state.offset;
         const urlSigned = getSingedUrl(url, constants.uuid);
