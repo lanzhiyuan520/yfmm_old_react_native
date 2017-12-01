@@ -11,13 +11,15 @@ import {
     FlatList,
     ToastAndroid,
     ScrollView,
-    AsyncStorage
+    AsyncStorage,
+    InteractionManager
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import ScrollableTabView,{ScrollableTabBar} from "react-native-scrollable-tab-view"
 import {request_article_yinshi_list} from "../api"
 import Loadmore from "../loadmore/loadmore"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+var user
 export default class DietListdetailed extends Component{
     static navigationOptions = ({navigation}) => ({
 
@@ -38,52 +40,34 @@ export default class DietListdetailed extends Component{
         super(props)
         this.state = {
             food_list:[],
-            btn:"加载更多",
             num:null,
             count:5,
             user:{},
             index:0
         }
-        this.hidden_btn=this.hidden_btn.bind(this)
-        this.render_list=this.render_list.bind(this)
-        this.hello=this.hello.bind(this)
+        this.success=this.success.bind(this)
     }
 
     componentDidMount(){
-        this.setState({
-            food_list:this.props.diet_list
+        this.props.load(1)
+        user = this.props.user
+        InteractionManager.runAfterInteractions(()=>{
+            AsyncStorage.getItem("user_data",(error,result)=>{
+                result = JSON.parse(result)
+                request_article_yinshi_list(user.uuid,1,"weightDesc", 0,100,user.token,this.success)
+            })
         })
-    }
 
-    hidden_btn(){
-        if(this.state.num){
-            return <Loadmore btn={this.state.btn} render_list={this.render_list}/>
-        }else{
-            return null
-        }
     }
-    render_list(){
-        if(this.state.count >= this.state.num){
-            this.setState({
-                count:this.state.num,
-                btn:"没有更多了"
-            })
-            return false
-        }else{
-            this.setState({
-                count:this.state.count+=5,
-                btn:"加载中..."
-            })
-        }
-    }
-    hello(){
-
+    success(responseText){
+        this.props.load(2)
+        this.setState({
+            food_list:responseText.data.dataList
+        })
     }
     render(){
         return(
             <View style={{flex:1}}>
-                <Text onPress={()=>{this.hello()}}>哈哈</Text>
-                <ScrollView>
                 <FlatList
                    data={this.state.food_list}
                    renderItem={({item})=>{
@@ -93,12 +77,10 @@ export default class DietListdetailed extends Component{
                                height:300,
                                backgroundColor:"#fff"
                            }}>
-                               <TouchableWithoutFeedback onPress={()=>{this.props.navigate.navigate('Detailed',{
-                                   img:item.banner,
-                                   author_img:item.author_img,
-                                   tags_name:item.tags_name,
-                                   title:item.title,
-                                   time:item.created_at
+                               <TouchableWithoutFeedback onPress={()=>{this.props.navigate('Detailed',{
+                                   id:item.id,
+                                   user:user,
+                                   title:item.title
                                })}}>
                                    <View>
                                        <View style={{width:width,height:230,justifyContent:"center",alignItems:"center"}}>
@@ -125,8 +107,6 @@ export default class DietListdetailed extends Component{
                        )
                    }}
                 />
-                {this.hidden_btn()}
-                </ScrollView>
             </View>
         )
     }

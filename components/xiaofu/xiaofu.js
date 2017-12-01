@@ -58,6 +58,7 @@ export default class Smallfu extends Component{
 
     }
     more(){
+        this.props.loading(1)
         this.setState({
             actionNum:this.state.actionNum+1,
             btn:"加载中..."
@@ -66,6 +67,7 @@ export default class Smallfu extends Component{
         this.xiaofu_list(offset)
     }
     xiaofu(responseText){
+        this.props.loading(2)
         let oldArr= this.state.xiaofu_list
         let newArr=responseText.data.dataList;
         if(!newArr){
