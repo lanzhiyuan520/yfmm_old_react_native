@@ -32,7 +32,8 @@ export default class Collect extends Component{
     constructor(props){
         super(props)
         this.state={
-            collect_list:[]
+            collect_list:[],
+            state:false
         }
         this.collect_success=this.collect_success.bind(this)
     }
@@ -41,9 +42,18 @@ export default class Collect extends Component{
         collect_user_list(user.id,user.uuid,user.token,this.collect_success)
     }
     collect_success(responseText){
-        this.setState({
-            collect_list:responseText.data.dataList
-        })
+        if (responseText.code == 995 && responseText.msg == "请求数据为空"){
+            this.setState({
+                state:false
+            })
+            console.log(responseText)
+        }else if (responseText.code == 0){
+            this.setState({
+                collect_list:responseText.data.dataList,
+                state:true
+            })
+        }
+
     }
     _renderItem=({item})=>{
 
@@ -182,14 +192,22 @@ export default class Collect extends Component{
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#f5f5f5"}}>
-                <ScrollView>
-                <View style={{width:width}}>
-                    <FlatList
-                        data={this.state.collect_list}
-                        renderItem={this._renderItem}
-                    />
-                </View>
-                </ScrollView>
+                {
+                    this.state.state?
+                        <ScrollView>
+                            <View style={{width:width}}>
+                                <FlatList
+                                    data={this.state.collect_list}
+                                    renderItem={this._renderItem}
+                                />
+                            </View>
+                        </ScrollView>
+                        :
+                        <View style={{width:width,marginTop:10,justifyContent:"center",alignItems:"center"}}>
+                            <Text>暂无收藏</Text>
+                        </View>
+                }
+
             </View>
         )
     }
