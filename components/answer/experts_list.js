@@ -17,6 +17,7 @@ import PublishProblem from './publish_problem';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ExpertsList from './../Experts/ExpertsList';
 import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
+import Expertsdetails from "./../Experts/Expertsdetails"
 export default class ExpertList extends Component {
     constructor(props){
         super(props);
@@ -51,7 +52,11 @@ export default class ExpertList extends Component {
         var itemAry=[];
         this.state.oldAry.map( (item,index)=> {
             itemAry.push(
-                <TouchableWithoutFeedback key={index} onPress={()=> {this.props.navigate('PublishProblem',{navigate:this.props.navigate})} }>
+                <TouchableWithoutFeedback key={index} onPress={()=> {this.props.navigate('Expertsdetails',{
+                    expert:item.name,
+                    user:constants.user,
+                    id:item.id
+                })}}>
                     <View style={styles.container}>
                         <View>
                             <Image style={{width:scaleSize(100),height:scaleSize(100),borderRadius:scaleSize(50)}} source={{uri:item.img}}/>

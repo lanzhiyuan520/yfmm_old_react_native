@@ -106,6 +106,7 @@ export default class Column  extends Component {
         })
             .then((response) => response.json())
             .then((response) => {
+                console.log(response)
                 let oldArr=this.state.data;
                 let newArr=response.data.group_list;
                 let allArr={};

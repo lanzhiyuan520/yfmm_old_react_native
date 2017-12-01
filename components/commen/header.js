@@ -45,7 +45,6 @@ export default class Header extends Component{
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 try {
                     AsyncStorage.setItem(
                         'userActionList',

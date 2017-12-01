@@ -18,6 +18,7 @@ import Btn from './../column/att_btn';
 import OrtherList from './orther_dongtai';
 import constants from './../constants';
 import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
+import LoadingMore from './../loading_more';
 export default class Expert extends Component{
 
     static navigationOptions = {
@@ -32,14 +33,22 @@ export default class Expert extends Component{
             attend:'false',
             isRefreshing: false,
             loadMore:false,
-            actionNum:0
+            actionNum:0,
+            list:[],
+            finish:false,
+            count:0
         };
         this._loadInitialState=this._loadInitialState.bind(this);
+        this. _onScroll=this. _onScroll.bind(this);
+        this.requestData=this.requestData.bind(this);
+        this.requestLists=this.requestLists.bind(this);
     }
 
     componentWillMount(){
         const id=this.props.navigation.state.params.id;
-        this.requestData(id)
+        this.requestData(id);
+        let offset=0;
+        this.requestLists(id,offset);
     }
     //关注收藏按钮
     componentDidMount(){
@@ -63,7 +72,7 @@ export default class Expert extends Component{
             this._appendMessage('AsyncStorage错误'+error.message);
         }
     }
-
+    //请求页面头部数据
     requestData(id){
         const url=constants.url+'/v1/professionals?uuid='+constants.uuid+'&rid='+id;
         const urlSigned = getSingedUrl(url, constants.uuid);
@@ -85,28 +94,65 @@ export default class Expert extends Component{
             });
     }
 
+    //请求页面列表数据
+    requestLists(id,offset){
+        const url=constants.url+'/v1/article?uuid='+constants.uuid+'&limit=5&offset='+offset+'&orderBy=created_at desc&authId='+id+'&articleSource=auth';
+        const urlSigned = getSingedUrl(url, constants.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers: {
+                "Http-App-Token": constants.token
+            }
+        })
+            .then((response) => response.json())
+            .then((responsejson) => {
+                 let oldArr=this.state.list;
+                 let newArr=responsejson.data.dataList;
+                 this.setState({
+                     count:responsejson.data.count
+                 });
+                 if(newArr.length<5){
+                     this.setState({
+                         finish:true,
+                         actionNum:this.state.actionNum-1
+                     })
+                 }else {
+                     allArr=[...oldArr,...newArr];
+                     this.setState({
+                         list:allArr,
+                     });
+                 }
+            })
+            .catch(() => {
+                console.error('数据请求失败！');
+            });
+    }
+
     //监听列表滚到底部
     _onScroll(event) {
+        const id=this.props.navigation.state.params.id;
         let y = event.nativeEvent.contentOffset.y;
         let height = event.nativeEvent.layoutMeasurement.height;
         let contentHeight = event.nativeEvent.contentSize.height;
         if(y+height>=contentHeight-20){
+            const id=this.props.navigation.state.params.id;
             this.setState({
                 loadMore:true,
                 actionNum:this.state.actionNum+1
             });
+            let offset=(this.state.actionNum+1)*5;
+            this.requestLists(id,offset);
         }
     }
     //刷新函数
     _onRefresh(){
-
         alert('刷新成功')
     }
 
     render(){
         const {state}=this.props.navigation;
         return(
-            <View>
+            <View style={{marginBottom:50}}>
                 <Header title={this.state.author.name} attend={this.state.attend} back="true" changeBtn={state.params.changeBtn}  navigation={this.props.navigation} />
                 <ScrollView
                     refreshControl={
@@ -138,7 +184,22 @@ export default class Expert extends Component{
                         </View>
                         <View><Text style={{fontSize:12,color:'#262626'}}>{this.state.author.content}</Text></View>
                     </View>
-                    <OrtherList isLoading={this.state.loadMore} actionNum={this.state.actionNum} id={state.params.id}/>
+                    <OrtherList list={this.state.list} isLoading={this.state.loadMore} actionNum={this.state.actionNum} id={state.params.id}/>
+                    <View>
+                        <LoadingMore
+                            finish={this.state.finish}
+                            isLoading={this.state.loadMore}
+                            onLoading={()=>{
+                                const id=this.props.navigation.state.params.id;
+                                this.setState({
+                                    loadMore:true,
+                                    actionNum:this.state.actionNum+1
+                                });
+                                let offset=(this.state.actionNum+1)*5;
+                                this.requestLists(id,offset);
+                            }}
+                        />
+                    </View>
                 </ScrollView>
             </View>
         )

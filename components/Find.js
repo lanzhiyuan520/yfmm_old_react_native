@@ -45,7 +45,6 @@ export default class Find extends Component{
                 let oldArr=this.state.dataSource;
                 let newArr=responseJson.data.dataList;
                 allArr=[...oldArr,...newArr];
-                console.log(allArr);
                 this.setState({
                     dataSource:allArr,
                     refreshing: false
