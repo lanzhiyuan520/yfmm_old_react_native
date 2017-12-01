@@ -1,5 +1,24 @@
 import React, { Component } from 'react';
-import { AppRegistry,Alert,Platform,AsyncStorage,Dimensions,ActivityIndicator,ToastAndroid, Button,TextInput ,TouchableOpacity,TouchableNativeFeedback,TouchableHighlight,Image , StyleSheet, Text, View ,ScrollView} from 'react-native';
+import {
+    AppRegistry,
+    Alert,
+    Platform,
+    AsyncStorage,
+    Dimensions,
+    ActivityIndicator,
+    ToastAndroid,
+    Button,
+    TextInput ,
+    TouchableOpacity,
+    TouchableNativeFeedback,
+    TouchableHighlight,
+    Image ,
+    StyleSheet,
+    Text,
+    View ,
+    ScrollView,
+    TouchableWithoutFeedback
+} from 'react-native';
 var WeChat=require('react-native-wechat');
 import DeviceInfo from 'react-native-device-info'
 
@@ -320,20 +339,20 @@ export default class Login extends Component {
                         justifyContent:'center'
                     }}>
                         <View style={{width:335,flexDirection:"row",}}>
-                            <TouchableNativeFeedback
+                            <TouchableWithoutFeedback
                                 disabled={this.state.disabled}
                                 onPress={this.checked}>
                                 <View ><Image source={check} style={{width:13,height:13}}/></View>
-                            </TouchableNativeFeedback>
+                            </TouchableWithoutFeedback>
                             <View style={{marginLeft:5,marginTop:-4,flexDirection:"row"}}>
-                                <TouchableHighlight
+                                <TouchableWithoutFeedback
                                     disabled={this.state.disabled}
                                     onPress={this.service}>
                                     <Text style={{fontSize:15,color:"#262626"}}>阅读并同意</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight onPress={()=>{this.props.navigation.navigate("Service")}}>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={()=>{this.props.navigation.navigate("Service")}}>
                                     <Text style={{color:"#ff8089",fontSize:15}}>《用户服务条款》</Text>
-                                </TouchableHighlight>
+                                </TouchableWithoutFeedback>
                             </View>
                         </View>
                     </View>
@@ -343,14 +362,23 @@ export default class Login extends Component {
                         justifyContent:"center",
                         marginTop:20,
                     }}>
-                        <View style={{width:335,height:45,}}>
-                            <Button
+
+                            <TouchableWithoutFeedback onPress={()=>{
+                                this.click();
+
+                            }}>
+                                <View style={{width:335,height:45,backgroundColor:"#ff8080",justifyContent:"center",alignItems:"center"}}>
+                                    <Text style={{color:"#fff",fontSize:17}}>登录</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            {/*<Button
                                     disabled={this.state.disabled2}
                                     title="登录"
                                     color="#ff8080"
                                     onPress={this.click}
-                            />
-                        </View>
+                            />*/}
+
+
                     </View>
 
                     <View style={{flexDirection:"row",justifyContent:"center",marginTop:80,marginBottom:40}}>
@@ -359,11 +387,11 @@ export default class Login extends Component {
 
                     <View style={{flexDirection:"row",justifyContent:"center"}}>
                         <View style={{width:335,flexDirection:"row",justifyContent:"center"}}>
-                            <TouchableNativeFeedback
+                            <TouchableWithoutFeedback
                                 disabled={this.state.disabled}
                                 onPress={this.social}><Image source={require("../../img/mm.png")}
                                                                                   style={{width:80,height:80}}
-                            /></TouchableNativeFeedback>
+                            /></TouchableWithoutFeedback>
                         </View>
                     </View>
                 </View>
