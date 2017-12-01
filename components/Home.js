@@ -40,14 +40,14 @@ export default class Home extends Component{
             loading:true,
             disabled:false,
             status:"",
-            status_img:null,
+            status_img:"",
             user:[],
             experts:{},
             suggest:{},
             read:"每周必读",
             data:{},
             message:false,
-            sta:null,
+            sta:"",
             isRefreshing: false,
             loadMore:false,
             actionNum:0
@@ -204,7 +204,8 @@ export default class Home extends Component{
                         <View>
                             <Text style={{
                                 color:"#fff",
-                                fontSize:16
+                                fontSize:16,
+                                backgroundColor:"transparent"
                             }}>{this.state.months+1}月{this.state.day}日 {this.state.week}</Text>
                         </View>
                         <TouchableWithoutFeedback
@@ -223,7 +224,7 @@ export default class Home extends Component{
                                 position:"absolute",
                                 right:10
                             }}>
-                                <FontAwesome name="bell-o" style={{fontSize: 20, color: "#fff",marginLeft:10}}/>
+                                <FontAwesome name="bell-o" style={{fontSize: 20,backgroundColor:"transparent", color: "#fff",marginLeft:10}}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -235,7 +236,7 @@ export default class Home extends Component{
                         justifyContent:"center",
                         alignItems:"center"
                     }}>
-                        <Text style={{color:"#fff",fontSize:14}}>{this.state.status}</Text>
+                        <Text style={{color:"#fff",fontSize:14,backgroundColor:"transparent"}}>{this.state.status}</Text>
                     </View>
                 </View>
                                 <TouchableWithoutFeedback
@@ -288,12 +289,12 @@ export default class Home extends Component{
                                         </View>
                                     </View>
                                 </TouchableWithoutFeedback>
-                <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
+                <View style={{width:width,height:15,backgroundColor:"#f2f2f2"}}></View>
                     <Diet navigate={this.props.navigate} user={this.props.user} disabled={this.state.disabled} disabled_fun={this.disabled}/>
                 <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
                    <Video navigate={this.props.navigate} find={this.props.find} user={this.props.user} />
                     <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
-                    <View style={{width:width,height:100}}>
+                    <View style={{width:width,height:100,backgroundColor:"#fff"}}>
                         <TouchableWithoutFeedback
                             disabled={this.state.disabled}
                             onPress={()=>{

@@ -20,7 +20,7 @@ export default class Diet extends Component{
         super(props)
         this.state={
             diet_list:[],
-            count:null,
+            count:5,
             user:{},
             user_data:{},
             food_list:[],
@@ -82,7 +82,7 @@ export default class Diet extends Component{
                         data={this.state.diet_list}
                         renderItem={({item,index})=>{
                             return(
-                                <View style={[styles.img_line,index==this.state.count-1&&styles.img_last]}>
+                                <View style={[styles.img_line,index==this.state.count-1?styles.img_last:""]}>
 
                                             <TouchableWithoutFeedback
                                                 disabled={this.props.disabled}
@@ -93,7 +93,7 @@ export default class Diet extends Component{
                                             });
                                                     this.props.disabled_fun()
                                                 }}>
-                                                <View>
+                                                <View style={{}}>
                                                     <View style={{}}>
                                                         <Image source={{uri:item.banner}} style={{width:190,height:120}}/>
                                                     </View>
@@ -104,8 +104,8 @@ export default class Diet extends Component{
                                                         paddingLeft:10,
                                                         paddingRight:10,
                                                     }}>
-                                                        <Text style={{color:"#fff",fontSize:12}}>#福滋味</Text>
-                                                        <Text style={{color:"#fff",fontSize:12}}>{item.title}</Text>
+                                                        <Text style={{color:"#fff",fontSize:12,backgroundColor:"transparent"}}>#福滋味</Text>
+                                                        <Text style={{color:"#fff",fontSize:12,backgroundColor:"transparent"}}>{item.title}</Text>
                                                     </View>
                                                 </View>
                                             </TouchableWithoutFeedback>

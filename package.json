@@ -9,6 +9,7 @@
     "lint": "eslint . --fix --format=node_modules/eslint-formatter-pretty --quiet"
   },
   "dependencies": {
+    "ansi-styles": "^3.2.0",
     "crypto-js": "^3.1.9-1",
     "eslint": "^4.9.0",
     "moment": "^2.19.1",
