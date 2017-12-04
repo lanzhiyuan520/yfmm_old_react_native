@@ -9,7 +9,8 @@ import {
     Image,
     ScrollView,
     TouchableWithoutFeedback,
-    FlatList
+    FlatList,
+    AsyncStorage
 } from 'react-native';
 import constants from './../constants';
 import Problem from './problem_detail';
@@ -23,21 +24,40 @@ export default class AnswerList extends Component {
             sort:true,
             limit:this.props.problemLimit,
             orderby:'weight',
-            more_title:'点击加载更多数据'
+            more_title:'点击加载更多数据',
+            user:{}
         }
     }
     componentDidMount(){
-        const orderby='weight';
-        this.requestData(orderby);
+        this._loadInitialUser();
+    }
+
+    //获取用户信息
+    async _loadInitialUser(){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.requestData();
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
     }
 
     requestData(){
-        const url=constants.url+"/v1/problem?type=1&orderby=weight&offset=0&limit=4&uuid="+constants.uuid;
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+"/v1/problem?type=1&orderby=weight&offset=0&limit=4&uuid="+this.state.user.uuid;
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())

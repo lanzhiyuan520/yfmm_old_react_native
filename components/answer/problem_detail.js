@@ -37,9 +37,9 @@ export default class Problem extends Component{
     }
 
     componentWillMount(){
-        // const id=this.props.navigation.state.params.id;
+        const id=this.props.navigation.state.params.id;
         // this.requestData(id);
-        this._loadInitialUser();
+        this._loadInitialUser(id);
     }
 
     componentDidMount(){
@@ -47,7 +47,7 @@ export default class Problem extends Component{
         this._loadInitialState(id);
     }
     //获取用户信息
-    async _loadInitialUser(){
+    async _loadInitialUser(id){
         var that=this;
         try{
             var value=await AsyncStorage.getItem('user');
@@ -56,7 +56,6 @@ export default class Problem extends Component{
                 this.setState({
                     user:result
                 });
-                const id=this.props.navigation.state.params.id;
                 that.requestData(id)
             }else{
                 console.log('无数据')
@@ -88,23 +87,18 @@ export default class Problem extends Component{
 
     //渲染图片
     renderPic(){
-        if(this.state.author.images !== null){
-            return(
-                <View>
-                    <View style={[styles.flex_row,styles.wrap]}>
-                        <View style={{marginRight:10,width:100,height:75,marginBottom:10}}>
-                            <Image source={{uri:'http://cdn.ayi800.com/app-article-cover.jpg'}} style={{width:100,height:75}} />
-                        </View>
-                        <View style={{marginRight:10,width:100,height:75,marginBottom:10}}>
-                            <Image source={{uri:'http://cdn.ayi800.com/app-article-cover.jpg'}} style={{width:100,height:75}} />
-                        </View>
-                        <View style={{marginRight:10,width:100,height:75,marginBottom:10}}>
-                            <Image source={{uri:'http://cdn.ayi800.com/app-article-cover.jpg'}} style={{width:100,height:75}} />
-                        </View>
+        let images=this.props.navigation.state.params.images;
+        let newArr=[];
+        if( images!== null && images!== undefined){
+            images.forEach(function(listItem,index){
+                newArr.push(
+                    <View key={index} style={{marginRight:10}}>
+                        <Image source={{uri:listItem}} style={{width:100,height:75}} />
                     </View>
-                </View>
-            )
+                )
+            })
         }
+        return newArr;
     }
     renderTop(){
         return (
@@ -113,7 +107,7 @@ export default class Problem extends Component{
                     <View style={{marginBottom:15}}>
                         <Text>{this.state.author.content}</Text>
                     </View>
-                    <View style={{height:'auto'}}>
+                    <View style={[styles.flex_row,styles.wrap,styles.mb_15]}>
                         {this.renderPic()}
                     </View>
                 </View>
@@ -168,7 +162,7 @@ export default class Problem extends Component{
                                     </View>
                                 </View>
                             </View>
-                            {this.renderTop()}
+                                {this.renderTop()}
                             <View style={[styles.flex_row,styles.space_between,styles.p_15]}>
                                 <View>
                                     <Text style={{fontSize:10}}>{this.state.author.create_at}</Text>
@@ -216,5 +210,8 @@ const styles = StyleSheet.create({
     p_15:{
         paddingHorizontal:15,
         paddingBottom:15
-    }
+    },
+    mb_15:{
+        marginBottom:15
+    },
 });

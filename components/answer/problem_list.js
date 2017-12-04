@@ -140,11 +140,17 @@ export default class ProblemList extends Component {
         })
     }
     renderItem(images){
-        return(
-            <View>
-                <Image source={{uri:images[0]}} style={{width:50,height:40}}/>
-            </View>
-        )
+        let newArr=[];
+        if( images!== null && images!== undefined){
+            images.forEach(function(listItem,index){
+                newArr.push(
+                    <View key={index} style={{marginRight:5,marginBottom:5}}>
+                        <Image source={{uri:listItem}} style={{width:50,height:40}}/>
+                    </View>
+                )
+            })
+        }
+        return newArr;
     }
     render() {
         var that=this;
@@ -174,7 +180,7 @@ export default class ProblemList extends Component {
                             if(listItem.images==null){
                                 return  (
                                     <View key={index}>
-                                        <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list}) }>
+                                        <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list,images:listItem.images}) }>
                                             <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
                                                 <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
                                                     <View style={{marginRight:10}}>
@@ -194,7 +200,7 @@ export default class ProblemList extends Component {
                             }else {
                                 return  (
                                     <View key={index}>
-                                        <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list}) }>
+                                        <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list,images:listItem.images}) }>
                                             <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
                                                 <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
                                                     <View style={{marginRight:10}}>
@@ -206,9 +212,11 @@ export default class ProblemList extends Component {
                                                     <View style={{marginBottom:5}}>
                                                         <Text style={styles.show_two}>{listItem.content}</Text>
                                                     </View>
-                                                    {that.renderItem(listItem.images)}
+                                                    <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',height:'auto'}}>
+                                                        {that.renderItem(listItem.images)}
+                                                    </View>
                                                 </View>
-                                                <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
+                                                <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
                                                     <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
                                                     <View><Text>{listItem.create_at}</Text></View>
                                                 </View>
