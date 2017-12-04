@@ -51,7 +51,6 @@ export default class Recommend extends Component{
     }
 
     requestData(){
-        console.log(this.state.user)
         const url=constants.url+'/v1/article?uuid='+this.state.user.uuid+'&articleType=4&orderBy=createTimeDesc&limit=5&offset=0';
         const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{

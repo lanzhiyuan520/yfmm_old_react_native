@@ -36,9 +36,6 @@ export default class ProblemList extends Component {
         this.requestData=this.requestData.bind(this);
     }
     componentDidMount(){
-        // const orderby='weight';
-        // const offset=0;
-        // this.requestData(orderby,offset);
         const orderby='weight';
         const offset=0;
         this._loadInitialUser(orderby,offset);
@@ -47,7 +44,6 @@ export default class ProblemList extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({actionNum: nextProps.actionNum});
         let offset=(this.state.actionNum+1)*5;
-        // this.requestData(this.state.orderby,offset);
         this._loadInitialUser(this.state.orderby,offset);
     }
 
@@ -81,10 +77,8 @@ export default class ProblemList extends Component {
             })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 let oldArr=this.state.data;
                 let newArr=responseJson.data;
-                console.log(newArr.length)
                 if(newArr.length<=0){
                     this.setState({
                         finish:true,

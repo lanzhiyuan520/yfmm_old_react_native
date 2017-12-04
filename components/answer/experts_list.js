@@ -51,7 +51,6 @@ export default class ExpertList extends Component {
         }
     }
     requestData(){
-        console.log(this.state.user)
         const url=constants.url+"/v1/professionals?uuid="+this.state.user.uuid+"&offset=0&limit=4";
         const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{

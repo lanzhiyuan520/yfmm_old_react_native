@@ -13,4 +13,20 @@ const object = {
     ARTICLE_URL :"http://nf.youfubaba.com/article/show-article",//文章分享url
 };
 
+AsyncStorage.getItem("user",(error,result)=>{
+    if(result==null || result==""){
+        console .log("暂无数据")
+    }else{
+        result = JSON.parse(result);
+        console.log(result);
+        object.user=result;
+        object.token=result.token;//把token做成公共变量
+        object.uuid=result.uuid;
+        object.userId=result.id;
+        object.status=result.status;
+    }
+});
+
+
+
 export default object;

@@ -59,6 +59,7 @@ export default class Home extends Component{
             cropping: false
         }).then(image => {
             let imagePic=this.state.imageArr;
+            console.log(image);
             imagePic.push(JSON.stringify(image));
             this.props.getPic(imagePic,false);
             this.props.cameraHide();
