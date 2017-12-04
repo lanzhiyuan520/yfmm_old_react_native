@@ -22,25 +22,46 @@ export default class Header extends Component{
     constructor(props){
         super(props);
         this.state={
-            heart:this.props.heart
+            heart:this.props.heart,
+            user:{}
         }
     }
 
     componentWillMount(){
-        this.getActionList();
+        // this.getActionList();
+        this._loadInitialUser();
     }
     componentWillReceiveProps(nextProps) {
         this.setState({heart: nextProps.heart});
     }
 
+    //获取用户信息
+    async _loadInitialUser(){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.getActionList();
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
+    }
+
     //获取用户的点赞 - 关注 - 收藏 list
     getActionList(){
-        const url=constants.url+"/v1/userbehavior/user?uuid="+constants.uuid+"&userId="+constants.userId+"&userOpType=10";
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+"/v1/userbehavior/user?uuid="+this.state.user.uuid+"&userId="+this.state.user.id+"&userOpType=10";
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())
@@ -73,18 +94,18 @@ export default class Header extends Component{
     //改变心形按钮
     changeHeart(reverse){
         let post_params={
-            userId:constants.userId,
+            userId:this.state.user.id,
             operateType:'3',
             operateId:this.props.id,
             reverse:reverse
         };
-        const url=constants.url+"/v1/userbehavior/collect?uuid="+constants.uuid;
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+"/v1/userbehavior/collect?uuid="+this.state.user.uuid;
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         const dataEncrypt = getEncryptParam(post_params);
         fetch(urlSigned,{
             method: "POST",
             headers: {
-                "Http-App-Token": constants.token,
+                "Http-App-Token": this.state.user.token,
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
             },

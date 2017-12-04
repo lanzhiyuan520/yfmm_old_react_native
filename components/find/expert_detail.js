@@ -36,7 +36,8 @@ export default class Expert extends Component{
             actionNum:0,
             list:[],
             finish:false,
-            count:0
+            count:0,
+            user:{}
         };
         this._loadInitialState=this._loadInitialState.bind(this);
         this. _onScroll=this. _onScroll.bind(this);
@@ -46,9 +47,29 @@ export default class Expert extends Component{
 
     componentWillMount(){
         const id=this.props.navigation.state.params.id;
-        this.requestData(id);
+        // this.requestData(id);
         let offset=0;
-        this.requestLists(id,offset);
+        // this.requestLists(id,offset);
+        this._loadInitialUser(id,offset)
+    }
+    //获取用户信息
+    async _loadInitialUser(id,offset){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.requestData(id);
+                that.requestLists(id,offset);
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
     }
     //关注收藏按钮
     componentDidMount(){
@@ -74,12 +95,12 @@ export default class Expert extends Component{
     }
     //请求页面头部数据
     requestData(id){
-        const url=constants.url+'/v1/professionals?uuid='+constants.uuid+'&rid='+id;
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+'/v1/professionals?uuid='+this.state.user.uuid+'&rid='+id;
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())
@@ -96,12 +117,12 @@ export default class Expert extends Component{
 
     //请求页面列表数据
     requestLists(id,offset){
-        const url=constants.url+'/v1/article?uuid='+constants.uuid+'&limit=5&offset='+offset+'&orderBy=created_at desc&authId='+id+'&articleSource=auth';
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+'/v1/article?uuid='+this.state.user.uuid+'&limit=5&offset='+offset+'&orderBy=created_at desc&authId='+id+'&articleSource=auth';
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())

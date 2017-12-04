@@ -73,13 +73,14 @@ export default class Find extends Component{
         if(this.state.picArr.length==0){
           console.log('没有上传照片')
         } else {
+            console.log(this.state.picArr)
             img=[];
             for(var i = 0;i<this.state.picArr.length;i++){
                 var uri = this.state.picArr[i].path;
                 img.push(uri)
             }
         }
-        let post_params={author_id:constants.userId,content:this.state.text,service_groups:'1',service_id:this.state.service,anonymous:'0',adapter:'1',images:img};
+        let post_params={author_id:constants.userId,content:this.state.text,service_groups:'2',service_id:this.state.service,anonymous:'0',adapter:constants.status,images:img};
         let url=constants.url+"/v1/problem?uuid="+constants.uuid;
         let urlSigned = getSingedUrl(url, constants.uuid);
         var dataEncrypt = getEncryptParam(post_params);

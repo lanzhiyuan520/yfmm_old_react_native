@@ -33,7 +33,8 @@ export default class Column  extends Component {
             finish:false,
             isRefreshing: false,
             loadMore:false,
-            actionNum:0
+            actionNum:0,
+            user:{}
         }
         this.changeData=this.changeData.bind(this);
         this._loadInitialState=this._loadInitialState.bind(this);
@@ -42,10 +43,29 @@ export default class Column  extends Component {
     //初始化数据
     componentWillMount(){
         const offset=0;
-        this.requestData(offset);
+        this._loadInitialUser(offset);
         this._loadInitialState();
     }
 
+
+    //获取用户信息
+    async _loadInitialUser(offset){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.requestData(offset);
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
+    }
 
     //监听列表滚到底部
     _onScroll(event) {
@@ -74,7 +94,7 @@ export default class Column  extends Component {
             actionNum:this.state.actionNum+1
         });
         let offset=(this.state.actionNum+1)*5;
-        this.requestData(offset);
+        this._loadInitialUser(offset);
     }
 
     //从存储中取出数据，判断关注按钮的状态
@@ -96,17 +116,16 @@ export default class Column  extends Component {
     }
     //请求数据
     requestData(offset){
-        const url=constants.url+'/v1/group?type=12312&offset='+offset+'&limit=4&orderby=weight&uuid='+constants.uuid+'&action_num=1';
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+'/v1/group?type=12312&offset='+offset+'&limit=4&orderby=weight&uuid='+this.state.user.uuid+'&action_num=1';
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())
             .then((response) => {
-                console.log(response)
                 let oldArr=this.state.data;
                 let newArr=response.data.group_list;
                 let allArr={};

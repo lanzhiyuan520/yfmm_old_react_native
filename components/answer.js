@@ -10,7 +10,8 @@ import {
     RefreshControl,
     Button,
     ScrollView,
-    StatusBar
+    StatusBar,
+    AsyncStorage
 } from 'react-native';
 
 import Header from './answer/answer_top';
@@ -23,10 +24,15 @@ export default class MinePage extends Component {
         this.state={
             changePage:'true',
             isRefreshing: false,
-            problemLimit:4,
+            problemLimit:4
         };
     }
 
+    componentDidMount() {
+        this.setState({
+            user:JSON.parse(this.props.user)
+        })
+    }
     changestate(newState){
         this.setState({
             changePage:newState

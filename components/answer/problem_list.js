@@ -9,7 +9,8 @@ import {
     Image,
     ScrollView,
     TouchableWithoutFeedback,
-    FlatList
+    FlatList,
+    AsyncStorage
 } from 'react-native';
 import constants from './../constants';
 import Problem from './problem_detail';
@@ -29,36 +30,61 @@ export default class ProblemList extends Component {
             more_title:'点击加载更多数据',
             actionNum:0,
             offset:0,
-            finish:false
+            finish:false,
+            user:{}
         }
         this.requestData=this.requestData.bind(this);
     }
     componentDidMount(){
+        // const orderby='weight';
+        // const offset=0;
+        // this.requestData(orderby,offset);
         const orderby='weight';
         const offset=0;
-        this.requestData(orderby,offset);
+        this._loadInitialUser(orderby,offset);
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({actionNum: nextProps.actionNum});
         let offset=(this.state.actionNum+1)*5;
-        this.requestData(this.state.orderby,offset);
+        // this.requestData(this.state.orderby,offset);
+        this._loadInitialUser(this.state.orderby,offset);
+    }
+
+    //获取用户信息
+    async _loadInitialUser(orderby,offset){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.requestData(orderby,offset);
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
     }
 
     requestData(orderby,offset){
-        const url=constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset="+offset+"&limit="+this.state.limit+"&uuid="+constants.uuid;
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset="+offset+"&limit="+this.state.limit+"&uuid="+this.state.user.uuid;
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
                 }
             })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
+                console.log(responseJson);
                 let oldArr=this.state.data;
                 let newArr=responseJson.data;
+                console.log(newArr.length)
                 if(newArr.length<=0){
                     this.setState({
                         finish:true,
@@ -95,6 +121,37 @@ export default class ProblemList extends Component {
         this.requestData(orderby,offset)
     }
 
+    //渲染页面
+    renderItem(){
+        this.state.data.map(function(listItem,index){
+            return  (
+                <View key={index}>
+                    <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list}) }>
+                        <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
+                            <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
+                                <View style={{marginRight:10}}>
+                                    <Image source={{uri:listItem.author_list.head_img}} style={{width:20,height:20,borderRadius:10}} />
+                                </View>
+                                <View><Text>{listItem.author_list.nickname}</Text></View>
+                            </View>
+                            <View><Text style={styles.show_two}>{listItem.content}</Text></View>
+                            <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
+                                <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
+                                <View><Text>{listItem.create_at}</Text></View>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+            )
+        })
+    }
+    renderItem(images){
+        return(
+            <View>
+                <Image source={{uri:images[0]}} style={{width:50,height:40}}/>
+            </View>
+        )
+    }
     render() {
         var that=this;
         return (
@@ -120,25 +177,53 @@ export default class ProblemList extends Component {
                 {
                     <View>
                         {this.state.data.map(function(listItem,index){
-                            return  (
-                            <View key={index}>
-                                <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list}) }>
-                                    <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
-                                        <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
-                                            <View style={{marginRight:10}}>
-                                                <Image source={{uri:listItem.author_list.head_img}} style={{width:20,height:20,borderRadius:10}} />
+                            if(listItem.images==null){
+                                return  (
+                                    <View key={index}>
+                                        <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list}) }>
+                                            <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
+                                                <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
+                                                    <View style={{marginRight:10}}>
+                                                        <Image source={{uri:listItem.author_list.head_img}} style={{width:20,height:20,borderRadius:10}} />
+                                                    </View>
+                                                    <View><Text>{listItem.author_list.nickname}</Text></View>
+                                                </View>
+                                                <View><Text style={styles.show_two}>{listItem.content}</Text></View>
+                                                <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
+                                                    <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
+                                                    <View><Text>{listItem.create_at}</Text></View>
+                                                </View>
                                             </View>
-                                            <View><Text>{listItem.author_list.nickname}</Text></View>
-                                        </View>
-                                        <View><Text style={styles.show_two}>{listItem.content}</Text></View>
-                                        <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-                                            <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
-                                            <View><Text>{listItem.create_at}</Text></View>
-                                        </View>
+                                        </TouchableWithoutFeedback>
                                     </View>
-                                </TouchableWithoutFeedback>
-                            </View>
-                            )
+                                )
+                            }else {
+                                return  (
+                                    <View key={index}>
+                                        <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list}) }>
+                                            <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
+                                                <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
+                                                    <View style={{marginRight:10}}>
+                                                        <Image source={{uri:listItem.author_list.head_img}} style={{width:20,height:20,borderRadius:10}} />
+                                                    </View>
+                                                    <View><Text>{listItem.author_list.nickname}</Text></View>
+                                                </View>
+                                                <View>
+                                                    <View style={{marginBottom:5}}>
+                                                        <Text style={styles.show_two}>{listItem.content}</Text>
+                                                    </View>
+                                                    {that.renderItem(listItem.images)}
+                                                </View>
+                                                <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
+                                                    <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
+                                                    <View><Text>{listItem.create_at}</Text></View>
+                                                </View>
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    </View>
+                                )
+                            }
+
                         })}
                     </View>
                 }

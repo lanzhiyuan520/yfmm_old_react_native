@@ -8,13 +8,15 @@ import {
     Alert,
     Image,
     FlatList,
-    Dimensions
+    Dimensions,
+    AsyncStorage
 } from 'react-native';
 import Header from './commen/header';
 import constants from './constants';
 import VideoDetail from './find/video_detail';
 var {width} = Dimensions.get('window');
 import {getSingedUrl,getEncryptParam,decrypt} from "./tools/tools";
+let count=0;
 export default class Find extends Component{
     constructor(props){
         super(props);
@@ -22,33 +24,69 @@ export default class Find extends Component{
             dataSource:[],
             refreshing: false,
             limit:5,
-            offset:0
+            offset:0,
+            user:{},
+            action_num:0
         }
         this._onload=this._onload.bind(this);
     }
 
     componentDidMount(){
-        this.requestData();
+        let offset=0;
+        this._loadInitialUser(offset);
     }
-    
-    requestData(){
-        const url=constants.url+"/v1/article?uuid="+constants.uuid+"&articleType=4&orderBy=createTimeDesc&limit="+this.state.limit+"&offset="+this.state.offset;
-        const urlSigned = getSingedUrl(url, constants.uuid);
+    //获取用户信息
+    async _loadInitialUser(offset){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.requestData(offset);
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
+    }
+    requestData(offset){
+        const url=constants.url+"/v1/article?uuid="+this.state.user.uuid+"&articleType=4&orderBy=createTimeDesc&limit="+this.state.limit+"&offset="+offset;
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())
             .then((responseJson) => {
                 let oldArr=this.state.dataSource;
                 let newArr=responseJson.data.dataList;
-                allArr=[...oldArr,...newArr];
-                this.setState({
-                    dataSource:allArr,
-                    refreshing: false
-                })
+                if(newArr.length<5 && newArr.length>=0){
+                    count++;
+                    if(count==1){
+                        allArr=[...oldArr,...newArr];
+                        this.setState({
+                            dataSource:allArr,
+                            refreshing: false
+                        })
+                    }
+                    console.log('到底了');
+                    this.setState({
+                        action_num:this.state.action_num-1
+                    });
+                }else {
+                    allArr=[...oldArr,...newArr];
+                    this.setState({
+                        dataSource:allArr,
+                        refreshing: false
+                    })
+                }
+
             })
             .catch((err) => {
                 console.error('数据请求失败:'+err);
@@ -92,13 +130,14 @@ export default class Find extends Component{
             </View>
         )
     }
-
+    //加载更多
     _onload(){
         let timer =  setTimeout(()=>{
             this.setState({
-                offset:this.state.offset+1
+                action_num:this.state.action_num+1
             });
-            this.requestData();
+            let offset=this.state.action_num*5;
+            this._loadInitialUser(offset);
             clearTimeout(timer);
         },1500)
     }

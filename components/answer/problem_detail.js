@@ -30,19 +30,40 @@ export default class Problem extends Component{
         this.state={
             author:{},
             attend:'false',
-            show:false
+            show:false,
+            user:{}
         };
         this._loadInitialState=this._loadInitialState.bind(this);
     }
 
     componentWillMount(){
-        const id=this.props.navigation.state.params.id;
-        this.requestData(id);
+        // const id=this.props.navigation.state.params.id;
+        // this.requestData(id);
+        this._loadInitialUser();
     }
 
     componentDidMount(){
         const id=this.props.navigation.state.params.id;
         this._loadInitialState(id);
+    }
+    //获取用户信息
+    async _loadInitialUser(){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                const id=this.props.navigation.state.params.id;
+                that.requestData(id)
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
     }
     //问题初始化
     async _loadInitialState(id){
@@ -101,12 +122,12 @@ export default class Problem extends Component{
     }
     //请求数据
     requestData(id){
-        const url=constants.url+"/v1/problem?rid="+id+"&offset=0&limit=3&type=0&uuid="+constants.uuid;
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+"/v1/problem?rid="+id+"&offset=0&limit=3&type=0&uuid="+this.state.user.uuid;
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())

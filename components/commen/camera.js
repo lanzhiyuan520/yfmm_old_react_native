@@ -61,7 +61,6 @@ export default class Home extends Component{
             let imagePic=this.state.imageArr;
             imagePic.push(JSON.stringify(image));
             this.props.getPic(imagePic,false);
-            console.log(imagePic);
             this.props.cameraHide();
             this.setState({
                 show:false

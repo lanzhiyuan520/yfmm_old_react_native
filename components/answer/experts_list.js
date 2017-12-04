@@ -8,7 +8,8 @@ import {
     Text,
     Image,
     ScrollView,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    AsyncStorage
 } from 'react-native';
 import {setSpText} from './../UiStyle';
 import {scaleSize} from './../UiStyle';
@@ -23,19 +24,40 @@ export default class ExpertList extends Component {
         super(props);
         this.state={
             oldAry:[],
-            navigation:this.props.navigation
+            navigation:this.props.navigation,
+            user:{}
         };
+        this._loadInitialUser=this._loadInitialUser.bind(this);
     }
     componentWillMount(){
-        this.requestData()
+        this._loadInitialUser();
+    }
+    //获取用户信息
+    async _loadInitialUser(){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.requestData()
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
     }
     requestData(){
-        const url=constants.url+"/v1/professionals?uuid="+constants.uuid+"&offset=0&limit=4";
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        console.log(this.state.user)
+        const url=constants.url+"/v1/professionals?uuid="+this.state.user.uuid+"&offset=0&limit=4";
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers:{
-                "Http-App-Token":constants.token
+                "Http-App-Token":this.state.user.token
             }
         })
             .then((response) => response.json())
@@ -54,7 +76,7 @@ export default class ExpertList extends Component {
             itemAry.push(
                 <TouchableWithoutFeedback key={index} onPress={()=> {this.props.navigate('Expertsdetails',{
                     expert:item.name,
-                    user:constants.user,
+                    user:this.state.user,
                     id:item.id
                 })}}>
                     <View style={styles.container}>
@@ -82,7 +104,7 @@ export default class ExpertList extends Component {
                 <View style={styles.article_item}>
                     <View style={{flex:1}}><Text style={styles.font_12}>专家推荐</Text></View>
                     <View style={{flex:1}}>
-                        <TouchableWithoutFeedback onPress={()=>this.props.navigate('ExpertsList', {navigate: this.props.navigate, user: constants.user})}>
+                        <TouchableWithoutFeedback onPress={()=>this.props.navigate('ExpertsList', {navigate: this.props.navigate, user: this.state.user})}>
                             <FontAwesome name="angle-right" style={styles.font_10} />
                         </TouchableWithoutFeedback>
                     </View>
