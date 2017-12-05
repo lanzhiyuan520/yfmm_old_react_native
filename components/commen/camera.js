@@ -14,17 +14,22 @@ import {
     Dimensions,
     FlatList,
     AlertIOS,
-    ToastAndroid
+    ToastAndroid,
+    AsyncStorage
 } from 'react-native';
 const {width,height}=Dimensions.get('window');
+import constants from './../constants';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class Home extends Component{
 
     constructor(props){
         super(props);
         this.state={
             show:false,
-            imageArr:[]
-        }
+            imageArr:[],
+            user:{}
+        };
+        this._loadInitialUser=this._loadInitialUser.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,6 +42,51 @@ export default class Home extends Component{
             show:false
         })
     }
+    //获取用户信息
+    async _loadInitialUser(path){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.uploadPic(path);
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
+    }
+    //上传照片
+    uploadPic(path){
+        console.log(this.state.user)
+        var url = constants.url+'/v1/upload?uuid='+this.state.user.uuid;
+        let formData = new FormData();
+        let file = {uri: path, type: 'multipart/form-data', name: 'image.jpg'};
+        formData.append("photo",file);
+        var urlSigned = getSingedUrl(url,this.state.user.uuid);
+        fetch(urlSigned,{
+            method:"POST",
+            headers: {
+                "Http-App-Token": this.state.user.token,
+                'Content-Type':'multipart/form-data'
+            },
+            body:formData
+        })
+            .then((response) => {
+                console.log(response)
+                return response.json();
+            })
+            .then((responseText) => {
+                console.log(responseText)
+            })
+            .catch((error)=>{
+                ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            })
+    }
     //调用相册
     photoAlbum(){
         ImagePicker.openPicker({
@@ -44,6 +94,7 @@ export default class Home extends Component{
         }).then(images => {
             let picArr=this.state.imageArr;
             picArr.push(...images);
+            this._loadInitialUser(picArr[0].path);
            this.props.getPic(picArr,true);
             this.props.cameraHide();
            this.setState({
@@ -59,7 +110,6 @@ export default class Home extends Component{
             cropping: false
         }).then(image => {
             let imagePic=this.state.imageArr;
-            console.log(image);
             imagePic.push(JSON.stringify(image));
             this.props.getPic(imagePic,false);
             this.props.cameraHide();
