@@ -22,12 +22,14 @@ export default class Specialist extends Component{
         this.collect_success=this.collect_success.bind(this)
     }
     componentDidMount(){
+        this.props.load(1)
         request_user_collect(this.props.user.id,this.props.user.uuid,this.props.user.token,this.collect_success)
     }
     collect_success(responseText){
         this.setState({
             collect_experts:responseText.data.dataList
         })
+        this.props.load(2)
     }
     disabled(){
         this.setState({
@@ -63,8 +65,8 @@ export default class Specialist extends Component{
                                             <View style={{marginRight:10,flex:1}}>
                                                 <Image source={{uri:item.img}} style={{width:80,height:80,borderRadius:40}} />
                                             </View>
-                                            <View style={{flex:4,flexDirection:"row",alignItems:"center"}}>
-                                                <View style={{}}>
+                                            <View style={{flex:3,flexDirection:"row",alignItems:"center"}}>
+                                                <View style={{flex:1}}>
                                                     <Text style={{color:"#000",fontSize:18}}>{item.name}</Text>
                                                     <Text style={{color:"#999",fontSize:17}}>{item.title}</Text>
                                                     <View style={{flexDirection:"row"}}>
@@ -90,7 +92,8 @@ export default class Specialist extends Component{
                                                         justifyContent:"center",
                                                         alignItems:"center",
                                                         position:"absolute",
-                                                        right:10
+                                                        right:10,
+                                                        flex:1
                                                     }}>
                                                         <Text style={{color:"#ff8089"}}>提问</Text>
                                                     </View>

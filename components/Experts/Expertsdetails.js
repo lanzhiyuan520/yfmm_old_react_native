@@ -156,7 +156,7 @@ export default class Expertsdetails extends Component{
                         <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="7" id={this.state.experts_data.id}/>
                     </View>
                 </View>
-                <View style={{width:width,paddingRight:10,paddingLeft:10}}>
+                <View style={{width:width,paddingRight:10,paddingLeft:10,paddingBottom:10}}>
                     <Text style={{color:"#333",fontSize:14}}>{this.state.experts_data.content}</Text>
                 </View>
                 <View style={{width:width,height:15,backgroundColor:"#f2f2f2"}}></View>
@@ -203,22 +203,30 @@ export default class Expertsdetails extends Component{
                         data={this.state.problem_list}
                         renderItem={({item,index})=>{
                             return (
-                                <View style={{width:width,borderBottomWidth:1,borderBottomColor:"#f2f2f2",paddingBottom:5}}>
-                                    <View style={{width:width,justifyContent:"center",paddingRight:10,paddingLeft:10,paddingBottom:10,paddingTop:10}}>
-                                        <Text style={{color:'#000',fontSize:15}}>{item.problem_content}</Text>
-                                    </View>
-                                    <View style={{width:width,justifyContent:"center",padding:5}}>
-                                        <Text style={{color:'#666',fontSize:13}}>{item.content}</Text>
-                                    </View>
-                                    <View style={{width:width,flexDirection:"row",justifyContent:"space-between"}}>
-                                        <View style={{paddingLeft:10,paddingRight:10}}>
-                                            <Text style={{color:"#999",fontSize:12}}>{item.create_at}</Text>
+                                <TouchableWithoutFeedback onPress={()=>{
+                                    this.props.navigation.navigate("Problem",{
+                                        id:item.id,
+                                        author:item
+                                    })
+                                }}>
+                                    <View style={{width:width,borderBottomWidth:1,borderBottomColor:"#f2f2f2",paddingBottom:5}}>
+                                        <View style={{width:width,justifyContent:"center",paddingRight:10,paddingLeft:10,paddingBottom:10,paddingTop:10}}>
+                                            <Text style={{color:'#000',fontSize:15}}>{item.problem_content}</Text>
                                         </View>
-                                        <View style={{paddingLeft:10,paddingRight:10}}>
-                                            <Text style={{color:"#999",fontSize:12}}>{item.parent}</Text>
+                                        <View style={{width:width,justifyContent:"center",padding:5}}>
+                                            <Text style={{color:'#666',fontSize:13}}>{item.content}</Text>
+                                        </View>
+                                        <View style={{width:width,flexDirection:"row",justifyContent:"space-between"}}>
+                                            <View style={{paddingLeft:10,paddingRight:10}}>
+                                                <Text style={{color:"#999",fontSize:12}}>{item.create_at}</Text>
+                                            </View>
+                                            <View style={{paddingLeft:10,paddingRight:10,flexDirection:"row"}}>
+                                                <FontAwesome name="thumbs-o-up" style={styles.un_hand} />
+                                                <Text style={{color:"#999",fontSize:12,marginLeft:5}}>{item.parent}</Text>
+                                            </View>
                                         </View>
                                     </View>
-                                </View>
+                                </TouchableWithoutFeedback>
                             )
                         }}
                     />
@@ -232,6 +240,13 @@ export default class Expertsdetails extends Component{
                     onPress={this.handlePress}
                 />
                 </ScrollView>
+                <View style={{width:width,height:60,backgroundColor:'#fff',justifyContent:"center",alignItems:"center"}}>
+                    <TouchableWithoutFeedback>
+                        <View style={{backgroundColor:"#ff8089",width:width*0.9,height:40,justifyContent:"center",alignItems:"center"}}>
+                            <Text style={{color:"#fff",fontSize:16}}>提问</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
             </View>
         )
     }

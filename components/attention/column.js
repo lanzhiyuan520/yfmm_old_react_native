@@ -22,12 +22,14 @@ export default class Column extends Component{
         this.column_success=this.column_success.bind(this)
     }
     componentDidMount(){
+        this.props.load(1)
         request_user_column(this.props.user.id,this.props.user.uuid,this.props.user.token,this.column_success)
     }
     column_success(responseText){
         this.setState({
             column_list:responseText.data.dataList
         })
+        this.props.load(2)
     }
     render(){
         return(
@@ -52,7 +54,7 @@ export default class Column extends Component{
                                             <View style={{marginRight:10,flex:1}}>
                                                 <Image source={{uri:item.group_img}} style={{width:80,height:60}} />
                                             </View>
-                                            <View style={{flex:4,flexDirection:"row",alignItems:"center"}}>
+                                            <View style={{flex:3,flexDirection:"row",alignItems:"center"}}>
                                                 <View style={{}}>
                                                     <Text style={{color:"#000",fontSize:18}}>{item.group_name}</Text>
                                                     <Text style={{color:"#999",fontSize:16}} numberOfLines={2}>{item.group_content}</Text>

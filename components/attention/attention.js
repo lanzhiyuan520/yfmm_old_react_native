@@ -15,28 +15,38 @@ import Talent from "./talent"
 import Specialist from "./specialist"
 import Column from "./column"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Load from "../loading/loading"
+import Header from "../commen/header"
 export default class Attention extends Component{
     static navigationOptions = ({navigation}) => ({
-
-        title: "我的关注",
-        headerTitleStyle:{
-            alignSelf:'center',
-            color:"#333",
-            fontSize:15
-        },
-        headerStyle:{
-            elevation: 0,
-            backgroundColor:"#fff"
-        },
-        headerRight: <View></View>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 30, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        header:null
     });
+    constructor(props){
+        super(props)
+        this.state={
+            loading:true
+        }
+        this.load = this.load.bind(this)
+    }
     componentDidMount(){
         console.log(this.props)
+    }
+    load(num){
+        if(num==1){
+            this.setState({
+                loading:true
+            })
+        }else{
+            this.setState({
+                loading:false
+            })
+        }
     }
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#fff"}}>
+                <Header title="我的关注" back="true" navigation={this.props.navigation} />
+                <Load loading={this.state.loading} />
                 <ScrollableTabView
                     initialPage={0}
                     scrollWithoutAnimation={true}
@@ -47,9 +57,9 @@ export default class Attention extends Component{
                     tabBarInactiveTextColor="#666"
                     tabBarBackgroundColor="#fff"
                 >
-                    <Talent tabLabel="达人" navigate={this.props.navigation} user={this.props.navigation.state.params.user}/>
-                    <Specialist tabLabel="专家" navigate={this.props.navigation} user={this.props.navigation.state.params.user}/>
-                    <Column tabLabel="专栏" navigate={this.props.navigation} user={this.props.navigation.state.params.user}/>
+                    <Talent tabLabel="达人" load={this.load} navigate={this.props.navigation} user={this.props.navigation.state.params.user}/>
+                    <Specialist tabLabel="专家" load={this.load} navigate={this.props.navigation} user={this.props.navigation.state.params.user}/>
+                    <Column tabLabel="专栏" load={this.load} navigate={this.props.navigation} user={this.props.navigation.state.params.user}/>
                 </ScrollableTabView>
             </View>
         )

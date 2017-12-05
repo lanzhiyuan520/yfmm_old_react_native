@@ -868,3 +868,23 @@ export function request_professionals_reply_content(token, get_params, successCa
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })
 }
+//我的提问
+export function request_zhuanlan_reply(token, uuid, support, group_id, orderby, offset, limit, successCallback) {
+    var url = URI + API_VERSION + "problem?uuid=" + uuid + "&support=" + support + "&group_id=" + group_id + "&orderby=" + orderby + "&offset=" + offset + "&limit=" + limit;
+    var urlSigned = getSingedUrl(url, uuid);
+    fetch(urlSigned,{
+        headers: {
+            "Http-App-Token": token
+        },
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallback(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
+}

@@ -9,7 +9,8 @@ import {
     Image,
     Dimensions,
     ToastAndroid,
-    AsyncStorage
+    AsyncStorage,
+    ScrollView
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import Variable from "../Variable/Variable"
@@ -19,29 +20,20 @@ import {Circle,friends} from "../fenxiang/fenxiang"
 import {request_article_yinshi_xiangqing,request_user_action,user_behavior} from "../api"
 import {bounces} from "../bounces/bounces"
 import Btn from './../column/att_btn';
+import Header from "../commen/header"
+import HTMLView from "react-native-htmlview"
 export default class DietList extends Component{
     static navigationOptions = ({navigation}) => ({
-        title: navigation.state.params.title,
-        headerTitleStyle:{
-            alignSelf:'center',
-            color:"#333",
-            fontSize:15
-        },
-        headerStyle:{
-            elevation: 0,
-            backgroundColor:"#fff"
-        },
-        headerRight:  <TouchableWithoutFeedback onPress={()=>{navigation.state.params.navigatePress()}}>
-            <FontAwesome name="share-alt" style={{fontSize: 20, color: "#ff8080",marginRight:10}}/>
-        </TouchableWithoutFeedback>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        header:null
     });
     constructor(props){
         super(props)
         this.state = {
             attend:"false",
             user_behavior:null,
-            detailed_data:{}
+            detailed_data:{},
+            heart:false,
+            show:false
         }
         this.showActionSheet = this.showActionSheet.bind(this)
         this.handlePress = this.handlePress.bind(this)
@@ -66,6 +58,7 @@ export default class DietList extends Component{
         try{
             var value=await AsyncStorage.getItem('userActionList');
             const author_id=this.state.detailed_data.author_id+"";
+            var id = this.state.detailed_data.id
             if(value!=null){
                 result=JSON.parse(value);
                 if(result.guanzhu.daren.dataList.indexOf(author_id) == -1){
@@ -78,7 +71,17 @@ export default class DietList extends Component{
                         attend:'true'
                     })
                 }
-                console.log(this.state.attend)
+                if(result.shoucang.yinshi.dataList.indexOf(id) !== -1){
+                    this.setState({
+                        show:false,
+                        heart:false
+                    })
+                }else {
+                    this.setState({
+                        show:false,
+                        heart:true
+                    })
+                }
             }else{
                 console.log('无数据')
             }
@@ -100,11 +103,18 @@ export default class DietList extends Component{
             alert("点了剪切板")
         }
     }
-
+    //控制分享组件显示
+    shareShow(){
+        this.setState({
+            show:true
+        })
+    }
 
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#fff"}}>
+                <Header share='true' title={this.props.navigation.state.params.title} id={this.state.detailed_data.id} heart={this.state.heart} back="true" isheart='true' navigation={this.props.navigation} shareShow={()=>this.shareShow()} />
+                <ScrollView>
                 <View>
                     <Image source={{uri:this.state.detailed_data.banner}} style={{width:width,height:250}}/>
                 </View>
@@ -124,15 +134,26 @@ export default class DietList extends Component{
                     </View>
                 </View>
                 <View style={{paddingLeft:10,paddingRight:10,flexDirection:"row",height:70,alignItems:"center",justifyContent:"space-between"}}>
-                    <View style={{flexDirection:"row"}}>
-                        <Image source={{uri:this.state.detailed_data.author_img}} style={{width:36,height:20}}/>
-                        <Text style={{marginLeft:5,color:"#333",fontSize:16}}>{this.state.detailed_data.tags_name}</Text>
-                    </View>
+                    <TouchableWithoutFeedback onPress={()=>{
+                        this.props.navigation.navigate("ExpertDetail",{
+                            id:this.state.detailed_data.author_id
+                        })
+                    }}>
+                        <View style={{flexDirection:"row"}}>
+                            <Image source={{uri:this.state.detailed_data.author_img}} style={{width:36,height:20}}/>
+                            <Text style={{marginLeft:5,color:"#333",fontSize:16}}>{this.state.detailed_data.tags_name}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
                     <View style={{position:"absolute",right:10}}>
                         <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.detailed_data.author_id}/>
                     </View>
                 </View>
                 <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
+                <HTMLView
+                    value={this.state.detailed_data.content}
+                    stylesheet={styles}
+                />
+                </ScrollView>
                 <View>
                     <ActionSheet
                         ref={o => this.ActionSheet = o}
@@ -147,6 +168,10 @@ export default class DietList extends Component{
     }
 }
 const styles = StyleSheet.create({
+    p:{
+      marginTop:-5,
+      marginBottom:-5
+    },
     attention:{
         color:"#FF9490"
     },
