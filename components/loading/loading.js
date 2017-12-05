@@ -22,7 +22,7 @@ export default class Loading extends Component{
                     animating={this.props.loading}
                     size='large'
                     style={styles.gray}
-                    color="#6c6c6c"
+                    color="#000"
                 />
             </View>
         )

@@ -26,7 +26,7 @@ export default class Smallfu extends Component{
             num:0,
             disabled:false,
             user:{},
-            status:null,
+            status:"",
             list_num:5,
             finish:false,
             data:[],
@@ -85,7 +85,7 @@ export default class Smallfu extends Component{
     }
     render(){
         return(
-            <View style={{width:width}}>
+            <View style={{width:width,backgroundColor:"#fff"}}>
                 <View style={styles.title}>
                     <View>
                         <Text style={styles.text}>小福精选</Text>
@@ -107,7 +107,7 @@ export default class Smallfu extends Component{
                             })
                                 }}>
                                 <View
-                                    style={{flexDirection:"row",justifyContent:"center"}}>
+                                    style={{flexDirection:"row",justifyContent:"center",position:"relative"}}>
                                     <View style={{
                                         width:width,
                                         height:80,
@@ -120,20 +120,23 @@ export default class Smallfu extends Component{
                                     }}>
                                         <View style={{height:70,flexDirection:"row"}}>
                                             <View style={{height:70}}>
-                                                <View style={{width:width*.8}}>
-                                                    <Text style={{color:"#333",lineHeight:23}}>{item.title}</Text>
+                                                <View style={{width:width*.7}}>
+                                                    <Text style={{color:"#333",lineHeight:20}}>{item.title}</Text>
                                                 </View>
                                                 <View style={{flexDirection:"row",position:"absolute",bottom:10}}>
                                                     <View style={{flexDirection:"row",marginRight:20}}>
-                                                        <Image source={{uri:item.author_img}} style={{width:18,height:18,borderRadius:18,marginRight:5}}/>
-                                                        <Text style={{color:"#999",fontSize:12}}>{item.author_name}</Text>
+                                                        <Image source={{uri:item.author_img?item.author_img:""}} style={{width:18,height:18,borderRadius:18,marginRight:5}}/>
+                                                        <Text style={{color:"#999",fontSize:12}}>{item.author_name?item.author_name:""}</Text>
                                                     </View>
                                                     <View>
                                                         <Text style={{color:"#999",fontSize:12}}>阅读{item.visit_num}</Text>
                                                     </View>
                                                 </View>
                                             </View>
-                                            <View>
+                                            <View style={{
+                                                position:"absolute",
+                                                right:10
+                                            }}>
                                                 <Image source={{uri:item.id==169?"http://cdn.ayi800.com/image/jpg/app_dengdeng2.jpg":item.banner}} style={styles.xiaofu_banner} />
                                             </View>
                                         </View>

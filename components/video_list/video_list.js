@@ -72,7 +72,7 @@ export default class Video extends Component{
                                 }}>
                                     <View style={[styles.img_line,index==this.state.count-1&&styles.img_last]}>
                                         <View>
-                                            <View style={{opacity:.8,backgroundColor:"#000"}}>
+                                            <View style={{}}>
                                                 <Image source={{uri:item.banner}} style={{width:190,height:120}}/>
                                             </View>
                                             <View style={{
@@ -82,8 +82,8 @@ export default class Video extends Component{
                                                 paddingLeft:10,
                                                 paddingRight:10,
                                             }}>
-                                                <Text style={{color:"#fff",fontSize:12}}>#{item.tags_name}</Text>
-                                                <Text style={{color:"#fff",fontSize:12}}>{item.title}</Text>
+                                                <Text style={{color:"#fff",fontSize:12,backgroundColor:"transparent"}}>#{item.tags_name}</Text>
+                                                <Text style={{color:"#fff",fontSize:12,backgroundColor:"transparent"}}>{item.title}</Text>
                                             </View>
                                         </View>
                                     </View>

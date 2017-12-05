@@ -51,9 +51,9 @@ export default class Setting extends Component{
                     if(!error){
                         AsyncStorage.removeItem("user_data",(error)=>{
                             if(!error){
+                                bounces('退出成功')
                                 this.setState({show:false});
                                 this.setState({flag:false});
-                                bounces('退出成功')
                                 this.props.navigation.navigate("Login")
                             }
                         })
