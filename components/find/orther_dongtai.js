@@ -14,65 +14,64 @@ import {
     FlatList
 } from 'react-native';
 import constants from './../constants';
-import LoadingMore from './../loading_more';
 import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class OrtherList extends Component{
 
     constructor(props){
         super(props);
         this.state={
-            list:[]
+            list:this.props.list,
+            loadMore:false,
+            actionNum:0,
+            state:0
         }
+        // this.requestData=this.requestData.bind(this);
+
     }
 
-    componentWillMount(){
-        const id=this.props.id;
-        const offset=0;
-        this.requestData(id,offset)
-    }
+    // componentDidMount(){
+    //     const id=this.props.id;
+    //     this.requestData(id)
+    // }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({actionNum: nextProps.actionNum});
-        let offset=this.state.actionNum;
-        this.requestData(this.props.id,offset);
-    }
-
-    requestData(id,offset){
-        const url=constants.url+'/v1/article?uuid='+constants.uuid+'&limit=10&offset=0&orderBy=created_at desc&authId='+id+'&articleSource=auth';
-        const urlSigned = getSingedUrl(url, constants.uuid);
-        fetch(urlSigned,{
-            method:"GET",
-            headers: {
-                "Http-App-Token": constants.token
-            }
-        })
-            .then((response) => response.json())
-            .then((responsejson) => {
-               this.setState({
-                   list:responsejson.data.dataList
-               })
-               //  let oldArr=this.state.list;
-               //  let newArr=responsejson.data.dataList;
-               //  if(newArr.length<=0){
-               //      this.setState({
-               //          finish:true,
-               //          actionNum:this.state.actionNum-1
-               //      })
-               //  }else {
-               //      allArr=[...oldArr,...newArr];
-               //      this.setState({
-               //          list:allArr
-               //      });
-               //  }
-            })
-            .catch(() => {
-                console.error('数据请求失败！');
-            });
-    }
+    // requestData(id){
+    //     let offset=this.state.actionNum*5;
+    //     console.log(offset);
+    //     const url=constants.url+'/v1/article?uuid='+constants.uuid+'&limit=5&offset=0&orderBy=created_at desc&authId='+id+'&articleSource=auth';
+    //     const urlSigned = getSingedUrl(url, constants.uuid);
+    //     fetch(urlSigned,{
+    //         method:"GET",
+    //         headers: {
+    //             "Http-App-Token": constants.token
+    //         }
+    //     })
+    //         .then((response) => response.json())
+    //         .then((responsejson) => {
+    //             console.log(responsejson)
+    //            this.setState({
+    //                list:responsejson.data.dataList
+    //            })
+    //            //  let oldArr=this.state.list;
+    //            //  let newArr=responsejson.data.dataList;
+    //            //  if(newArr.length<=0){
+    //            //      this.setState({
+    //            //          finish:true,
+    //            //          actionNum:this.state.actionNum-1
+    //            //      })
+    //            //  }else {
+    //            //      allArr=[...oldArr,...newArr];
+    //            //      this.setState({
+    //            //          list:allArr
+    //            //      });
+    //            //  }
+    //         })
+    //         .catch(() => {
+    //             console.error('数据请求失败！');
+    //         });
+    // }
 
     render(){
         return(
-            <View style={{marginBottom:50}}>
                 <View style={styles.container}>
                     <View style={{paddingLeft:15}}>
                         <Text style={{fontSize:12,color:'#262626'}}>TA的动态</Text>
@@ -81,7 +80,7 @@ export default class OrtherList extends Component{
                         {
                             <View>
                                 {
-                                    this.state.list.map(function(listItem,index){
+                                    this.props.list.map(function(listItem,index){
                                         return(
                                             <View key={index} style={{flex:1,flexDirection:'row',justifyContent:'space-between',padding:15,borderBottomWidth:0.5,borderBottomColor:'#f2f2f2'}}>
                                                 <View style={{flex:2,justifyContent:'space-between',paddingRight:10}}>
@@ -107,23 +106,14 @@ export default class OrtherList extends Component{
 
                     </View>
                 </View>
-                <View style={{marginTop:10}}>
-                    <LoadingMore
-                        finish={this.state.finish}
-                        isLoading={this.props.isLoading}
-                        onLoading={()=>{
-                            let offset=(this.state.actionNum+1)*5;
-                            this.requestData(this.state.orderby,offset);
-                        }}
-                    />
-                </View>
-            </View>
         )
     }
+
 }
 const styles = StyleSheet.create({
     container:{
         backgroundColor:'#fff',
         paddingTop:15,
+        marginBottom:10
     }
 })

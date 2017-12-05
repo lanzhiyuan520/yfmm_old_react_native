@@ -29,23 +29,25 @@ export default class Problem extends Component{
         super(props);
         this.state={
             author:{},
-            attend:'false'
+            attend:'false',
+            user:{}
         };
         this._loadInitialState=this._loadInitialState.bind(this);
+        this._loadInitialUser=this._loadInitialUser.bind(this);
     }
 
     componentWillMount(){
         const id=this.props.navigation.state.params.id;
-        this.requestData(id);
+        this._loadInitialUser(id);
     }
 
     requestData(id){
-        const url=constants.url+'/v1/group?rid='+id+'&offset=0&limit=1&uuid='+constants.uuid;
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+'/v1/group?rid='+id+'&offset=0&limit=1&uuid='+this.state.user.uuid;
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())
@@ -58,6 +60,25 @@ export default class Problem extends Component{
             .catch(() => {
                 console.error('数据请求失败！');
             });
+    }
+
+    //获取用户信息
+    async _loadInitialUser(id){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.requestData(id);
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
     }
 
     componentDidMount(){

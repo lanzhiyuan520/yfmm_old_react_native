@@ -11,7 +11,8 @@ import {
     Alert,
     Image,
     Dimensions,
-    FlatList
+    FlatList,
+    AsyncStorage
 } from 'react-native';
 import constants from './../constants';
 import VideoDetail from './video_detail';
@@ -21,21 +22,41 @@ export default class Recommend extends Component{
     constructor(props){
         super(props);
         this.state={
-            list:[]
+            list:[],
+            user:{}
         }
     }
 
     componentWillMount(){
-        this.requestData()
+        this. _loadInitialUser()
+    }
+
+    //获取用户信息
+    async _loadInitialUser(){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.requestData();
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
     }
 
     requestData(){
-        const url=constants.url+'/v1/article?uuid='+constants.uuid+'&articleType=4&orderBy=createTimeDesc&limit=5&offset=0';
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+'/v1/article?uuid='+this.state.user.uuid+'&articleType=4&orderBy=createTimeDesc&limit=5&offset=0';
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())

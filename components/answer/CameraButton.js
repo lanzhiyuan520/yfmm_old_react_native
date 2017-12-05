@@ -51,16 +51,16 @@ export default class Home extends Component{
     renderPic(){
         var picArr=[];
         if(this.props.camera){
-            this.props.picArr.map(function (listItem) {
+            this.props.picArr.map(function (listItem,index) {
                 picArr.push(
-                    <Image source={{uri:listItem.path}} style={{width:100,height:100,marginRight:10,marginBottom:10}} />
+                    <Image key={index} source={{uri:listItem.path}} style={{width:100,height:100,marginRight:10,marginBottom:10}} />
                 )
             })
         }else{
-            this.props.picArr.map(function (listItem) {
+            this.props.picArr.map(function (listItem,index) {
                 listItem=JSON.parse(listItem);
                 picArr.push(
-                    <Image source={{uri:listItem.path}} style={{width:100,height:100,marginRight:10,marginBottom:10}} />
+                    <Image key={index} source={{uri:listItem.path}} style={{width:100,height:100,marginRight:10,marginBottom:10}} />
                 )
             })
         }
