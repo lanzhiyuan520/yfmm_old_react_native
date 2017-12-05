@@ -52,6 +52,7 @@ export default class Problem extends Component{
         })
             .then((response) => response.json())
             .then((response) => {
+                console.log(response);
                 this.setState({
                     author:response.data.group_msg
                 })
@@ -102,13 +103,26 @@ export default class Problem extends Component{
             this._appendMessage('AsyncStorage错误'+error.message);
         }
     }
-
+    header(){
+        if (this.props.navigation.state.params.removeItem){
+            return (
+                <Header title={this.state.author.group_name} changeBtn={this.props.navigation.state.params.removeItem}  back="true" navigation={this.props.navigation} />
+            )
+        }else{
+            return (
+                <Header title={this.state.author.group_name}   back="true" navigation={this.props.navigation} />
+            )
+        }
+    }
     render(){
         const { state } = this.props.navigation;
         return(
             <View>
-                <Header title={this.state.author.group_name} changeBtn={state.params.removeItem} back="true" navigation={this.props.navigation} />
+                {
+                  this.header()
+                }
                 <ScrollView>
+
                     <View style={{marginBottom:10}}>
                         <View style={{flex:1,flexDirection:'row',padding:15,backgroundColor:'#fff'}}>
                             <View style={{flex:1}}>

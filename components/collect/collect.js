@@ -48,15 +48,17 @@ export default class Collect extends Component{
             })
             console.log(responseText)
         }else if (responseText.code == 0){
+            console.log(responseText)
             this.setState({
                 collect_list:responseText.data.dataList,
                 state:true
             })
+            console.log(this.state.state)
         }
 
     }
     _renderItem=({item})=>{
-
+        console.log(item)
         if(item.type==2){
             return (
                     <View>
@@ -154,7 +156,7 @@ export default class Collect extends Component{
                     <View style={{width:width,height:15,backgroundColor:"#f5f5f5"}}></View>
                 </View>
             )
-        }else if(item.shoucang==1){
+        }else if(item.support=="question"){
             return (
                 <View>
                     <TouchableWithoutFeedback onPress={()=>{

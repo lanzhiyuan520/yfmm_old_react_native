@@ -12,7 +12,7 @@ export default class Loading extends Component{
         return(
             <View style={{
                 position:"absolute",
-                zIndex:5,
+                zIndex:9999999,
                 top:height/2,
                 left:width/2,
                 marginLeft:-18,

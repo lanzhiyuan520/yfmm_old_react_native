@@ -40,6 +40,7 @@ export default class Expert extends Component{
             user:{}
         };
         this._loadInitialState=this._loadInitialState.bind(this);
+        this.header=this.header.bind(this);
         this. _onScroll=this. _onScroll.bind(this);
         this.requestData=this.requestData.bind(this);
         this.requestLists=this.requestLists.bind(this);
@@ -169,12 +170,24 @@ export default class Expert extends Component{
     _onRefresh(){
         alert('刷新成功')
     }
-
+    header(){
+        if(this.props.navigation.state.params.changeBtn){
+            return (
+                 <Header title={this.state.author.name} attend={this.state.attend} back="true" changeBtn={this.props.navigation.state.params.changeBtn}  navigation={this.props.navigation}  />
+            )
+        }else{
+        return(
+                <Header title={this.state.author.name} attend={this.state.attend} back="true" navigation={this.props.navigation} />
+            )
+        }
+    }
     render(){
         const {state}=this.props.navigation;
         return(
-            <View style={{marginBottom:50}}>
-                <Header title={this.state.author.name} attend={this.state.attend} back="true" changeBtn={state.params.changeBtn}  navigation={this.props.navigation} />
+            <View>
+                {
+                    this.header()
+                }
                 <ScrollView
                     refreshControl={
                         <RefreshControl

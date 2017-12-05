@@ -9,15 +9,20 @@ import {
     Image,
     Button,
     Dimensions,
-    ToastAndroid
+    ToastAndroid,
+    AsyncStorage,
+    FlatList,
+    ScrollView
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet'
 var {width} = Dimensions.get('window')
 import Variable from "../Variable/Variable"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {request_professionals_content} from "../api"
+import {request_professionals_content,request_professionals_reply_content} from "../api"
 import {Circle,friends} from "../fenxiang/fenxiang"
 import {bounces} from "../bounces/bounces"
+import Btn from './../column/att_btn';
+var user
 export default class Expertsdetails extends Component{
     static navigationOptions = ({navigation}) => ({
 
@@ -34,29 +39,75 @@ export default class Expertsdetails extends Component{
     constructor(props){
         super(props)
         this.state = {
-            attention:false,
+            attend:"false",
             user:{},
             experts_data:{},
             care_num:null,
-            reply_num:null
+            reply_num:null,
+            sort:true,
+            problem_list:[]
         }
         this.handlePress = this.handlePress.bind(this)
         this.showActionSheet = this.showActionSheet.bind(this)
-        this.attention = this.attention.bind(this)
         this.experts_success = this.experts_success.bind(this)
+        this._loadInitialState=this._loadInitialState.bind(this);
+        this.problem=this.problem.bind(this);
     }
     componentDidMount(){
-        var user = this.props.navigation.state.params.user
+         user = this.props.navigation.state.params.user
         //获取专家详情
         request_professionals_content(user.uuid,user.token,this.props.navigation.state.params.id,this.experts_success)
         this.props.navigation.setParams({navigatePress:this.showActionSheet})
     }
     experts_success(responseText){
+        var type = "weight"
         this.setState({
             experts_data:responseText.data.professional,
             reply_num:responseText.data.reply_num,
             care_num:responseText.data.care_num
         })
+        this._loadInitialState()
+        this.problem(type)
+    }
+    //问题列表
+    problem(type){
+        request_professionals_reply_content(user.token,{
+            uuid:user.uuid,
+            support:2,
+            problem_id:this.props.navigation.state.params.id,
+            orderby:type,
+            offset:0,
+            limit: 4000,
+            action_num:0,
+            font:false
+        },(responseText)=>{
+            this.setState({
+                problem_list:responseText.data.reply_msg
+            })
+        })
+    }
+    //关注收藏按钮初始化
+    async _loadInitialState(){
+        try{
+            var value=await AsyncStorage.getItem('userActionList');
+            const id=this.state.experts_data.id+"";
+            if(value!=null){
+                result=JSON.parse(value);
+                if(result.guanzhu.zhuanjia.dataList.indexOf(id) == -1){
+                    this.setState({
+                        attend:'false'
+                    })
+                }else {
+                    this.setState({
+                        attend:'true'
+                    })
+                }
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            console.log(error)
+        }
     }
     showActionSheet() {
         this.ActionSheet.show()
@@ -74,22 +125,10 @@ export default class Expertsdetails extends Component{
         }
 
     }
-    attention(){
-        if(this.state.attention){
-            bounces('取关成功')
-
-        }else{
-            bounces('关注成功')
-        }
-        this.setState({
-            attention:!this.state.attention
-        })
-    }
     render(){
-        let attention = this.state.attention?"已关注":"+关注"
-        let attention_style = this.state.attention?styles.Has_attention:styles.attention
         return(
             <View style={{flex:1,backgroundColor:"#fff"}}>
+                <ScrollView>
                 <View style={{
                     width:width,
                     height:100,
@@ -113,28 +152,78 @@ export default class Expertsdetails extends Component{
                             <Text style={{color:"#999",fontSize:14}}>关注 {this.state.care_num}</Text>
                         </View>
                     </View>
-                    <TouchableWithoutFeedback onPress={()=>{this.attention()}}>
-                        <View style={{
-                            width:80,
-                            height:35,
-                            backgroundColor:"#fff",
-                            justifyContent:"center",
-                            alignItems:"center",
-                            borderWidth:1,
-                            borderColor:"#f3f3f3",
-                            borderRadius:5,
-                            position:"absolute",
-                            right:10
-                        }}>
-                            <Text style={attention_style}>{attention}</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
+                    <View style={{position:"absolute",right:10}}>
+                        <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="7" id={this.state.experts_data.id}/>
+                    </View>
                 </View>
                 <View style={{width:width,paddingRight:10,paddingLeft:10}}>
                     <Text style={{color:"#333",fontSize:14}}>{this.state.experts_data.content}</Text>
                 </View>
                 <View style={{width:width,height:15,backgroundColor:"#f2f2f2"}}></View>
+                <View>
+                    <View style={{
+                        width:width,
+                        height:45,
+                        flexDirection:"row",
+                        paddingRight:10,
+                        paddingLeft:10,
+                        alignItems:"center",
+                        justifyContent:"space-between"
+                    }}>
+                        <View style={{width:100}}>
+                            <Text style={{color:"#999",fontSize:14}}>回答{this.state.problem_list.length?this.state.problem_list.length:0}个</Text>
+                        </View>
+                        <View style={{flexDirection:"row",alignItems:"center"}}>
+                            <TouchableWithoutFeedback onPress={()=>{
+                                this.problem("weight");
+                                this.setState({
+                                    font:false
+                                })
+                            }}>
+                                <View>
+                                    <Text style={this.state.font?styles.light_color:styles.black_color}>最热</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <View style={{marginLeft:5,marginRight:5}}>
+                                <Text>|</Text>
+                            </View>
+                            <TouchableWithoutFeedback onPress={()=>{
+                                this.problem("create");
+                                this.setState({
+                                    font:true
+                                })
+                            }}>
+                                <View>
+                                    <Text style={this.state.font?styles.black_color:styles.light_color}>最新</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </View>
+                    <FlatList
+                        data={this.state.problem_list}
+                        renderItem={({item,index})=>{
+                            return (
+                                <View style={{width:width,borderBottomWidth:1,borderBottomColor:"#f2f2f2",paddingBottom:5}}>
+                                    <View style={{width:width,justifyContent:"center",paddingRight:10,paddingLeft:10,paddingBottom:10,paddingTop:10}}>
+                                        <Text style={{color:'#000',fontSize:15}}>{item.problem_content}</Text>
+                                    </View>
+                                    <View style={{width:width,justifyContent:"center",padding:5}}>
+                                        <Text style={{color:'#666',fontSize:13}}>{item.content}</Text>
+                                    </View>
+                                    <View style={{width:width,flexDirection:"row",justifyContent:"space-between"}}>
+                                        <View style={{paddingLeft:10,paddingRight:10}}>
+                                            <Text style={{color:"#999",fontSize:12}}>{item.create_at}</Text>
+                                        </View>
+                                        <View style={{paddingLeft:10,paddingRight:10}}>
+                                            <Text style={{color:"#999",fontSize:12}}>{item.parent}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            )
+                        }}
+                    />
 
+                </View>
                 <ActionSheet
                     ref={o => this.ActionSheet = o}
                     options={Variable.options}
@@ -142,15 +231,31 @@ export default class Expertsdetails extends Component{
                     destructiveButtonIndex={Variable.DESTRUCTIVE_INDEX}
                     onPress={this.handlePress}
                 />
+                </ScrollView>
             </View>
         )
     }
 }
 const styles = StyleSheet.create({
+    division:{
+        width:2,
+        height:15,
+        backgroundColor:'#999',
+        marginLeft:8,
+        marginRight:8
+    },
     attention:{
         color:"#FF8080"
     },
     Has_attention:{
         color:"#999"
-    }
+    },
+    black_color:{
+        color:'#333',
+        fontSize:15
+    },
+    light_color:{
+        color:'#999',
+        fontSize:15
+    },
 })

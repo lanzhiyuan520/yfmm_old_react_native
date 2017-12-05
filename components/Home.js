@@ -24,7 +24,7 @@ import Diet from "./diet/diet"
 import Video from "./video_list/video_list"
 var {width} = Dimensions.get('window')
 var {height} = Dimensions.get('window')
-import {request_professionals_list,requestTodayView,request_noticelist} from "./api"
+import {request_professionals_list, requestTodayView, request_noticelist, request_article_xiaofujingxuan} from "./api"
 import {PullView} from 'react-native-pull';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Load from "./loading/loading";
@@ -145,7 +145,7 @@ export default class Home extends Component{
         }
     }*/
     _onRefresh(){
-        alert("hello")
+        alert("刷新成功")
     }
     disabled(){
         this.setState({
@@ -158,9 +158,7 @@ export default class Home extends Component{
     render(){
         return(
             <View style={{position:"relative"}}>
-                <View>
                     <Load loading={this.state.loading}/>
-                </View>
                 <ScrollView
                     refreshControl={
                         <RefreshControl

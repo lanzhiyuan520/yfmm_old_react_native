@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import {request_user_status,user_status} from "../api"
+import DatePicker from 'react-native-datepicker'
 var selectTableWarp = {}
 var user
 export default class UserTime extends Component{
@@ -36,12 +37,14 @@ export default class UserTime extends Component{
             year:"",
             month:"",
             day:"",
-            text:""
+            text:"",
+            chooseDate: new Date()
         }
         this.showPicker=this.showPicker.bind(this)
         this.submit=this.submit.bind(this)
         this.user=this.user.bind(this)
         this.state_success=this.state_success.bind(this)
+        this.phone=this.phone.bind(this)
 
     }
     componentDidMount(){
@@ -55,6 +58,36 @@ export default class UserTime extends Component{
                 text:"宝宝生日"
             })
         }
+    }
+    phone(){
+        if (Platform.OS === "android") {
+            return (
+                <TouchableWithoutFeedback onPress={()=>{this.showPicker()}}>
+                    <View style={{width:100,height:35,backgroundColor:"#fff",borderRadius:5,borderWidth:1,borderColor:"#f2f2f2",justifyContent:"center",alignItems:"center"}}>
+                        <Text>选择日期</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        } else if (Platform.OS === "ios") {
+            return (
+                <DatePicker
+                    style={{width: width*0.9,height:100}}
+                    date={this.state.chooseDate}
+                    mode="date"
+                    placeholder="选择日期"
+                    format="YYYY-MM-DD"
+                    confirmBtnText="确定"
+                    cancelBtnText="取消"
+                    onDateChange={this._onDateChange.bind(this)}
+                />
+            )
+        }
+    }
+    _onDateChange(data){
+        this.setState({
+            chooseDate:data
+        })
+        selectTableWarp.confinementDate=data
     }
     submit(){
         if(this.props.navigation.state.params.state){
@@ -123,11 +156,9 @@ export default class UserTime extends Component{
                     <Text style={{color:"#ff8089",fontSize:30}}>{this.state.year}年{this.state.month}月{this.state.day}日</Text>
                 </View>
                 <View style={{width:width,alignItems:'center'}}>
-                    <TouchableWithoutFeedback onPress={()=>{this.showPicker()}}>
-                        <View style={{width:100,height:35,backgroundColor:"#fff",borderRadius:5,borderWidth:1,borderColor:"#f2f2f2",justifyContent:"center",alignItems:"center"}}>
-                            <Text>选择日期</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
+                    {
+                        this.phone()
+                    }
                 </View>
                 <TouchableWithoutFeedback onPress={()=>{
                     this.submit()

@@ -54,7 +54,7 @@ export default class Welcome extends Component {
                                         position:"absolute",
                                         bottom:70
                                     }}>
-                                        <Text style={{color:"#fff",fontSize:16}}>立即体验</Text>
+                                        <Text style={{color:"#fff",fontSize:16,backgroundColor:"transparent"}}>立即体验</Text>
                                     </View>
                                 </View>
                             </TouchableWithoutFeedback>
