@@ -33,6 +33,11 @@ export default class ExpertsList extends Component{
         this.experts_list=this.experts_list.bind(this)
     }
     componentDidMount(){
+        if (this.state.experts.length == 0){
+            this.props.load(1)
+        }else{
+            this.props.load(2)
+        }
         //获取用户状态来获取不同类型的专家列表
         InteractionManager.runAfterInteractions(()=>{
             AsyncStorage.getItem("user_data",(error,result)=>{
@@ -52,7 +57,7 @@ export default class ExpertsList extends Component{
                 experts:responseText.data
             })
         })
-
+        this.props.load(2)
     }
     render(){
         return(

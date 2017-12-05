@@ -70,7 +70,7 @@ export default class Video extends Component{
                                         author:item
                                     })
                                 }}>
-                                    <View style={[styles.img_line,index==this.state.count-1&&styles.img_last]}>
+                                    <View style={[styles.img_line,index==this.state.count-1?styles.img_last:""]}>
                                         <View>
                                             <View style={{}}>
                                                 <Image source={{uri:item.banner}} style={{width:190,height:120}}/>

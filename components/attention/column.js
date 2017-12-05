@@ -37,9 +37,8 @@ export default class Column extends Component{
                         data={this.state.column_list}
                         renderItem={({item})=>{
                             return (
-                                <TouchableWithoutFeedback onPress={()=>{this.props.navigate.navigate("ColumnDetailed",{
-                                    id:item.id,
-                                    user:this.props.user
+                                <TouchableWithoutFeedback onPress={()=>{this.props.navigate.navigate("ColumnDetail",{
+                                    id:item.id
                                 })}}>
                                     <View style={{width:width,height:120,justifyContent:"center",backgroundColor:"#fff",borderTopWidth:1,borderTopColor:"#f2f2f2"}}>
                                         <View style={{

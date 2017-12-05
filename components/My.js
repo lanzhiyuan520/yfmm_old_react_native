@@ -8,7 +8,8 @@ import {
     Alert,
     Image,
     Dimensions,
-    AsyncStorage
+    AsyncStorage,
+    ScrollView
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -60,6 +61,7 @@ export default class My extends Component{
         var img = "http://cdn.ayi800.com/1491981237"
         return(
             <View style={{width:width,flex:1,backgroundColor:"#f5f5f5"}}>
+              <ScrollView>
                 <View style={{
                     width:width,
                     height:50,
@@ -153,7 +155,7 @@ export default class My extends Component{
                             <View>
                                 <Text style={{color:"#333"}}>我的状态</Text>
                             </View>
-                            <View style={{position:"absolute",right:10,flexDirection:"row"}}>
+                            <View style={{position:"absolute",right:10,flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{color:"#ff8089"}}>{this.status()}</Text>
                                 <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
@@ -202,6 +204,7 @@ export default class My extends Component{
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
+              </ScrollView>
             </View>
         )
     }

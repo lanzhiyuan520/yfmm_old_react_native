@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import {requestTodayView} from "../api"
+import Btn from './../column/att_btn';
 export default class RequiredList extends Component{
     constructor(props){
         super(props)
@@ -35,9 +36,11 @@ export default class RequiredList extends Component{
                 type:2,
                 visit_num:1428,
                 weight:0
-            }
+            },
+            attend:"false"
         }
         this.suggest_success=this.suggest_success.bind(this)
+        this._loadInitialState=this._loadInitialState.bind(this);
     }
     componentDidMount(){
         var user = this.props.user
@@ -48,6 +51,34 @@ export default class RequiredList extends Component{
         })
 
     }
+    //关注收藏按钮初始化
+    async _loadInitialState(){
+        const author_id=this.state.suggest_data.author_id+"";
+        console.log(author_id)
+        try{
+            var value=await AsyncStorage.getItem('userActionList');
+            if(value!=null){
+                result=JSON.parse(value);
+                console.log(result.guanzhu.daren.dataList)
+                if(result.guanzhu.daren.dataList.indexOf(author_id) == -1){
+                    this.setState({
+                        attend:'false'
+                    })
+                    console.log("1");
+                }else {
+                    this.setState({
+                        attend:'true'
+                    })
+                    console.log("2")
+                }
+                console.log(this.state.attend)
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            console.log(error)
+        }
+    }
     suggest_success(responseText){
         if(responseText.code != 0){
             this.setState({
@@ -57,6 +88,7 @@ export default class RequiredList extends Component{
             this.setState({
                 suggest_data:responseText.data.articleData
             })
+            this._loadInitialState();
         }
 
     }
@@ -84,22 +116,9 @@ export default class RequiredList extends Component{
                                 <Text style={{color:"#333",fontSize:13}}>{this.state.suggest_data.author_name}</Text>
                             </View>
                         </View>
-                        <TouchableWithoutFeedback onPress={()=>{}}>
-                            <View style={{
-                                width:80,
-                                height:35,
-                                backgroundColor:"#fff",
-                                justifyContent:"center",
-                                alignItems:"center",
-                                borderRadius:5,
-                                position:"absolute",
-                                right:10,
-                                borderWidth:1,
-                                borderColor:"#f2f2f2"
-                            }}>
-                                <Text style={{color:"#ff8080",fontSize:15}}>+关注</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
+                        <View style={{position:"absolute",right:10}}>
+                            <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.suggest_data.author_id}/>
+                        </View>
                     </View>
                 </View>
         )

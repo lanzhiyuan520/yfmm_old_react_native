@@ -42,7 +42,7 @@ export default class Attention extends Component{
                         data={this.state.daren}
                         renderItem={({item})=>{
                             return (
-                                <TouchableWithoutFeedback onPress={()=>{this.props.navigate.navigate("TalentDetailed",{
+                                <TouchableWithoutFeedback onPress={()=>{this.props.navigate.navigate("ExpertDetail",{
                                     id:item.id,
                                     user:this.props.user,
                                     img:item.img,
@@ -57,11 +57,12 @@ export default class Attention extends Component{
                                             paddingLeft:10,
                                             paddingRight:10,
                                             flexDirection:"row",
+                                            alignItems:"center"
                                         }}>
-                                            <View style={{marginRight:10,flex:1}}>
+                                            <View style={{flex:1}}>
                                                 <Image source={{uri:item.img}} style={{width:80,height:80,borderRadius:40}} />
                                             </View>
-                                            <View style={{flex:4}}>
+                                            <View style={{flex:4,marginLeft:10}}>
                                                 <View style={{flexDirection:'row',alignItems:'center'}}>
                                                     <Text style={{color:"#000",fontSize:18,marginRight:5}}>{item.name}</Text>
                                                     <Text style={{marginRight:5,fontSize:15}}>关注</Text>
