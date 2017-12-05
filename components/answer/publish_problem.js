@@ -15,7 +15,8 @@ import {
     Switch,
     ScrollView,
     AlertIOS,
-    ToastAndroid
+    ToastAndroid,
+    AsyncStorage
 } from 'react-native';
 import PubTop from './publish_top';
 import Btn from './btn';
@@ -24,6 +25,7 @@ import Camera from './../commen/camera';
 import constants from './../constants';
 // import queryString from 'query-string';
 import qs from 'qs';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class Find extends Component{
     static navigationOptions = {
         header:null
@@ -39,7 +41,8 @@ export default class Find extends Component{
             arr:[],
             show:false,
             picArr:[],
-            camera:false
+            camera:false,
+            user:{}
         }
         this.getService=this.getService.bind(this);
         this.putIn=this.putIn.bind(this);
@@ -66,20 +69,64 @@ export default class Find extends Component{
         }
     }
 
+    //获取用户信息
+    async _loadInitialUser(){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.postData();
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
+    }
+
     //提交数据
     postData(){
-        let img=JSON.stringify([]);
-        let data={'author_id':constants.userId,'content':this.state.text,'service_groups':'1','service_id':this.state.service,'anonymous':'0','adapter':'1'};
-        data=qs.stringify(data);
-        fetch(constants.url+"/v1/problem?uuId="+constants.uuid,{
-            method: "patch",
-            mode: 'same-origin',
+        console.log(this.state.user);
+        let img=null;
+        if(this.state.picArr.length==0){
+          console.log('没有上传照片')
+        } else {
+            console.log(this.state.picArr)
+            img=[];
+            if(this.state.camera){
+                for(var i = 0;i<this.state.picArr.length;i++){
+                    var uri = this.state.picArr[i].path;
+                    img.push(uri)
+                }
+            }else {
+                for(var i = 0;i<this.state.picArr.length;i++){
+                    this.state.picArr[i]=JSON.parse(this.state.picArr[i]);
+                    var uri = this.state.picArr[i].path;
+                    img.push(uri)
+                }
+            }
+
+        }
+        let post_params={author_id:this.state.user.id,content:this.state.text,service_groups:'2',service_id:this.state.service,anonymous:'0',adapter:this.state.user.status,images:img};
+        let url=constants.url+"/v1/problem?uuid="+this.state.user.uuid;
+        let urlSigned = getSingedUrl(url, this.state.user.uuid);
+        var dataEncrypt = getEncryptParam(post_params);
+        console.log(post_params);
+        fetch(urlSigned,{
+            method:"PATCH",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Http-App-Token": this.state.user.token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
             },
-            body:data,
+            body:`param=${dataEncrypt.param}`
         }).then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson);
                 if(responseJson.code==0){
                     if (Platform.OS === "android") {
                         ToastAndroid.show('提问成功', ToastAndroid.SHORT);
@@ -87,6 +134,9 @@ export default class Find extends Component{
                         AlertIOS.alert('提问成功');
                     }
                     this.refs.aTextInputRef.clear();
+                    this.setState({
+                        picArr:[]
+                    })
                 }
             })
             .catch((err) => {
@@ -96,7 +146,6 @@ export default class Find extends Component{
 
     //提交问题
     putIn(){
-        console.log(this.state.arr);
         //获取匿名提问还是公开提问
         if(this.state.trueSwitchIsOn){
             this.setState({
@@ -107,7 +156,7 @@ export default class Find extends Component{
                 quiz:1
             })
         }
-        this.postData();
+        this._loadInitialUser();
     }
 
     //获取选中专家的类型

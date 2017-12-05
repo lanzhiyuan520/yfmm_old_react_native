@@ -9,7 +9,8 @@ import {
     Image,
     ScrollView,
     TouchableWithoutFeedback,
-    FlatList
+    FlatList,
+    AsyncStorage
 } from 'react-native';
 import constants from './../constants';
 // import Problem from './problem_detail';
@@ -22,21 +23,22 @@ export default class ProblemList extends Component {
             sort:true,
             limit:4,
             orderby:'weight',
-            more_title:'点击加载更多数据'
+            more_title:'点击加载更多数据',
+            user:{}
         }
     }
     componentDidMount(){
         const orderby='weight';
-        this.requestData(orderby);
+        this._loadInitialUser(orderby);
     }
 
     requestData(orderby){
-        const url=constants.url+"/v1/problem?uuid="+constants.uuid+"&support=1&group_id="+this.props.id+"&orderby="+orderby+"&offset=0&limit=5";
-        const urlSigned = getSingedUrl(url, constants.uuid);
+        const url=constants.url+"/v1/problem?uuid="+this.state.user.uuid+"&support=1&group_id="+this.props.id+"&orderby="+orderby+"&offset=0&limit=5";
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
             headers: {
-                "Http-App-Token": constants.token
+                "Http-App-Token": this.state.user.token
             }
         })
             .then((response) => response.json())
@@ -50,6 +52,26 @@ export default class ProblemList extends Component {
             });
     }
 
+    //获取用户信息
+    async _loadInitialUser(orderby){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.requestData(orderby);
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
+    }
+
+    //最热最新按钮切换
     changeSort(orderby){
         if(orderby=='weight'){
             this.setState({

@@ -44,6 +44,7 @@ export default class AnswerList extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                //获取真实数据后打开
                 result=responseJson.data;
                 if(result.dianzan.huida.dataList.indexOf(id) !== -1){
                     this.setState({
@@ -58,62 +59,62 @@ export default class AnswerList extends Component {
 
     //点赞改变颜色
     changeHand(reverse){
-        let post_params={
-            userId:constants.userId,
-            operateType:this.props.operateType,
-            operateId:this.props.id,
-            reverse:reverse
-        };
-        const url=constants.url+"/v1/userbehavior/like?uuId="+constants.uuid;
-        const urlSigned = getSingedUrl(url, constants.uuid);
-        const dataEncrypt = getEncryptParam(post_params);
-        fetch(urlSigned,{
-            method: "POST",
-            headers: {
-                "Http-App-Token": constants.token,
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            body:`param=${dataEncrypt.param}`,
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                console.log(responseJson);
-                if( reverse == '1' ){
-                    if(responseJson.code==0){
-                        if (Platform.OS === "android") {
-                            ToastAndroid.show('点赞成功', ToastAndroid.SHORT);
-                        } else if (Platform.OS === "ios") {
-                            AlertIOS.alert('点赞成功');
+            let post_params={
+                userId:constants.userId,
+                operateType:'1',
+                operateId:this.props.id,
+                reverse:reverse
+            };
+            const url=constants.url+"/v1/userbehavior/like?uuid="+constants.uuid;
+            const urlSigned = getSingedUrl(url, constants.uuid);
+            const dataEncrypt = getEncryptParam(post_params);
+            fetch(urlSigned,{
+                method: "POST",
+                headers: {
+                    "Http-App-Token": constants.token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                },
+                body:`param=${dataEncrypt.param}`,
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    if( reverse == '1' ){
+                        if(responseJson.code==0){
+                            if (Platform.OS === "android") {
+                                ToastAndroid.show('点赞成功', ToastAndroid.SHORT);
+                            } else if (Platform.OS === "ios") {
+                                AlertIOS.alert('点赞成功');
+                            }
+                            this.setState({
+                                admire:true,
+                                num:parseInt(this.state.num)+1
+                            })
+                        }else {
+                            if (Platform.OS === "android") {
+                                ToastAndroid.show('点赞失败', ToastAndroid.SHORT);
+                            } else if (Platform.OS === "ios") {
+                                AlertIOS.alert('点赞失败');
+                            }
                         }
-                        this.setState({
-                            admire:true,
-                            num:parseInt(this.state.num)+1
-                        })
-                    }else {
-                        if (Platform.OS === "android") {
-                            ToastAndroid.show('点赞失败', ToastAndroid.SHORT);
-                        } else if (Platform.OS === "ios") {
-                            AlertIOS.alert('点赞失败');
+                    }else if( reverse == '2' ){
+                        if(responseJson.code==0){
+                            if (Platform.OS === "android") {
+                                ToastAndroid.show('取关成功', ToastAndroid.SHORT);
+                            } else if (Platform.OS === "ios") {
+                                AlertIOS.alert('取关成功');
+                            }
+                            this.setState({
+                                admire:false,
+                                num:parseInt(this.state.num)-1
+                            })
                         }
                     }
-                }else if( reverse == '2' ){
-                    if(responseJson.code==0){
-                        if (Platform.OS === "android") {
-                            ToastAndroid.show('取关成功', ToastAndroid.SHORT);
-                        } else if (Platform.OS === "ios") {
-                            AlertIOS.alert('取关成功');
-                        }
-                        this.setState({
-                            admire:false,
-                            num:parseInt(this.state.num)-1
-                        })
-                    }
-                }
 
-            })
-            .catch((err) => {
-                console.error('数据请求失败');
-            });
+                })
+                .catch((err) => {
+                    console.error('数据请求失败');
+                });
     }
     render() {
         if(this.state.admire){

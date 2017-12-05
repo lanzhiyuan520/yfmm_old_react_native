@@ -40,6 +40,7 @@ export default class VideoDetail extends Component{
         };
         this._loadInitialState=this._loadInitialState.bind(this);
     }
+
     //视频加载成功后回调函数
     onLoad(info){
         // info == {currentTime,duration,...}

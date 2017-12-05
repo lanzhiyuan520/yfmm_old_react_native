@@ -27,7 +27,7 @@ var {height} = Dimensions.get('window')
 import {request_professionals_list,requestTodayView,request_noticelist} from "./api"
 import {PullView} from 'react-native-pull';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Load from "./loading/loading"
+import Load from "./loading/loading";
 export default class Home extends Component{
     constructor(props){
         super(props)
