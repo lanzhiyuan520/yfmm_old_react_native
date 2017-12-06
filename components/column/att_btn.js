@@ -120,6 +120,8 @@ export default class RecColumn  extends Component {
             body:`param=${dataEncrypt.param}`,
         }).then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
+                console.log(reverse)
                 if( reverse == '1' ){
                     if(responseJson.code==0){
                         if (Platform.OS === "android") {

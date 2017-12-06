@@ -4,10 +4,16 @@ import {
     AlertIOS,
     Platform
 } from 'react-native';
-export function bounces(msg){
+import Toast, {DURATION} from 'react-native-easy-toast'
+export function bounces(msg,that){
     if (Platform.OS === "android") {
         ToastAndroid.show(msg, ToastAndroid.SHORT);
     } else if (Platform.OS === "ios") {
-        AlertIOS.alert(msg);
+        if (that){
+            that.refs.toast.show(msg);
+        }else{
+            AlertIOS.alert(msg)
+        }
+
     }
 }

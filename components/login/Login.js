@@ -35,6 +35,7 @@ import {
 var wx_user_access_token
 var openid
 var refresh_token
+import Toast, {DURATION} from 'react-native-easy-toast'
 import {bounces} from "../bounces/bounces"
 export default class Login extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -81,27 +82,30 @@ export default class Login extends Component {
     click(){
         this.disabled(2)
         if(!this.state.text){
-            bounces('请输入手机号')
+            bounces('请输入手机号',this)
             return false
         }else{
+            if(!(/^1[34578]\d{9}$/.test(this.state.text))){
+                bounces('手机号有误请重新填写',this)
+                return false;
+            }
             var codeDomain= 0 ;
             var phone_val = this.state.text ;
             var code_val  = this.state.validation
             //判断是否同意服务条款
             if(!this.state.check){
-                bounces('请同意服务条款')
+                bounces('请同意服务条款',this)
                 return false
             }
             //判断是否输入验证码
             if(!code_val){
-                bounces('请输入验证码')
+                bounces('请输入验证码',this)
                 return false
             }
             //手机登录接口
             AsyncStorage.getItem("uuid",(error,result)=>{
                 var uuid = JSON.parse(result)
                 request_login_by_phone(uuid,{phone:phone_val,code:code_val,type:codeDomain},this.user_success)
-
             })
         }
     }
@@ -109,7 +113,7 @@ export default class Login extends Component {
     user_success(responseText){
         console.log(responseText)
         if(responseText.code != 0){
-            bounces(responseText.msg)
+            bounces(responseText.msg,this)
             return false
         }else{
             this.state.user=responseText.data
@@ -151,7 +155,7 @@ export default class Login extends Component {
     }
     service(){
         this.disabled(1)
-        bounces('暂时还没有服务条款')
+        bounces('暂时还没有服务条款',this)
     }
     //获取微信access_token
     wx_access_token(code,appid,secret){
@@ -231,7 +235,7 @@ export default class Login extends Component {
     //验证码发送成功回调
     success(responseText){
         if(responseText.code==0 && responseText.msg=="success"){
-            bounces('验证码已发出')
+            bounces('验证码已发出',this)
             this.setState({clear:false,liked:true})
             this.time = setInterval(()=>{
                 this.setState({verify:`${this.state.count}${this.state.countText}`})
@@ -242,7 +246,7 @@ export default class Login extends Component {
                 }
             },1000)
         }else{
-            bounces(responseText.msg)
+            bounces(responseText.msg,this)
         }
     }
 
@@ -253,7 +257,7 @@ export default class Login extends Component {
         var codeDomain= 0 ;
         var phone_val = this.state.text
         if(!(/^1[34578]\d{9}$/.test(this.state.text))){
-            bounces('手机号有误请重新填写')
+            bounces('手机号有误请重新填写',this)
             return false;
         }else {
             if(this.state.count==60){
@@ -262,7 +266,7 @@ export default class Login extends Component {
                     request_code_in_phone({phone:phone_val,type:codeDomain,uuid:uuid},this.success)
                 })
             }else{
-                bounces('请稍后再次发送')
+                bounces('请稍后再次发送',this)
             }
         }
     }
@@ -284,6 +288,7 @@ export default class Login extends Component {
         let once = this.state.liked?styles.once:styles.once1
         return (
             <View style={{backgroundColor:"#fff",paddingBottom:100,flex:1}}>
+                <Toast ref="toast"/>
                 <View style={styles.header}>
                     <Text style={styles.title}>快速登录</Text>
                 </View>
@@ -308,6 +313,8 @@ export default class Login extends Component {
                     <View style={{
                         flexDirection:"row",
                         justifyContent:"center",
+                        paddingLeft:15,
+                        paddingRight:15
                     }}>
                         <TextInput
                             style={styles.validation}
@@ -320,25 +327,28 @@ export default class Login extends Component {
                         <TouchableOpacity
                             disabled={this.state.disabled}
                             style={{
-                            width:100,
-                            height:45,
-                            backgroundColor:"#fff",
-                            borderRadius:5,
-                            flexDirection:"row",
-                            justifyContent:"center",
-                            alignItems:"center",
-                            borderWidth:1,
-                            borderColor:"#f2f2f2",
-                            marginLeft:10
+                                flex:1,
+                                width:100,
+                                height:45,
+                                backgroundColor:"#fff",
+                                borderRadius:5,
+                                flexDirection:"row",
+                                justifyContent:"center",
+                                alignItems:"center",
+                                borderWidth:1,
+                                borderColor:"#f2f2f2",
+                                marginLeft:10
                         }} onPress={this.send}>
                             <Text style={once}>{this.state.verify}</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{marginTop:10,
+                    <View style={{
+                        marginTop:10,
                         flexDirection:"row",
-                        justifyContent:'center'
+                        justifyContent:'center',
+
                     }}>
-                        <View style={{width:335,flexDirection:"row",}}>
+                        <View style={{width:width*0.9,flexDirection:"row",}}>
                             <TouchableWithoutFeedback
                                 disabled={this.state.disabled}
                                 onPress={this.checked}>
@@ -365,9 +375,8 @@ export default class Login extends Component {
 
                             <TouchableWithoutFeedback onPress={()=>{
                                 this.click();
-
                             }}>
-                                <View style={{width:335,height:45,backgroundColor:"#ff8080",justifyContent:"center",alignItems:"center"}}>
+                                <View style={{width:width*0.9,height:45,backgroundColor:"#ff8080",justifyContent:"center",alignItems:"center"}}>
                                     <Text style={{color:"#fff",fontSize:17}}>登录</Text>
                                 </View>
                             </TouchableWithoutFeedback>
@@ -413,7 +422,7 @@ const styles = StyleSheet.create({
     },
     phone:{
         height: 45,
-        width:335,
+        width:width*0.9,
         backgroundColor:"#f8f8f8",
         padding:0,
         borderRadius:5,
@@ -422,7 +431,8 @@ const styles = StyleSheet.create({
         paddingLeft:30
     },
     validation:{
-        width:225,
+        flex:2,
+        width:width*0.5,
         height:45,
         backgroundColor:"#f8f8f8",
         borderRadius:5,

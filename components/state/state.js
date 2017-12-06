@@ -9,13 +9,18 @@ import {
     Image,
     Dimensions,
     DatePickerAndroid,
-    AsyncStorage
+    AsyncStorage,
+    DatePickerIOS,
+    ToastAndroid,
+    AlertIOS,
+
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import {request_user_status,user_status} from "../api"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 var selectTableWarp = {}
 var user
+import DatePicker from 'react-native-datepicker'
 export default class State extends Component{
     static navigationOptions = ({navigation}) => ({
         title: "我的状态",
@@ -40,7 +45,8 @@ export default class State extends Component{
             Sta:false,
             state:null,
             Text:"宝宝生日",
-            text_color:true
+            text_color:true,
+            chooseDate: new Date()
         }
         this.production=this.production.bind(this)
         this.birth=this.birth.bind(this)
@@ -48,6 +54,37 @@ export default class State extends Component{
         this.showPicker=this.showPicker.bind(this)
         this.state_success=this.state_success.bind(this)
         this.user=this.user.bind(this)
+        this.phone=this.phone.bind(this)
+    }
+    _onDateChange(data){
+        this.setState({
+            chooseDate:data
+        })
+        selectTableWarp.confinementDate=data
+    }
+    phone(){
+        if (Platform.OS === "android") {
+            return (
+                <TouchableWithoutFeedback onPress={()=>{this.showPicker()}}>
+                    <View style={{width:100,height:35,backgroundColor:"#fff",borderRadius:5,borderWidth:1,borderColor:"#f2f2f2",justifyContent:"center",alignItems:"center"}}>
+                        <Text>选择日期</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        } else if (Platform.OS === "ios") {
+            return (
+                <DatePicker
+                    style={{width: width*0.9,height:100}}
+                    date={this.state.chooseDate}
+                    mode="date"
+                    placeholder="选择日期"
+                    format="YYYY-MM-DD"
+                    confirmBtnText="确定"
+                    cancelBtnText="取消"
+                    onDateChange={this._onDateChange.bind(this)}
+                />
+            )
+        }
     }
     //时间插件
     async showPicker(options) {
@@ -78,6 +115,7 @@ export default class State extends Component{
                 alert("请选择时间")
                 return false
             }
+            console.log(selectTableWarp)
             //更改用户状态
             request_user_status(user,selectTableWarp,this.state_success)
         })
@@ -156,11 +194,9 @@ export default class State extends Component{
                     <Text style={{color:"#666",fontSize:17}}>{this.state.Text}</Text>
                 </View>
                 <View style={{width:width,alignItems:'center'}}>
-                    <TouchableWithoutFeedback onPress={()=>{this.showPicker()}}>
-                        <View style={{width:100,height:35,backgroundColor:"#fff",borderRadius:5,borderWidth:1,borderColor:"#f2f2f2",justifyContent:"center",alignItems:"center"}}>
-                            <Text>选择日期</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
+                    {
+                        this.phone()
+                    }
                 </View>
             </View>
         )

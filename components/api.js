@@ -59,6 +59,7 @@ var REVERSE_NO = 2;
 var LIST_ID_FLAG = "user_id_";
 import {ToastAndroid,AsyncStorage} from "react-native"
 import {getSingedUrl,getEncryptParam,decrypt} from "./tools/tools"
+import {bounces} from "../components/bounces/bounces"
 //发送验证码
 export function request_code_in_phone(get_params,success){
     var url = URI + API_VERSION + "verifycode/getlogincode?uuid=" + get_params.uuid + "&phone=" + get_params.phone + "&type=" + get_params.type;
@@ -208,7 +209,6 @@ export function request_professionals_list(offset, limit, uuid, token, successCa
 export function requestTodayView(rid, userstatus, uuid, token, successCallback){
     var url = URI + API_VERSION + "advice?rid=" + rid + "&userStatus=" + userstatus + "&uuid=" + uuid;
     var urlSigned = getSingedUrl(url, uuid);
-    console.log(url)
     fetch(urlSigned,{
         method:"GET",
         headers:{
@@ -822,7 +822,7 @@ export function send_code(data,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //绑定手机号
@@ -849,4 +849,24 @@ export function bind_phone(data,successCallback){
             ToastAndroid.show('网络错误', ToastAndroid.SHORT)
         })
 
+}
+//专家详情页下边的问题列表
+export function request_professionals_reply_content(token, get_params, successCallBack){
+    var url = URI + API_VERSION + "reply?uuid=" + get_params.uuid + "&support=" + get_params.support + "&problem_id=" + get_params.problem_id + "&orderby=" + get_params.orderby + "&offset=" + get_params.offset + "&limit=" + get_params.limit;
+    var urlSigned = getSingedUrl(url, get_params.uuid);
+    fetch(urlSigned,{
+        headers: {
+            "Http-App-Token": token
+        },
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseText) => {
+            successCallBack(responseText)
+        })
+        .catch((error)=>{
+            console.log(error)
+            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+        })
 }

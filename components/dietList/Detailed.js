@@ -18,6 +18,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Circle,friends} from "../fenxiang/fenxiang"
 import {request_article_yinshi_xiangqing,request_user_action,user_behavior} from "../api"
 import {bounces} from "../bounces/bounces"
+import Btn from './../column/att_btn';
 export default class DietList extends Component{
     static navigationOptions = ({navigation}) => ({
         title: navigation.state.params.title,
@@ -38,29 +39,19 @@ export default class DietList extends Component{
     constructor(props){
         super(props)
         this.state = {
-            attention:false,
+            attend:"false",
             user_behavior:null,
             detailed_data:{}
         }
         this.showActionSheet = this.showActionSheet.bind(this)
         this.handlePress = this.handlePress.bind(this)
         this.yinshi_detailed_success = this.yinshi_detailed_success.bind(this)
-        this.attention = this.attention.bind(this)
-        this.care_success = this.care_success.bind(this)
-        this.cancel_care_success = this.cancel_care_success.bind(this)
+        this._loadInitialState=this._loadInitialState.bind(this)
     }
     componentDidMount(){
         var user= this.props.navigation.state.params.user
         //获取推荐详情
         request_article_yinshi_xiangqing(this.props.navigation.state.params.id,user.uuid,user.token,this.yinshi_detailed_success)
-        //首次获取用户行为
-        AsyncStorage.getItem("user_behavior",(error,result)=>{
-            if(result!=null || result!=""){
-                this.setState({
-                    user_behavior:JSON.parse(result)
-                })
-            }
-        })
         this.props.navigation.setParams({navigatePress:this.showActionSheet,collect:this.collect})
     }
     //饮食详情成功回调
@@ -68,16 +59,31 @@ export default class DietList extends Component{
         this.setState({
             detailed_data:responseText.data
         })
-        var num = this.state.user_behavior.guanzhu.daren.dataList.indexOf(responseText.data.author_id)
-        //首次进来判断是否是关注状态
-        if(num == -1){
-            this.setState({
-                attention:false
-            })
-        }else{
-            this.setState({
-                attention:true
-            })
+        this._loadInitialState()
+    }
+    //关注收藏按钮初始化
+    async _loadInitialState(){
+        try{
+            var value=await AsyncStorage.getItem('userActionList');
+            const author_id=this.state.detailed_data.author_id+"";
+            if(value!=null){
+                result=JSON.parse(value);
+                if(result.guanzhu.daren.dataList.indexOf(author_id) == -1){
+                    this.setState({
+                        attend:'false'
+                    })
+                    console.log("1");
+                }else {
+                    this.setState({
+                        attend:'true'
+                    })
+                }
+                console.log(this.state.attend)
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            console.log(error)
         }
     }
     showActionSheet() {
@@ -94,51 +100,9 @@ export default class DietList extends Component{
             alert("点了剪切板")
         }
     }
-    attention(attention){
-        //获取用户信息
-        var user= this.props.navigation.state.params.user
-        //判断是取关还是关注
-        if(!attention){
-            request_user_action(user,"care",{
-                userId : user.id ,
-                operateType : 8 ,
-                operateId : this.state.detailed_data.author_id ,
-                reverse :  1 ,
-            },this.care_success)
-        }else{
-            request_user_action(user,"care",{
-                userId : user.id ,
-                operateType : 8 ,
-                operateId : this.state.detailed_data.author_id ,
-                reverse :  2 ,
-            },this.cancel_care_success)
 
-        }
-    }
-    //取消关注成功回调
-    cancel_care_success(responseText){
-        bounces("取关成功")
-        this.setState({
-            attention:false
-        })
-        user_behavior(this.props.navigation.state.params.user,function(responseText){
-            AsyncStorage.setItem("user_behavior",JSON.stringify(responseText.data))
-        })
-        console.log(responseText)
-    }
-    //关注成功回调
-    care_success(responseText){
-        bounces('关注成功')
-        this.setState({
-            attention:true
-        })
-        user_behavior(this.props.navigation.state.params.user,function(responseText){
-            AsyncStorage.setItem("user_behavior",JSON.stringify(responseText.data))
-        })
-    }
+
     render(){
-        let attention = this.state.attention?"已关注":"+关注"
-        let attention_style = this.state.attention?styles.Has_attention:styles.attention
         return(
             <View style={{flex:1,backgroundColor:"#fff"}}>
                 <View>
@@ -164,20 +128,9 @@ export default class DietList extends Component{
                         <Image source={{uri:this.state.detailed_data.author_img}} style={{width:36,height:20}}/>
                         <Text style={{marginLeft:5,color:"#333",fontSize:16}}>{this.state.detailed_data.tags_name}</Text>
                     </View>
-                    <TouchableWithoutFeedback onPress={()=>{this.attention(this.state.attention)}}>
-                        <View style={{
-                            width:80,
-                            height:35,
-                            backgroundColor:"#fff",
-                            justifyContent:"center",
-                            alignItems:"center",
-                            borderWidth:1,
-                            borderColor:"#f3f3f3",
-                            borderRadius:5
-                        }}>
-                            <Text style={attention_style}>{attention}</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
+                    <View style={{position:"absolute",right:10}}>
+                        <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.detailed_data.author_id}/>
+                    </View>
                 </View>
                 <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
                 <View>

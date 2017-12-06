@@ -18,7 +18,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {bounces} from "../bounces/bounces"
 export default class Setting extends Component{
     static navigationOptions = ({navigation}) => ({
-
         title: "系统设置",
         headerTitleStyle:{
             alignSelf:'center',
@@ -43,6 +42,11 @@ export default class Setting extends Component{
     componentDidMount(){
 
     }
+    componentWillUnmount(){
+        this.setState({
+            show:false
+        })
+    }
     exit(){
         try {
             AsyncStorage.removeItem(
@@ -51,7 +55,6 @@ export default class Setting extends Component{
                     if(!error){
                         AsyncStorage.removeItem("user_data",(error)=>{
                             if(!error){
-                                bounces('退出成功')
                                 this.setState({show:false});
                                 this.setState({flag:false});
                                 this.props.navigation.navigate("Login")

@@ -22,9 +22,12 @@ var {width} = Dimensions.get('window')
 var user
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {request_article_xiaofu_xiangqing} from "../api"
+import Btn from './../column/att_btn';
+import Header from './../commen/header';
 export default class XfDetailed extends Component{
     static navigationOptions = ({navigation}) => ({
-        title: "小福精选",
+        header:null
+        /*title: "小福精选",
         headerTitleStyle:{
             alignSelf:'center',
             color:"#333",
@@ -45,22 +48,22 @@ export default class XfDetailed extends Component{
            </View>
         )
         ,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,*/
     })
     constructor(props){
         super(props)
         this.state = {
             collect: false,
-            attention: false,
             xiaofu: {},
-            user_behavior: null
+            user_behavior: null,
+            attend:"false"
         }
         WeChat.registerApp('wx825ecd9a849eef9d')
         this.showActionSheet = this.showActionSheet.bind(this)
         this.handlePress = this.handlePress.bind(this)
         this.collect = this.collect.bind(this)
-        this.attention = this.attention.bind(this)
         this.xiaofu_detailed = this.xiaofu_detailed.bind(this)
+        this._loadInitialState=this._loadInitialState.bind(this);
     }
 
     componentDidMount(){
@@ -68,14 +71,6 @@ export default class XfDetailed extends Component{
         if( this.props.navigation.state.params.list){
             this.props.navigation.state.params.list()
         }
-        //首次获取用户行为
-                AsyncStorage.getItem("user_behavior",(error,result)=>{
-                    if(result!=null || result!=""){
-                        this.setState({
-                            user_behavior:JSON.parse(result)
-                        })
-                    }
-                })
         var id = this.props.navigation.state.params.id
          user = JSON.parse(this.props.navigation.state.params.user)
         //获取小福精选详情页
@@ -86,6 +81,7 @@ export default class XfDetailed extends Component{
         this.setState({
             xiaofu:responseText.data
         })
+        this._loadInitialState();
     }
     showActionSheet() {
         this.ActionSheet.show()
@@ -95,6 +91,32 @@ export default class XfDetailed extends Component{
             collect:!this.state.collect
         })
 
+    }
+    //关注收藏按钮初始化
+    async _loadInitialState(){
+        try{
+            var value=await AsyncStorage.getItem('userActionList');
+            console.log(value)
+            const author_id=this.state.xiaofu.author_id+"";
+            if(value!=null){
+                result=JSON.parse(value);
+                if(result.guanzhu.daren.dataList.indexOf(author_id) == -1){
+                    this.setState({
+                        attend:'false'
+                    })
+                    console.log("1");
+                }else {
+                    this.setState({
+                        attend:'true'
+                    })
+                }
+                console.log(this.state.attend)
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            console.log(error)
+        }
     }
     handlePress(i) {
         if(i==0){
@@ -127,22 +149,11 @@ export default class XfDetailed extends Component{
             alert("点了剪切板")
         }
     }
-    attention(){
-        if(this.state.attention){
-            ToastAndroid.show('取关成功', ToastAndroid.SHORT)
 
-        }else{
-            ToastAndroid.show('关注成功', ToastAndroid.SHORT)
-        }
-       this.setState({
-           attention:!this.state.attention
-       })
-    }
     render(){
-        let attention = this.state.attention?"已关注":"+关注"
-        let attention_style = this.state.attention?styles.Has_attention:styles.attention
         return(
             <View style={{width:width,backgroundColor:"#fff",flex:1}}>
+                <Header title="小福精选" back="true" navigation={this.props.navigation}/>
                 <View style={{
                     width:width,
                     height:80,
@@ -179,20 +190,9 @@ export default class XfDetailed extends Component{
                             <Image source={{uri:this.state.xiaofu.author_img}} style={{width:46,height:46,borderRadius:23}}/>
                             <Text style={{marginLeft:10}}>{this.state.xiaofu.author_name}</Text>
                         </View>
-                        <TouchableWithoutFeedback onPress={()=>{this.attention()}}>
-                            <View style={{
-                                width:80,
-                                height:35,
-                                backgroundColor:"#fff",
-                                justifyContent:"center",
-                                alignItems:"center",
-                                borderWidth:1,
-                                borderColor:"#f3f3f3",
-                                borderRadius:5
-                            }}>
-                                <Text style={attention_style}>{attention}</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
+                        <View style={{position:"absolute",right:10}}>
+                            <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.xiaofu.author_id}/>
+                        </View>
                     </View>
                 </View>
                 <View>

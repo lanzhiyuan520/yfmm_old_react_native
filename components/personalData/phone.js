@@ -16,6 +16,7 @@ var {width} = Dimensions.get('window')
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {send_code,bind_phone} from "../api"
 import {bounces} from "../bounces/bounces"
+import Toast, {DURATION} from 'react-native-easy-toast'
 var user
 var bindDomain = 1;
 export default class Phone extends Component{
@@ -60,11 +61,11 @@ export default class Phone extends Component{
         var code = this.state.code
         var uuid = user.uuid
         if(!this.state.count == 60){
-            bounces('请稍后再次发送')
+            bounces('请稍后再次发送',this)
             return false
         }else{
             if(!(/^1[34578]\d{9}$/.test(phone_val))){
-                bounces('手机号有误请重新填写')
+                bounces('手机号有误请重新填写',this)
                 return false;
             }else{
                 send_code({
@@ -141,6 +142,7 @@ export default class Phone extends Component{
         let once = this.state.liked?styles.once:styles.once1
         return(
             <View style={{flex:1,backgroundColor:"#f8f8f8"}}>
+                <Toast ref="toast"/>
                 <View>
                     <View style={{width:width,alignItems:"center",marginTop:10}}>
                         <TextInput
