@@ -25,50 +25,8 @@ export default class OrtherList extends Component{
             actionNum:0,
             state:0
         }
-        // this.requestData=this.requestData.bind(this);
-
     }
 
-    // componentDidMount(){
-    //     const id=this.props.id;
-    //     this.requestData(id)
-    // }
-
-    // requestData(id){
-    //     let offset=this.state.actionNum*5;
-    //     console.log(offset);
-    //     const url=constants.url+'/v1/article?uuid='+constants.uuid+'&limit=5&offset=0&orderBy=created_at desc&authId='+id+'&articleSource=auth';
-    //     const urlSigned = getSingedUrl(url, constants.uuid);
-    //     fetch(urlSigned,{
-    //         method:"GET",
-    //         headers: {
-    //             "Http-App-Token": constants.token
-    //         }
-    //     })
-    //         .then((response) => response.json())
-    //         .then((responsejson) => {
-    //             console.log(responsejson)
-    //            this.setState({
-    //                list:responsejson.data.dataList
-    //            })
-    //            //  let oldArr=this.state.list;
-    //            //  let newArr=responsejson.data.dataList;
-    //            //  if(newArr.length<=0){
-    //            //      this.setState({
-    //            //          finish:true,
-    //            //          actionNum:this.state.actionNum-1
-    //            //      })
-    //            //  }else {
-    //            //      allArr=[...oldArr,...newArr];
-    //            //      this.setState({
-    //            //          list:allArr
-    //            //      });
-    //            //  }
-    //         })
-    //         .catch(() => {
-    //             console.error('数据请求失败！');
-    //         });
-    // }
 
     render(){
         return(

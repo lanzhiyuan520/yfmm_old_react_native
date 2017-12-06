@@ -125,6 +125,7 @@ export default class Problem extends Component{
     }
     //请求数据
     requestData(id){
+        console.log(this.state.user)
         const url=constants.url+"/v1/problem?rid="+id+"&offset=0&limit=3&type=0&uuid="+this.state.user.uuid;
         const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
