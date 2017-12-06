@@ -43,7 +43,7 @@ export default class Home extends Component{
         })
     }
     //获取用户信息
-    async _loadInitialUser(path){
+    async _loadInitialUser(image){
         var that=this;
         try{
             var value=await AsyncStorage.getItem('user');
@@ -52,7 +52,7 @@ export default class Home extends Component{
                 this.setState({
                     user:result
                 });
-                that.uploadPic(path);
+                that.uploadPic(image);
             }else{
                 console.log('无数据')
             }
@@ -61,12 +61,19 @@ export default class Home extends Component{
         }
     }
     //上传照片
-    uploadPic(path){
-        console.log(this.state.user)
+    uploadPic(image){
+        console.log(image)
         var url = constants.url+'/v1/upload?uuid='+this.state.user.uuid;
         let formData = new FormData();
-        let file = {uri: path, type: 'multipart/form-data', name: 'image.jpg'};
-        formData.append("photo",file);
+        var uri = image.path;
+        var index = uri.lastIndexOf("/");
+        var name  = uri.substring(index + 1, uri.length);
+        let file = {uri: uri, type: 'multipart/form-data', name: name } ;
+        formData.append('headImg', file);
+
+        // let file = {uri: path, type: 'multipart/form-data', name: 'image.jpg'};
+        // formData.append("headImg",file);
+        console.log(formData)
         var urlSigned = getSingedUrl(url,this.state.user.uuid);
         fetch(urlSigned,{
             method:"POST",
@@ -77,11 +84,19 @@ export default class Home extends Component{
             body:formData
         })
             .then((response) => {
-                console.log(response)
                 return response.json();
             })
             .then((responseText) => {
-                console.log(responseText)
+               if(responseText.code==0){
+                    let picArr=this.state.imageArr;
+                    picArr.push(responseText.data.url);
+                   this.props.getPic(picArr,true);
+                    this.props.cameraHide();
+                   this.setState({
+                       show:false
+                   })
+               }
+
             })
             .catch((error)=>{
                 ToastAndroid.show('网络错误', ToastAndroid.SHORT)
@@ -90,16 +105,12 @@ export default class Home extends Component{
     //调用相册
     photoAlbum(){
         ImagePicker.openPicker({
-            multiple: true
-        }).then(images => {
-            let picArr=this.state.imageArr;
-            picArr.push(...images);
-            this._loadInitialUser(picArr[0].path);
-           this.props.getPic(picArr,true);
-            this.props.cameraHide();
-           this.setState({
-               show:false
-           })
+            width: 300,
+            height: 400,
+            cropping: false
+        }).then(image => {
+            console.log(image)
+            this._loadInitialUser(image);
         });
     }
     //调用相机
@@ -109,13 +120,15 @@ export default class Home extends Component{
             height: 400,
             cropping: false
         }).then(image => {
-            let imagePic=this.state.imageArr;
-            imagePic.push(JSON.stringify(image));
-            this.props.getPic(imagePic,false);
-            this.props.cameraHide();
-            this.setState({
-                show:false
-            })
+            console.log(image)
+            this._loadInitialUser(image);
+            // let imagePic=this.state.imageArr;
+            // imagePic.push(JSON.stringify(image));
+            // this.props.getPic(imagePic,false);
+            // this.props.cameraHide();
+            // this.setState({
+            //     show:false
+            // })
         });
     }
 

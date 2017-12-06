@@ -7,6 +7,7 @@ import {
     Text,
     View,
     TouchableWithoutFeedback,
+    Platform
 } from 'react-native';
 export default class Find extends Component{
 
@@ -37,7 +38,8 @@ const styles = StyleSheet.create({
         height:40,
         backgroundColor:'#fff',
         borderBottomColor:'#f2f2f2',
-        borderBottomWidth:1
+        borderBottomWidth:1,
+        marginTop:(Platform.OS === 'ios' ? 20 : 0)
     },
     sub_container:{
         flex:1,

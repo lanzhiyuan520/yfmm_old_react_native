@@ -115,13 +115,13 @@ export default class Find extends Component{
             img=[];
             if(this.state.camera){
                 for(var i = 0;i<this.state.picArr.length;i++){
-                    var uri = this.state.picArr[i].path;
+                    var uri = this.state.picArr[i];
                     img.push(uri)
                 }
             }else {
                 for(var i = 0;i<this.state.picArr.length;i++){
                     this.state.picArr[i]=JSON.parse(this.state.picArr[i]);
-                    var uri = this.state.picArr[i].path;
+                    var uri = this.state.picArr[i];
                     img.push(uri)
                 }
             }

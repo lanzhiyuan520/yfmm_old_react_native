@@ -2,11 +2,11 @@
 var API_VERSION = "v1/";
 //var URI = "http://www.youfubaba.com:9201/";
 //生产：
-/*var URI = "https://api.youfumama.com/";*/
+// var URI = "https://api.youfumama.com/";
 var URI = "http://test.na.ayi800.com/";
 
 const VERSION = 'v1';
-/*const DOMAIN = 'https://api.youfumama.com';*/
+// const DOMAIN = 'https://api.youfumama.com';
 const DOMAIN = 'http://test.na.ayi800.com/';
 //文章分享url
 var ARTICLE_URL = "http://nf.youfumama.com/article/show-article";
@@ -649,9 +649,11 @@ export function user_img(uuid,token,path,successCallback){
         body:formData
     })
         .then((response) => {
+            console.log(response)
             return response.json();
         })
         .then((responseText) => {
+            console.log(responseText)
             successCallback(responseText)
         })
         .catch((error)=>{

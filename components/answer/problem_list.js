@@ -67,6 +67,7 @@ export default class ProblemList extends Component {
     }
 
     requestData(orderby,offset){
+        console.log(offset)
         const url=constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset="+offset+"&limit="+this.state.limit+"&uuid="+this.state.user.uuid;
         const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
@@ -145,7 +146,7 @@ export default class ProblemList extends Component {
             images.forEach(function(listItem,index){
                 newArr.push(
                     <View key={index} style={{marginRight:5,marginBottom:5}}>
-                        <Image source={{uri:listItem}} style={{width:50,height:40}}/>
+                        <Image source={{uri:'http://'+listItem}} style={{width:50,height:40}}/>
                     </View>
                 )
             })

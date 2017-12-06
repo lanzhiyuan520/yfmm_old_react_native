@@ -73,7 +73,7 @@ export default class MinePage extends Component {
                             <View style={{flex:1,alignItems:'center'}}>
                                 <View><Text>免费问答，快速提问</Text></View>
                                 <TouchableWithoutFeedback onPress={()=> {this.props.navigate('PublishProblem',{navigate:this.props.navigate})} }>
-                                <View style={{width:70,height:24,borderColor:'#ff8080',borderWidth:1,borderRadius:12,marginTop:16}} >
+                                <View style={{width:70,height:24,borderColor:'#ff8080',borderWidth:1,borderRadius:12,marginTop:16,overflow:'hidden'}} >
                                     <Text style={{textAlign:'center',lineHeight:18,color:'#ff8080',fontSize:10}}>我要提问</Text>
                                 </View>
                                 </TouchableWithoutFeedback>
