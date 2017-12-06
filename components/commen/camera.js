@@ -109,7 +109,6 @@ export default class Home extends Component{
             height: 400,
             cropping: false
         }).then(image => {
-            console.log(image)
             this._loadInitialUser(image);
         });
     }
@@ -120,7 +119,6 @@ export default class Home extends Component{
             height: 400,
             cropping: false
         }).then(image => {
-            console.log(image)
             this._loadInitialUser(image);
             // let imagePic=this.state.imageArr;
             // imagePic.push(JSON.stringify(image));

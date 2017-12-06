@@ -113,19 +113,10 @@ export default class Find extends Component{
         } else {
             console.log(this.state.picArr)
             img=[];
-            if(this.state.camera){
-                for(var i = 0;i<this.state.picArr.length;i++){
-                    var uri = this.state.picArr[i];
-                    img.push(uri)
-                }
-            }else {
-                for(var i = 0;i<this.state.picArr.length;i++){
-                    this.state.picArr[i]=JSON.parse(this.state.picArr[i]);
-                    var uri = this.state.picArr[i];
-                    img.push(uri)
-                }
+            for(var i = 0;i<this.state.picArr.length;i++){
+                var uri = this.state.picArr[i];
+                img.push(uri)
             }
-
         }
         let post_params={author_id:this.state.user.id,content:this.state.text,service_groups:'2',service_id:this.state.service,anonymous:this.state.quiz,adapter:this.state.user.status,images:img};
         let url=constants.url+"/v1/problem?uuid="+this.state.user.uuid;

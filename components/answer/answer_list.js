@@ -88,7 +88,6 @@ export default class AnswerList extends Component {
                     <Image style={{width:125,height:100}} source={require('../../img/app_nothing.png')} />
                 </View>
             )
-            
         }else {
             return (
                 <View style={{backgroundColor:'#fff',paddingTop:15,marginBottom:50}}>

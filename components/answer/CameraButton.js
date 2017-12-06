@@ -50,22 +50,19 @@ export default class Home extends Component{
     //渲染照片
     renderPic(){
         var picArr=[];
-        if(this.props.camera){
-            this.props.picArr.map(function (listItem,index) {
-                console.log(listItem)
+        console.log(this.props.picArr)
+        this.props.picArr.map(function (listItem,index) {
+            if(listItem.indexOf('http') !== -1){
+                picArr.push(
+                    <Image key={index} source={{uri:listItem}} style={{width:100,height:75,marginRight:10,marginBottom:10}} />
+                )
+            }else {
                 picArr.push(
                     <Image key={index} source={{uri:'http://'+listItem}} style={{width:100,height:75,marginRight:10,marginBottom:10}} />
                 )
-            })
-        }else{
-            this.props.picArr.map(function (listItem,index) {
-                listItem=JSON.parse(listItem);
-                picArr.push(
-                    <Image key={index} source={{uri:'http://'+listItem}} style={{width:100,height:75,marginRight:10,marginBottom:10}} />
-                )
-            })
-        }
+            }
 
+        })
         return picArr;
     }
 
