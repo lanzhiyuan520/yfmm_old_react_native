@@ -106,10 +106,9 @@ export default class Find extends Component{
 
     //提交数据
     postData(){
-        console.log(this.state.quiz)
         let img=null;
         if(this.state.picArr.length==0){
-          console.log('没有上传照片')
+            console.log('没有上传照片')
         } else {
             console.log(this.state.picArr)
             img=[];

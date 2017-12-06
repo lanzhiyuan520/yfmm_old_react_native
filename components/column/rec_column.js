@@ -85,6 +85,13 @@ export default class RecColumn  extends Component {
 
 
     render() {
+        if(this.props.data.length==0){
+            return (
+                <View style={{backgroundColor:'#fff',flex:1,justifyContent:'center',alignItems:'center',height:380,marginBottom:10,marginTop:10}}>
+                    <Image style={{width:80,height:65}} source={require('../../img/app_no_network.png')} />
+                </View>
+            )
+        }else {
             return (
                 <View style={{marginTop:10,marginBottom:10}}>
                     <View style={{backgroundColor:'#fff'}}>
@@ -95,6 +102,7 @@ export default class RecColumn  extends Component {
                     </View>
                 </View>
             );
+        }
     }
 }
 const styles = StyleSheet.create({
