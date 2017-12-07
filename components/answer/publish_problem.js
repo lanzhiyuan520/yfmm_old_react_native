@@ -42,7 +42,8 @@ export default class Find extends Component{
             picArr:[],
             camera:false,
             user:{},
-            checked:true
+            checked:true,
+            groups:'2'
         }
         this.getService=this.getService.bind(this);
         this.putIn=this.putIn.bind(this);
@@ -51,7 +52,24 @@ export default class Find extends Component{
         this.cameraShow=this.cameraShow.bind(this);
         this.getPic=this.getPic.bind(this);
         this.cameraHide=this.cameraHide.bind(this);
+        this.hasExpert=this.hasExpert.bind(this);
     }
+
+    componentWillMount(){
+        const author=this.props.navigation.state.params.author;
+        if(author){
+            this.setState({
+                groups:'1',
+                service:author.id,
+            })
+        }else {
+            this.setState({
+                groups:'2',
+                service:0,
+            })
+        }
+    }
+
     //匿名提问、公开提问按钮
     changeFont(){
         if(this.state.trueSwitchIsOn){
@@ -117,7 +135,7 @@ export default class Find extends Component{
                 img.push(uri)
             }
         }
-        let post_params={author_id:this.state.user.id,content:this.state.text,service_groups:'2',service_id:this.state.service,anonymous:this.state.quiz,adapter:this.state.user.status,images:img};
+        let post_params={author_id:this.state.user.id,content:this.state.text,service_groups:this.state.groups,service_id:this.state.service,anonymous:this.state.quiz,adapter:this.state.user.status,images:img};
         let url=constants.url+"/v1/problem?uuid="+this.state.user.uuid;
         let urlSigned = getSingedUrl(url, this.state.user.uuid);
         var dataEncrypt = getEncryptParam(post_params);
@@ -189,12 +207,58 @@ export default class Find extends Component{
             camera:condition
         })
     }
+    //是否指定专家
+    appointExpert(){
+        const author=this.props.navigation.state.params.author;
+        if(author){
+            return(
+                <View style={{backgroundColor:'#fff',marginBottom:15,paddingHorizontal:15,paddingVertical:10}}>
+                    <View style={{flex:1,flexDirection:'row'}}>
+                        <View style={{marginRight:10}}>
+                            <Image source={{uri:author.img}} style={{width:30,height:30,borderRadius:15}} />
+                        </View>
+                        <View style={{paddingTop:2}}>
+                            <View><Text style={{fontSize:10}}>{author.name}</Text></View>
+                            <View><Text style={{fontSize:8,color:'#999'}}>{author.title}</Text></View>
+                        </View>
+                    </View>
+                </View>
+            )
+        }else {
+            return(
+                <View></View>
+            )
+        }
+    }
+
+    //是否渲染专家类型
+    hasExpert(){
+        const author=this.props.navigation.state.params.author;
+        if(author){
+            return(
+                <View></View>
+            )
+        }else {
+            return(
+                <View style={{backgroundColor:'#fff',marginTop:15,padding:15}}>
+                    <View style={{marginBottom:15}}>
+                        <Text style={{fontSize:12}}>我想让以下方面得专家解答</Text>
+                    </View>
+                    <View>
+                        <Btn title="不限"  getService={this.getService} />
+                    </View>
+                </View>
+            )
+        }
+    }
+
     render(){
         const { state } = this.props.navigation;
         return(
             <View>
                 <PubTop navigation={this.props.navigation} public={this.putIn} />
                 <ScrollView>
+                    {this.appointExpert()}
                     <View style={{backgroundColor:'#fff',borderBottomWidth:1,borderBottomColor:'#f2f2f2'}}>
                         <TextInput
                             style={{height: 120,marginLeft:15,marginRight:15}}
@@ -220,14 +284,7 @@ export default class Find extends Component{
                             {this.changeFont()}
                         </View>
                     </View>
-                    <View style={{backgroundColor:'#fff',marginTop:15,padding:15}}>
-                        <View style={{marginBottom:15}}>
-                            <Text style={{fontSize:12}}>我想让以下方面得专家解答</Text>
-                        </View>
-                        <View>
-                             <Btn title="不限"  getService={this.getService} />
-                        </View>
-                    </View>
+                    {this.hasExpert()}
                 </ScrollView>
                 <Camera cameraHide={this.cameraHide} getPic={this.getPic} show={this.state.show}/>
             </View>
