@@ -10,7 +10,8 @@ import {
     Dimensions,
     ToastAndroid,
     AsyncStorage,
-    ScrollView
+    ScrollView,
+    WebView
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet'
 
@@ -24,6 +25,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {request_article_xiaofu_xiangqing} from "../api"
 import Btn from './../column/att_btn';
 import Header from './../commen/header';
+import HTMLView from "react-native-htmlview"
 export default class XfDetailed extends Component{
     static navigationOptions = ({navigation}) => ({
         header:null
@@ -56,7 +58,8 @@ export default class XfDetailed extends Component{
             collect: false,
             xiaofu: {},
             user_behavior: null,
-            attend:"false"
+            attend:"false",
+            heart:true
         }
         WeChat.registerApp('wx825ecd9a849eef9d')
         this.showActionSheet = this.showActionSheet.bind(this)
@@ -83,6 +86,7 @@ export default class XfDetailed extends Component{
         this.props.navigation.setParams({navigatePress:this.showActionSheet,collect:this.collect})
     }
     xiaofu_detailed(responseText){
+        console.log(responseText)
         this.setState({
             xiaofu:responseText.data
         })
@@ -95,13 +99,12 @@ export default class XfDetailed extends Component{
         this.setState({
             collect:!this.state.collect
         })
-
     }
     //关注收藏按钮初始化
     async _loadInitialState(){
         try{
             var value=await AsyncStorage.getItem('userActionList');
-            console.log(value)
+            var id = this.state.xiaofu.id
             const author_id=this.state.xiaofu.author_id+"";
             if(value!=null){
                 result=JSON.parse(value);
@@ -109,13 +112,22 @@ export default class XfDetailed extends Component{
                     this.setState({
                         attend:'false'
                     })
-                    console.log("1");
                 }else {
                     this.setState({
                         attend:'true'
                     })
                 }
-                console.log(this.state.attend)
+                if(result.shoucang.yinshi.dataList.indexOf(id) !== -1){
+                    this.setState({
+                        show:false,
+                        heart:false
+                    })
+                }else {
+                    this.setState({
+                        show:false,
+                        heart:true
+                    })
+                }
             }else{
                 console.log('无数据')
             }
@@ -158,7 +170,8 @@ export default class XfDetailed extends Component{
     render(){
         return(
             <View style={{width:width,backgroundColor:"#fff",flex:1}}>
-                <Header title="小福精选" back="true" navigation={this.props.navigation}/>
+                <Header title="小福精选" id={this.state.xiaofu.id} heart={this.state.heart} back="true" isheart='true' navigation={this.props.navigation}/>
+              <ScrollView>
                 <View style={{
                     width:width,
                     height:80,
@@ -200,6 +213,12 @@ export default class XfDetailed extends Component{
                         </View>
                     </View>
                 </View>
+                  <View style={{width:width}}>
+                      <HTMLView
+                          value={this.state.xiaofu.content}
+                          stylesheet={styles}
+                      />
+                  </View>
                 <View>
                     <ActionSheet
                         ref={o => this.ActionSheet = o}
@@ -209,11 +228,16 @@ export default class XfDetailed extends Component{
                         onPress={this.handlePress}
                     />
                 </View>
+              </ScrollView>
             </View>
         )
     }
 }
 const styles = StyleSheet.create({
+    p:{
+      marginTop:-5,
+        marginBottom:-5
+    },
     attention:{
         color:"#FF9490"
     },
