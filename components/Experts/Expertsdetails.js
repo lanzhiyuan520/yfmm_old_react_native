@@ -15,6 +15,7 @@ import {
     ScrollView
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet'
+import PublishProblem from './../answer/publish_problem';
 var {width} = Dimensions.get('window')
 import Variable from "../Variable/Variable"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -246,7 +247,12 @@ export default class Expertsdetails extends Component{
                 />
                 </ScrollView>
                 <View style={{width:width,height:60,backgroundColor:'#fff',justifyContent:"center",alignItems:"center"}}>
-                    <TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={()=>{
+                        this.props.navigation.navigate("PublishProblem",{
+                            author:this.state.experts_data,
+                            navigate:this.props.navigate
+                        })
+                    }}>
                         <View style={{backgroundColor:"#ff8089",width:width*0.9,height:40,justifyContent:"center",alignItems:"center"}}>
                             <Text style={{color:"#fff",fontSize:16}}>提问</Text>
                         </View>

@@ -17,7 +17,6 @@ import Problem from './problem_detail';
 //Question
 var QUESTIONLIST = "problem?";
 var API_VERSION = "v1/";
-
 export default class ProblemList extends Component {
     constructor(props){
         super(props);
@@ -29,13 +28,10 @@ export default class ProblemList extends Component {
             actionNum:0,
             offset:0,
             finish:false,
-            user:{}
+            user:{},
+            afresh:false,
+            articleId:0
         }
-    }
-    componentDidMount(){
-        // const orderby='weight';
-        // const offset=0;
-        // this._loadInitialUser(orderby,offset);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -46,7 +42,6 @@ export default class ProblemList extends Component {
     //渲染图片
     renderItem(images){
         let newArr=[];
-        console.log(images)
         if( images!== null && images!== undefined){
             images.forEach(function(listItem,index){
                 if(listItem !== null && listItem.indexOf('http') !== -1) {
@@ -63,16 +58,21 @@ export default class ProblemList extends Component {
                     )
                 }
             })
+            return newArr;
+        }else {
+            <View></View>
         }
-        return newArr;
+
     }
+
+
     render() {
         var that=this;
-        console.log(this.state.data)
         if(this.state.data.length==0){
             return (
                 <View style={{backgroundColor:'#fff',flex:1,justifyContent:'center',alignItems:'center',height:200,marginBottom:10}}>
                     <Image style={{width:80,height:65}} source={require('../../img/app_no_network.png')} />
+                    <Text style={{fontSize:10,color:'#999',marginTop:10}}>下拉刷新试试~</Text>
                 </View>
             )
         }else {
@@ -99,55 +99,43 @@ export default class ProblemList extends Component {
                         {
                             <View>
                                 {this.state.data.map(function(listItem,index){
-                                    console.log(listItem)
-                                    if(listItem.images==null){
-                                        return  (
-                                            <View key={index}>
-                                                <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list,images:listItem.images}) }>
-                                                    <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
-                                                        <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
-                                                            <View style={{marginRight:10}}>
-                                                                <Image source={{uri:listItem.author_list.head_img}} style={{width:20,height:20,borderRadius:10}} />
-                                                            </View>
-                                                            <View><Text>{listItem.author_list.nickname}</Text></View>
+                                    return  (
+                                        <View key={index}>
+                                            <TouchableWithoutFeedback onPress={()=>
+                                            {
+                                                that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list,images:listItem.images});
+                                                if(that.state.articleId!=listItem.id){
+                                                    listItem.liulan_num=listItem.liulan_num+1;
+                                                    that.setState({
+                                                        afresh:true,
+                                                        articleId:listItem.id
+                                                    })
+                                                }
+
+                                            }}>
+                                                <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
+                                                    <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
+                                                        <View style={{marginRight:10}}>
+                                                            <Image source={{uri:listItem.author_list.head_img}} style={{width:20,height:20,borderRadius:10}} />
                                                         </View>
-                                                        <View><Text style={styles.show_two}>{listItem.content}</Text></View>
-                                                        <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-                                                            <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
-                                                            <View><Text>{listItem.create_at}</Text></View>
+                                                        <View><Text>{listItem.author_list.nickname}</Text></View>
+                                                    </View>
+                                                    <View>
+                                                        <View style={{marginBottom:5}}>
+                                                            <Text style={styles.show_two}>{listItem.content}</Text>
+                                                        </View>
+                                                        <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',height:'auto'}}>
+                                                            {that.renderItem(listItem.images)}
                                                         </View>
                                                     </View>
-                                                </TouchableWithoutFeedback>
-                                            </View>
-                                        )
-                                    }else {
-                                        return  (
-                                            <View key={index}>
-                                                <TouchableWithoutFeedback onPress={()=> that.props.navigate('Problem',{id:listItem.id,author:listItem.author_list,images:listItem.images}) }>
-                                                    <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
-                                                        <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
-                                                            <View style={{marginRight:10}}>
-                                                                <Image source={{uri:listItem.author_list.head_img}} style={{width:20,height:20,borderRadius:10}} />
-                                                            </View>
-                                                            <View><Text>{listItem.author_list.nickname}</Text></View>
-                                                        </View>
-                                                        <View>
-                                                            <View style={{marginBottom:5}}>
-                                                                <Text style={styles.show_two}>{listItem.content}</Text>
-                                                            </View>
-                                                            <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',height:'auto'}}>
-                                                                {that.renderItem(listItem.images)}
-                                                            </View>
-                                                        </View>
-                                                        <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
-                                                            <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
-                                                            <View><Text>{listItem.create_at}</Text></View>
-                                                        </View>
+                                                    <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
+                                                        <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
+                                                        <View><Text>{listItem.create_at}</Text></View>
                                                     </View>
-                                                </TouchableWithoutFeedback>
-                                            </View>
-                                        )
-                                    }
+                                                </View>
+                                            </TouchableWithoutFeedback>
+                                        </View>
+                                    )
                                 })}
                             </View>
                         }

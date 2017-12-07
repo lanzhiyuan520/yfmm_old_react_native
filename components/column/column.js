@@ -83,8 +83,9 @@ export default class Column  extends Component {
     }
     //刷新函数
     _onRefresh(){
-
-        alert('刷新成功')
+        const offset=0;
+        this._loadInitialUser(offset);
+        this._loadInitialState();
     }
 
     //点击加载更多数据

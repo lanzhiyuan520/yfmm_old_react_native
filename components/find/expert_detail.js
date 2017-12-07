@@ -48,9 +48,7 @@ export default class Expert extends Component{
 
     componentWillMount(){
         const id=this.props.navigation.state.params.id;
-        // this.requestData(id);
         let offset=0;
-        // this.requestLists(id,offset);
         this._loadInitialUser(id,offset)
     }
     //获取用户信息
@@ -168,7 +166,9 @@ export default class Expert extends Component{
     }
     //刷新函数
     _onRefresh(){
-        alert('刷新成功')
+        const id=this.props.navigation.state.params.id;
+        let offset=0;
+        this._loadInitialUser(id,offset)
     }
     header(){
         if(this.props.navigation.state.params.changeBtn){
@@ -218,7 +218,7 @@ export default class Expert extends Component{
                         </View>
                         <View><Text style={{fontSize:12,color:'#262626'}}>{this.state.author.content}</Text></View>
                     </View>
-                    <OrtherList list={this.state.list} isLoading={this.state.loadMore} actionNum={this.state.actionNum} id={state.params.id}/>
+                    <OrtherList list={this.state.list} user={this.state.user} navigate={this.props.navigation} id={state.params.id}/>
                     <View style={{height:40}}>
                         <LoadingMore
                             finish={this.state.finish}

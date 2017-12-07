@@ -50,7 +50,6 @@ export default class Home extends Component{
     //渲染照片
     renderPic(){
         var picArr=[];
-        console.log(this.props.picArr)
         this.props.picArr.map(function (listItem,index) {
             if(listItem.indexOf('http') !== -1){
                 picArr.push(

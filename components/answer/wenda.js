@@ -143,8 +143,9 @@ export default class MinePage extends Component {
     }
     //刷新函数
     _onRefresh(){
-
-        alert('刷新成功')
+        const orderby='weight';
+        const offset=0;
+        this._loadInitialUser(orderby,offset);
     }
 
     render() {
