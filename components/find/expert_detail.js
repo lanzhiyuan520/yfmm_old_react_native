@@ -166,7 +166,6 @@ export default class Expert extends Component{
     }
     //刷新函数
     _onRefresh(){
-        
         const id=this.props.navigation.state.params.id;
         let offset=0;
         this._loadInitialUser(id,offset)

@@ -151,6 +151,7 @@ export default class Find extends Component{
                 <View style={{backgroundColor:'#fff',width:width,height:height}}>
                     <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
                         <Image style={{width:80,height:65}} source={require('../img/app_nothing.png')} />
+                        <Text style={{fontSize:10,fontcolor:'#999',marginTop:10}}>下拉刷新试试~</Text>
                     </View>
                 </View>
             )
