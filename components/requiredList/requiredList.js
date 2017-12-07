@@ -8,11 +8,18 @@ import {
     Alert,
     Image,
     AsyncStorage,
-    Dimensions
+    Dimensions,
+    ToastAndroid,
+    WebView,
+    ScrollView
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import {requestTodayView} from "../api"
 import Btn from './../column/att_btn';
+import Video from 'react-native-video';
+import {bounces} from "../bounces/bounces"
+import Toast, {DURATION} from 'react-native-easy-toast'
+import HTMLView from "react-native-htmlview"
 export default class RequiredList extends Component{
     constructor(props){
         super(props)
@@ -30,14 +37,17 @@ export default class RequiredList extends Component{
                 collect_num:0,
                 created_at:"2017-07-24 22:16:25",
                 id:208,
+                content:"",
                 tags_ids:44,
                 tags_name:"好好坐月子",
                 title:"产后恢复操（上）",
                 type:2,
                 visit_num:1428,
-                weight:0
+                weight:0,
+                video:"http://cdn.ayi800.com/产后按摩.mp4"
             },
-            attend:"false"
+            attend:"false",
+            play:false
         }
         this.suggest_success=this.suggest_success.bind(this)
         this._loadInitialState=this._loadInitialState.bind(this);
@@ -50,6 +60,35 @@ export default class RequiredList extends Component{
             requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
         })
 
+    }
+    showVideo(){
+        if(this.state.play){
+            return(
+                <View style={{flex:1}}>
+                    <Video
+                        ref="myvideo"
+                        resizeMode='cover'
+                        source={{uri:this.state.suggest_data.video,type: 'mp4'}}
+                        style={{width:width,height:200,backgroundColor:"#fff"}}
+                        onLoad={this.onLoad}
+                        onError={this.onError}
+                        onProgress={this.onProgress}
+                    />
+                </View>
+            )
+        }else {
+            return(
+                <View style={{width:width}}>
+                    <Image style={{width:width,height:200}} source={{uri:this.state.suggest_data.banner}}/>
+                    <TouchableWithoutFeedback onPress={()=>this.setState({play:true})}>
+                        <View style={{position:'absolute',left:width/2,top:100,marginLeft:-25,marginTop:-25,zIndex:999}}>
+                            <Image style={{width:50,height:50}} source={{uri:"http://cdn.ayi800.com/app_faxian/@2px_btn_play_big.png"}}/>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <View style={styles.mask}></View>
+                </View>
+            )
+        }
     }
     //关注收藏按钮初始化
     async _loadInitialState(){
@@ -79,7 +118,20 @@ export default class RequiredList extends Component{
             console.log(error)
         }
     }
+    onLoad(info){
+        // info == {currentTime,duration,...}
+        bounces('视频加载成功！', this);
+    }
+    onError(e){
+        bounces('视频加载错误！',this);
+    }
+
+    onProgress(info){
+        // info == {currentTime: 0, playableDuration: 0}
+    }
+    //点击播放按钮视频播放
     suggest_success(responseText){
+        console.log(responseText)
         if(responseText.code != 0){
             this.setState({
                 suggest_data:this.state.suggest_data
@@ -94,7 +146,9 @@ export default class RequiredList extends Component{
     }
     render(){
         return(
-            <View style={{width:width,backgroundColor:"#fff"}}>
+            <View style={{flex:1,width:width,backgroundColor:"#fff"}}>
+                <Toast ref="toast"/>
+                <ScrollView>
                 <View>
                     <View style={{width:width,height:15,backgroundColor:"#f5f5f5"}}></View>
                         <View style={{width:width,justifyContent:"space-around",height:80,paddingRight:10,paddingLeft:10}}>
@@ -120,7 +174,25 @@ export default class RequiredList extends Component{
                             <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.suggest_data.author_id}/>
                         </View>
                     </View>
+                    <View>
+                        {this.showVideo()}
+                    </View>
+                    <View>
+                        <HTMLView
+                            value={this.state.suggest_data.content}
+                        />
+                    </View>
+                </ScrollView>
                 </View>
         )
     }
 }
+const styles = StyleSheet.create({
+    mask:{
+        width:width,
+        height:200,
+        backgroundColor:'rgba(0,0,0,0.5)',
+        position:'absolute',
+        left:0
+    }
+})

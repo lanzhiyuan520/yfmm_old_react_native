@@ -238,7 +238,7 @@ export default class Header extends Component{
             <View style={styles.container}>
                 <View style={{flex:1,flexDirection:'row',height:40}}>
                     {this.hasLeft()}
-                    <View style={[styles.sub_container,styles.center]}><Text>{this.props.title}</Text></View>
+                    <View style={[styles.sub_container,styles.center]} ><Text  numberOfLines={1}>{this.props.title}</Text></View>
                     {this.hasRight()}
                 </View>
             </View>

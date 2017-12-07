@@ -121,7 +121,7 @@ export default class My extends Component{
                 <View style={{width:width,height:120,backgroundColor:"#fff",flexDirection:"row",justifyContent:"space-around"}}>
                     <TouchableWithoutFeedback
                         disabled={this.state.disabled}
-                        onPress={()=>{this.props.navigate('Questions');this.disabled()}}>
+                        onPress={()=>{this.props.navigate('Questions',{user:this.state.user});this.disabled()}}>
                         <View style={{height:120,flex:1,justifyContent:"center",alignItems:"center"}}>
                             <FontAwesome name="telegram" style={{fontSize: 40, color: "#ff8089"}}/>
                             <Text style={{color:"#000",marginTop:5}}>提问</Text>

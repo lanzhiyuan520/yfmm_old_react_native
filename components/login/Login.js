@@ -358,10 +358,14 @@ export default class Login extends Component {
                                 <TouchableWithoutFeedback
                                     disabled={this.state.disabled}
                                     onPress={this.service}>
-                                    <Text style={{fontSize:15,color:"#262626"}}>阅读并同意</Text>
+                                    <View>
+                                        <Text style={{fontSize:15,color:"#262626"}}>阅读并同意</Text>
+                                    </View>
                                 </TouchableWithoutFeedback>
                                 <TouchableWithoutFeedback onPress={()=>{this.props.navigation.navigate("Service")}}>
-                                    <Text style={{color:"#ff8089",fontSize:15}}>《用户服务条款》</Text>
+                                    <View>
+                                        <Text style={{color:"#ff8089",fontSize:15}}>《用户服务条款》</Text>
+                                    </View>
                                 </TouchableWithoutFeedback>
                             </View>
                         </View>

@@ -323,11 +323,11 @@ export default class Home extends Component{
                                 paddingLeft:10,
                                 position:"relative"
                             }}>
-                                <View style={{flexDirection:"row"}}>
+                                <View style={{flexDirection:"row",width:width*0.6}}>
                                     <View>
                                         <Image source={{uri:this.state.experts.img}} style={{width:50,height:50,borderRadius:25}}/>
                                     </View>
-                                    <View style={{flexDirection:"column", width:210,marginLeft:5}}>
+                                    <View style={{flexDirection:"column",marginLeft:5}}>
                                         <View style={{flexDirection:"row"}}>
                                             <Text style={{color:"#000",fontSize:16,marginRight:5}}>{this.state.experts.name}</Text>
                                             <Text style={{fontSize:13,textAlignVertical:"center"}}>{this.state.experts.title}</Text>
@@ -360,7 +360,8 @@ export default class Home extends Component{
                                         justifyContent:"center",
                                         alignItems:"center",
                                         borderWidth:1,
-                                        borderColor:"#f5f5f5"
+                                        borderColor:"#f5f5f5",
+                                        flex:1
                                     }}>
                                         <Text style={{color:"#FF9490",fontSize:11}}>去问TA</Text>
                                     </View>

@@ -46,14 +46,11 @@ export default class Collect extends Component{
             this.setState({
                 state:false
             })
-            console.log(responseText)
         }else if (responseText.code == 0){
-            console.log(responseText)
             this.setState({
                 collect_list:responseText.data.dataList,
                 state:true
             })
-            console.log(this.state.state)
         }
 
     }
@@ -72,12 +69,12 @@ export default class Collect extends Component{
                             <View style={{width:width,height:80,paddingLeft:10,paddingRight:10,flexDirection:"row",position:"relative"}}>
                                 <View>
                                     <View>
-                                        <View style={{flexDirection:"row",alignItems:"center"}}>
+                                        <View style={{flexDirection:"row",alignItems:"center",width:width*0.3}}>
                                             <Image source={{uri:item.author_img}} style={{width:16,height:16,borderRadius:8}} />
                                             <Text style={{color:"#999",marginLeft:5}}>{item.author_name}</Text>
                                         </View>
-                                        <View style={{marginTop:20}}>
-                                            <Text style={{color:"#000"}}>{item.title}</Text>
+                                        <View style={{marginTop:20,width:width*0.6}}>
+                                            <Text style={{color:"#000"}} numberOfLines={2}>{item.title}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -138,12 +135,12 @@ export default class Collect extends Component{
                         <View style={{width:width,height:80,paddingLeft:10,paddingRight:10,flexDirection:"row",position:"relative"}}>
                             <View>
                                 <View>
-                                    <View style={{flexDirection:"row",alignItems:"center"}}>
+                                    <View style={{flexDirection:"row",alignItems:"center",width:width*0.3}}>
                                         <Image source={{uri:item.author_img}} style={{width:16,height:16,borderRadius:8}} />
                                         <Text style={{color:"#999",marginLeft:5}}>{item.author_name}</Text>
                                     </View>
-                                    <View style={{marginTop:20}}>
-                                        <Text style={{color:"#000"}}>{item.title}</Text>
+                                    <View style={{marginTop:20,width:width*0.6}}>
+                                        <Text style={{color:"#000"}} numberOfLines={2}>{item.title}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -160,7 +157,10 @@ export default class Collect extends Component{
             return (
                 <View>
                     <TouchableWithoutFeedback onPress={()=>{
-
+                        this.props.navigation.navigate("Problem",{
+                            id:item.id,
+                            author:item
+                        })
                     }}>
                     <View style={{width:width,backgroundColor:"#fff"}}>
                         <View style={{width:width,height:45,paddingRight:10,paddingLeft:10,flexDirection:"row",alignItems:"center"}}>
