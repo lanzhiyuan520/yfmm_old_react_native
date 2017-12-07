@@ -14,7 +14,7 @@ import {
 import Header from './commen/header';
 import constants from './constants';
 import VideoDetail from './find/video_detail';
-var {width} = Dimensions.get('window');
+var {width,height} = Dimensions.get('window');
 import {getSingedUrl,getEncryptParam,decrypt} from "./tools/tools";
 let count=0;
 export default class Find extends Component{
@@ -29,6 +29,7 @@ export default class Find extends Component{
             action_num:0
         }
         this._onload=this._onload.bind(this);
+        this.renderList=this.renderList.bind(this);
     }
 
     componentDidMount(){
@@ -143,10 +144,18 @@ export default class Find extends Component{
     }
     _extraUniqueKey(item ,index){ return "index"+index+item; }
 
-    render(){
-        return(
-            <View style={{marginTop:(Platform.OS === 'ios' ? -20 : 0)}}>
-                <Header title="发现" back="false" />
+    //列表加载
+    renderList(){
+        if(this.state.dataSource.length==0){
+            return(
+                <View style={{backgroundColor:'#fff',width:width,height:height}}>
+                    <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                        <Image style={{width:80,height:65}} source={require('../img/app_nothing.png')} />
+                    </View>
+                </View>
+            )
+        }else {
+            return(
                 <FlatList
                     keyExtractor = {this._extraUniqueKey}
                     data={this.state.dataSource}
@@ -161,6 +170,16 @@ export default class Find extends Component{
                     renderItem={({item}) => this.renderItem(item)}
                     style={{marginBottom:40}}
                 />
+            )
+        }
+    }
+
+
+    render(){
+        return(
+            <View style={{marginTop:(Platform.OS === 'ios' ? -20 : 0)}}>
+                <Header title="发现" back="false" />
+                {this.renderList()}
             </View>
         )
     }
