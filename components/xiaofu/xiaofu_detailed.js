@@ -72,7 +72,12 @@ export default class XfDetailed extends Component{
             this.props.navigation.state.params.list()
         }
         var id = this.props.navigation.state.params.id
-         user = JSON.parse(this.props.navigation.state.params.user)
+        if(this.props.navigation.state.params.video){
+            user = this.props.navigation.state.params.user
+        }else {
+            user = JSON.parse(this.props.navigation.state.params.user);
+        }
+
         //获取小福精选详情页
         request_article_xiaofu_xiangqing(id,user.uuid,user.token,this.xiaofu_detailed)
         this.props.navigation.setParams({navigatePress:this.showActionSheet,collect:this.collect})

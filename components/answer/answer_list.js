@@ -85,7 +85,7 @@ export default class AnswerList extends Component {
         if(this.state.blank) {
             return (
                 <View style={{backgroundColor:'#fff',flex:1,justifyContent:'center',alignItems:'center',height:500}}>
-                    <Image style={{width:125,height:100}} source={require('../../img/app_nothing.png')} />
+                    <Image style={{width:80,height:65}} source={require('../../img/app_nothing.png')} />
                 </View>
             )
         }else {
