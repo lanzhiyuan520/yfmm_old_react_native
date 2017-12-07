@@ -184,7 +184,7 @@ export default class Expert extends Component{
     render(){
         const {state}=this.props.navigation;
         return(
-            <View>
+            <View style={{marginBottom:30}}>
                 {
                     this.header()
                 }
@@ -219,7 +219,7 @@ export default class Expert extends Component{
                         <View><Text style={{fontSize:12,color:'#262626'}}>{this.state.author.content}</Text></View>
                     </View>
                     <OrtherList list={this.state.list} isLoading={this.state.loadMore} actionNum={this.state.actionNum} id={state.params.id}/>
-                    <View>
+                    <View style={{height:40}}>
                         <LoadingMore
                             finish={this.state.finish}
                             isLoading={this.state.loadMore}

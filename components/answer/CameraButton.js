@@ -50,21 +50,19 @@ export default class Home extends Component{
     //渲染照片
     renderPic(){
         var picArr=[];
-        if(this.props.camera){
-            this.props.picArr.map(function (listItem,index) {
+        console.log(this.props.picArr)
+        this.props.picArr.map(function (listItem,index) {
+            if(listItem.indexOf('http') !== -1){
                 picArr.push(
-                    <Image key={index} source={{uri:listItem.path}} style={{width:100,height:100,marginRight:10,marginBottom:10}} />
+                    <Image key={index} source={{uri:listItem}} style={{width:100,height:75,marginRight:10,marginBottom:10}} />
                 )
-            })
-        }else{
-            this.props.picArr.map(function (listItem,index) {
-                listItem=JSON.parse(listItem);
+            }else {
                 picArr.push(
-                    <Image key={index} source={{uri:listItem.path}} style={{width:100,height:100,marginRight:10,marginBottom:10}} />
+                    <Image key={index} source={{uri:'http://'+listItem}} style={{width:100,height:75,marginRight:10,marginBottom:10}} />
                 )
-            })
-        }
+            }
 
+        })
         return picArr;
     }
 
@@ -75,7 +73,7 @@ export default class Home extends Component{
                 <View>
                     <TouchableWithoutFeedback onPress={()=>this.showImagePicker()}>
                         <View style={styles.add_box}>
-                            <Octicons name="plus-small" style={{fontSize:50,color:"#aaa",paddingLeft:25}} />
+                            <Octicons name="plus-small" style={{fontSize:50,color:"#aaa",paddingLeft:30}} />
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
