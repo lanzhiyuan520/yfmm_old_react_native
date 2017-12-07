@@ -72,7 +72,7 @@ export function request_code_in_phone(get_params,success){
             success(responseText)
         })
         .catch((error)=>{
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
             console.log(error)
         })
 }
@@ -96,7 +96,7 @@ export function request_login_by_phone(uuid,post_params,successcallback){
             successcallback(responseText)
         })
         .catch((error)=>{
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
             console.log(error)
         })
 }
@@ -118,7 +118,7 @@ export function user_status(id,uuid,token,successcallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //获取首页饮食推荐列表
@@ -139,7 +139,7 @@ export function request_article_yinshi(uuid, userstatus, orderBy, offset, limit,
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
  //获取饮食推荐列表
@@ -160,7 +160,7 @@ export function request_article_yinshi_list(uuid, user_status, orderBy, offset, 
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //首页视频列表
@@ -181,7 +181,7 @@ export function request_article_shipin(uuid, token, offset, limit, orderBy, succ
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //首页有问必答
@@ -202,7 +202,7 @@ export function request_professionals_list(offset, limit, uuid, token, successCa
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //首页今日建议
@@ -223,7 +223,7 @@ export function requestTodayView(rid, userstatus, uuid, token, successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //专家列表
@@ -244,7 +244,7 @@ export function request_page_content_by_caregory(uuid, token, getParams, success
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //小福精选列表
@@ -265,7 +265,7 @@ export function request_article_xiaofujingxuan(uuid, userstatus, orderBy, offset
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //用户关注达人数据
@@ -286,7 +286,7 @@ export function request_user_action_list(id,uuid,token,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //用户关注专家数据
@@ -307,7 +307,7 @@ export function request_user_collect(id,uuid,token,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //用户关注专栏
@@ -328,12 +328,12 @@ export function request_user_column(id,uuid,token,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //用户收藏数据
 export function collect_user_list(id,uuid,token,successCallback){
-    var url = URI + API_VERSION + 'userbehavior/user?uuid=' + uuid + '&userId=' + id + '&userOpType=2' + "&operateType=14&limit=10&offset=0" ;
+    var url = URI + API_VERSION + 'userbehavior/user?uuid=' + uuid + '&userId=' + id + '&userOpType=2' + "&operateType=14&limit=100000&offset=0" ;
     var urlSigned = getSingedUrl(url,uuid);
     fetch(urlSigned,{
         method:"GET",
@@ -349,7 +349,7 @@ export function collect_user_list(id,uuid,token,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //获取用户行为
@@ -370,7 +370,7 @@ export function user_behavior(user, successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //饮食推荐详情
@@ -391,7 +391,7 @@ export function request_article_yinshi_xiangqing(id,uuid,token,successCallBack){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //初次获取用户行为
@@ -412,7 +412,7 @@ export function init_user_behavior(user, successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //关注事件
@@ -445,7 +445,7 @@ export function request_user_action(user, op, post_params, successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //获取专家详情
@@ -466,7 +466,7 @@ export function request_professionals_content(uuid, token, rid, successCallBack)
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //获取达人详情文章
@@ -488,7 +488,7 @@ export function request_get_article_byauth(id,user,succCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //小福精选详情页
@@ -509,7 +509,7 @@ export function request_article_xiaofu_xiangqing(id, uuid, token, successCallBac
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //专栏详情页面
@@ -530,7 +530,7 @@ export function columnDetail(token, uuid , id, successCallback,){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //获取消息列表
@@ -551,7 +551,7 @@ export function request_noticelist(uuid, token, successCallBack){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //用户状态
@@ -576,7 +576,7 @@ export function request_user_status(user, selectTableWarp, successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //修改用户名
@@ -603,7 +603,7 @@ export function username(userData, postData, successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //修改地址
@@ -629,7 +629,7 @@ export function address(userData, postData, successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //上传图片
@@ -658,7 +658,7 @@ export function user_img(uuid,token,path,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //修改头像更新用户数据
@@ -684,7 +684,7 @@ export function update_information(userData, postData,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //修改信箱数据
@@ -712,7 +712,7 @@ export function message(user, post_params){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //获取微信access_token
@@ -727,7 +727,7 @@ export function access_token(code,appid,secret,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //获取微信用户信息
@@ -742,7 +742,7 @@ export function weixin_user(access_token,openid,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //微信登录
@@ -781,7 +781,7 @@ export function wx_login(uuid,data,access_token,refresh_token,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //意见反馈
@@ -806,7 +806,7 @@ export function user_opinion(user,data,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //绑定手机中的发送验证码
@@ -846,7 +846,7 @@ export function bind_phone(data,successCallback){
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 
 }
@@ -867,7 +867,7 @@ export function request_professionals_reply_content(token, get_params, successCa
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }
 //我的提问
@@ -887,6 +887,6 @@ export function request_zhuanlan_reply(token, uuid, support, group_id, orderby, 
         })
         .catch((error)=>{
             console.log(error)
-            ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            bounces('网络错误')
         })
 }

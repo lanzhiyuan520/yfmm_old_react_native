@@ -26,6 +26,7 @@ import {request_article_xiaofu_xiangqing} from "../api"
 import Btn from './../column/att_btn';
 import Header from './../commen/header';
 import HTMLView from "react-native-htmlview"
+import Share from './../commen/share';
 export default class XfDetailed extends Component{
     static navigationOptions = ({navigation}) => ({
         header:null
@@ -59,7 +60,8 @@ export default class XfDetailed extends Component{
             xiaofu: {},
             user_behavior: null,
             attend:"false",
-            heart:true
+            heart:true,
+            show:false
         }
         WeChat.registerApp('wx825ecd9a849eef9d')
         this.showActionSheet = this.showActionSheet.bind(this)
@@ -67,6 +69,7 @@ export default class XfDetailed extends Component{
         this.collect = this.collect.bind(this)
         this.xiaofu_detailed = this.xiaofu_detailed.bind(this)
         this._loadInitialState=this._loadInitialState.bind(this);
+        this.shareShow=this.shareShow.bind(this);
     }
 
     componentDidMount(){
@@ -88,7 +91,8 @@ export default class XfDetailed extends Component{
     xiaofu_detailed(responseText){
         console.log(responseText)
         this.setState({
-            xiaofu:responseText.data
+            xiaofu:responseText.data,
+            heart:false
         })
         this._loadInitialState();
     }
@@ -166,12 +170,17 @@ export default class XfDetailed extends Component{
             alert("点了剪切板")
         }
     }
-
+    //控制分享组件显示
+    shareShow(){
+        this.setState({
+            show:true
+        })
+    }
     render(){
         return(
             <View style={{width:width,backgroundColor:"#fff",flex:1}}>
-                <Header title="小福精选" id={this.state.xiaofu.id} heart={this.state.heart} back="true" isheart='true' navigation={this.props.navigation}/>
-              <ScrollView>
+                <Header title="小福精选" id={this.state.xiaofu.id} heart={this.state.heart} back="true" isheart='true' shareShow={()=>this.shareShow()} navigation={this.props.navigation}/>
+                  <ScrollView>
                 <View style={{
                     width:width,
                     height:80,
@@ -229,6 +238,7 @@ export default class XfDetailed extends Component{
                     />
                 </View>
               </ScrollView>
+                <Share show={this.state.show} id={this.state.xiaofu.id} url="article" title={this.state.xiaofu.title} type="999" />
             </View>
         )
     }

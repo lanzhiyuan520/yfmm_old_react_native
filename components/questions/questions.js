@@ -39,6 +39,7 @@ export default class Questions extends Component{
         this.reply=this.reply.bind(this)
         this._renderItem=this._renderItem.bind(this)
         this.image=this.image.bind(this)
+        this.for_image=this.for_image.bind(this)
     }
     componentDidMount(){
 
@@ -58,12 +59,30 @@ export default class Questions extends Component{
         }
         console.log(responseText)
     }
+    for_image(item){
+        item.map((data)=>{
+
+            if (data != null){
+                return (
+                    <Image source={{uri:data}} style={{width:80,height:70,marginRight:5}} />
+                )
+            }
+        })
+    }
     image(item){
-        if(item.images !== null){
-            console.log(item.images)
+        if(item.images != null){
             return (
                 <View style={{flexDirection:"row"}}>
-                    <Image source={{uri:item.images}} style={{width:80,height:70,marginRight:5}} />
+                    {
+                        this.for_image(item.images)
+                        /*item.images.map((data,index)=>{
+                            if (!data){
+                                return (
+                                    <Image source={{uri:data}} style={{width:80,height:70,marginRight:5}} />
+                                )
+                            }
+                        })*/
+                    }
                 </View>
             )
         }

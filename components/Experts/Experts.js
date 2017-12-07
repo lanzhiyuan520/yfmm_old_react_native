@@ -65,7 +65,7 @@ export default class ExpertsList extends Component{
                 <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
                 <FlatList
                     data={this.state.experts}
-                    renderItem={({item})=>{
+                    renderItem={({item,index})=>{
                         return (
                             <View style={{
                                 paddingLeft:10,

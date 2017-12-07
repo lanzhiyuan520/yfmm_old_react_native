@@ -20,6 +20,7 @@ import Video from 'react-native-video';
 import {bounces} from "../bounces/bounces"
 import Toast, {DURATION} from 'react-native-easy-toast'
 import HTMLView from "react-native-htmlview"
+var user
 export default class RequiredList extends Component{
     constructor(props){
         super(props)
@@ -53,13 +54,12 @@ export default class RequiredList extends Component{
         this._loadInitialState=this._loadInitialState.bind(this);
     }
     componentDidMount(){
-        var user = this.props.user
+         user = this.props.user
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
             //获取今日建议的文章
             requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
         })
-
     }
     showVideo(){
         if(this.state.play){
@@ -93,24 +93,19 @@ export default class RequiredList extends Component{
     //关注收藏按钮初始化
     async _loadInitialState(){
         const author_id=this.state.suggest_data.author_id+"";
-        console.log(author_id)
         try{
             var value=await AsyncStorage.getItem('userActionList');
             if(value!=null){
                 result=JSON.parse(value);
-                console.log(result.guanzhu.daren.dataList)
                 if(result.guanzhu.daren.dataList.indexOf(author_id) == -1){
                     this.setState({
                         attend:'false'
                     })
-                    console.log("1");
                 }else {
                     this.setState({
                         attend:'true'
                     })
-                    console.log("2")
                 }
-                console.log(this.state.attend)
             }else{
                 console.log('无数据')
             }
@@ -129,9 +124,7 @@ export default class RequiredList extends Component{
     onProgress(info){
         // info == {currentTime: 0, playableDuration: 0}
     }
-    //点击播放按钮视频播放
     suggest_success(responseText){
-        console.log(responseText)
         if(responseText.code != 0){
             this.setState({
                 suggest_data:this.state.suggest_data

@@ -59,6 +59,7 @@ export default class Home extends Component{
         /*this.message_success=this.message_success.bind(this)
         this.message_list=this.message_list.bind(this)*/
     }
+
     componentDidMount(){
             this.setState({
                 user:JSON.parse(this.props.user),
@@ -164,9 +165,9 @@ export default class Home extends Component{
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
                             onRefresh={()=>this._onRefresh()}
-                            tintColor="#ff0000"
+                            tintColor="#000"
                             title="加载中..."
-                            titleColor="#00ff00"
+                            titleColor="#000"
                             colors={['#999', '#999', '#999']}
                             progressBackgroundColor="#ffffff"
                         />
