@@ -60,6 +60,7 @@ export default class Questions extends Component{
     }
     image(item){
         if(item.images !== null){
+            console.log(item.images)
             return (
                 <View style={{flexDirection:"row"}}>
                     <Image source={{uri:item.images}} style={{width:80,height:70,marginRight:5}} />

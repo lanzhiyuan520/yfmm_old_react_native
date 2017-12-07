@@ -102,6 +102,7 @@ export default class ExpertList extends Component {
             return (
                 <View style={{backgroundColor:'#fff',flex:1,justifyContent:'center',alignItems:'center',height:162,marginBottom:10,}}>
                     <Image style={{width:80,height:65}} source={require('../../img/app_no_network.png')} />
+                    <Text style={{fontSize:10,color:'#999',marginTop:10}}>下拉刷新试试~</Text>
                 </View>
             )
         }else {
