@@ -98,21 +98,29 @@ export default class ExpertList extends Component {
         return itemAry;
     }
     render() {
-        return (
-            <View style={[styles.scroll_box]}>
-                <View style={styles.article_item}>
-                    <View style={{flex:1}}><Text style={styles.font_12}>专家推荐</Text></View>
-                    <View style={{flex:1}}>
-                        <TouchableWithoutFeedback onPress={()=>this.props.navigate('ExpertsList', {navigate: this.props.navigate, user: this.state.user})}>
-                            <FontAwesome name="angle-right" style={styles.font_10} />
-                        </TouchableWithoutFeedback>
-                    </View>
+        if(this.state.oldAry.length==0){
+            return (
+                <View style={{backgroundColor:'#fff',flex:1,justifyContent:'center',alignItems:'center',height:162,marginBottom:10,}}>
+                    <Image style={{width:80,height:65}} source={require('../../img/app_no_network.png')} />
                 </View>
-                <ScrollView style={styles.scroll_pic} horizontal>
-                    {this.renderItem()}
-                </ScrollView>
-            </View>
-        );
+            )
+        }else {
+            return (
+                <View style={[styles.scroll_box]}>
+                    <View style={styles.article_item}>
+                        <View style={{flex:1}}><Text style={styles.font_12}>专家推荐</Text></View>
+                        <View style={{flex:1}}>
+                            <TouchableWithoutFeedback onPress={()=>this.props.navigate('ExpertsList', {navigate: this.props.navigate, user: this.state.user})}>
+                                <FontAwesome name="angle-right" style={styles.font_10} />
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </View>
+                    <ScrollView style={styles.scroll_pic} horizontal>
+                        {this.renderItem()}
+                    </ScrollView>
+                </View>
+            );
+        }
     }
 }
 

@@ -14,17 +14,22 @@ import {
     Dimensions,
     FlatList,
     AlertIOS,
-    ToastAndroid
+    ToastAndroid,
+    AsyncStorage
 } from 'react-native';
 const {width,height}=Dimensions.get('window');
+import constants from './../constants';
+import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
 export default class Home extends Component{
 
     constructor(props){
         super(props);
         this.state={
             show:false,
-            imageArr:[]
-        }
+            imageArr:[],
+            user:{}
+        };
+        this._loadInitialUser=this._loadInitialUser.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,18 +42,74 @@ export default class Home extends Component{
             show:false
         })
     }
+    //获取用户信息
+    async _loadInitialUser(image){
+        var that=this;
+        try{
+            var value=await AsyncStorage.getItem('user');
+            if(value!=null){
+                result=JSON.parse(value);
+                this.setState({
+                    user:result
+                });
+                that.uploadPic(image);
+            }else{
+                console.log('无数据')
+            }
+        }catch(error){
+            this._appendMessage('AsyncStorage错误'+error.message);
+        }
+    }
+    //上传照片
+    uploadPic(image){
+        console.log(image)
+        var url = constants.url+'/v1/upload?uuid='+this.state.user.uuid;
+        let formData = new FormData();
+        var uri = image.path;
+        var index = uri.lastIndexOf("/");
+        var name  = uri.substring(index + 1, uri.length);
+        let file = {uri: uri, type: 'multipart/form-data', name: name } ;
+        formData.append('headImg', file);
+
+        // let file = {uri: path, type: 'multipart/form-data', name: 'image.jpg'};
+        // formData.append("headImg",file);
+        console.log(formData)
+        var urlSigned = getSingedUrl(url,this.state.user.uuid);
+        fetch(urlSigned,{
+            method:"POST",
+            headers: {
+                "Http-App-Token": this.state.user.token,
+                'Content-Type':'multipart/form-data'
+            },
+            body:formData
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((responseText) => {
+               if(responseText.code==0){
+                    let picArr=this.state.imageArr;
+                    picArr.push(responseText.data.url);
+                   this.props.getPic(picArr,true);
+                    this.props.cameraHide();
+                   this.setState({
+                       show:false
+                   })
+               }
+
+            })
+            .catch((error)=>{
+                ToastAndroid.show('网络错误', ToastAndroid.SHORT)
+            })
+    }
     //调用相册
     photoAlbum(){
         ImagePicker.openPicker({
-            multiple: true
-        }).then(images => {
-            let picArr=this.state.imageArr;
-            picArr.push(...images);
-           this.props.getPic(picArr,true);
-            this.props.cameraHide();
-           this.setState({
-               show:false
-           })
+            width: 300,
+            height: 400,
+            cropping: false
+        }).then(image => {
+            this._loadInitialUser(image);
         });
     }
     //调用相机
@@ -58,14 +119,14 @@ export default class Home extends Component{
             height: 400,
             cropping: false
         }).then(image => {
-            let imagePic=this.state.imageArr;
-            console.log(image);
-            imagePic.push(JSON.stringify(image));
-            this.props.getPic(imagePic,false);
-            this.props.cameraHide();
-            this.setState({
-                show:false
-            })
+            this._loadInitialUser(image);
+            // let imagePic=this.state.imageArr;
+            // imagePic.push(JSON.stringify(image));
+            // this.props.getPic(imagePic,false);
+            // this.props.cameraHide();
+            // this.setState({
+            //     show:false
+            // })
         });
     }
 

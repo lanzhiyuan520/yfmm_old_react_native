@@ -7,6 +7,7 @@ import {
 
 const object = {
     url:'http://test.na.ayi800.com',
+    // url:'https://api.youfumama.com',
     api:'v1/',
     PROBLEM_URL:"http://nf.youfubaba.com/problem/show-problem",//问题分享url
     PROFEESIONAL_URL : "http://nf.youfubaba.com/professional/show-professional",//专家分享url

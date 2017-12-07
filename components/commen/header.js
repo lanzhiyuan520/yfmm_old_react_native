@@ -71,7 +71,6 @@ export default class Header extends Component{
                         'userActionList',
                         JSON.stringify(responseJson.data),
                         (error)=>{
-                            console.log(error);
                             if (error){
                                 console.log(error)
                             }else{
@@ -146,7 +145,7 @@ export default class Header extends Component{
 
             })
             .catch((err) => {
-                console.error('数据请求失败');
+                console.error('数据请求失败'+err);
             });
     }
 

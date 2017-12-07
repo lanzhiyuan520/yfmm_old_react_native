@@ -34,7 +34,6 @@ export default class Find extends Component{
         super(props);
         this.state={
             trueSwitchIsOn: true,
-            falseSwitchIsOn: false,
             service:0,
             quiz:0,
             text:'',
@@ -42,7 +41,8 @@ export default class Find extends Component{
             show:false,
             picArr:[],
             camera:false,
-            user:{}
+            user:{},
+            checked:true
         }
         this.getService=this.getService.bind(this);
         this.putIn=this.putIn.bind(this);
@@ -88,30 +88,36 @@ export default class Find extends Component{
         }
     }
 
+    //按钮改变回调函数
+    isChange(value){
+        this.setState({trueSwitchIsOn: value});
+        //获取匿名提问还是公开提问
+        if(this.state.trueSwitchIsOn){
+            this.setState({
+                quiz:1
+            })
+        }else {
+            this.setState({
+                quiz:0
+            })
+        }
+        console.log(this.state.quiz)
+    }
+
     //提交数据
     postData(){
-        console.log(this.state.user);
         let img=null;
         if(this.state.picArr.length==0){
-          console.log('没有上传照片')
+            console.log('没有上传照片')
         } else {
             console.log(this.state.picArr)
             img=[];
-            if(this.state.camera){
-                for(var i = 0;i<this.state.picArr.length;i++){
-                    var uri = this.state.picArr[i].path;
-                    img.push(uri)
-                }
-            }else {
-                for(var i = 0;i<this.state.picArr.length;i++){
-                    this.state.picArr[i]=JSON.parse(this.state.picArr[i]);
-                    var uri = this.state.picArr[i].path;
-                    img.push(uri)
-                }
+            for(var i = 0;i<this.state.picArr.length;i++){
+                var uri = this.state.picArr[i];
+                img.push(uri)
             }
-
         }
-        let post_params={author_id:this.state.user.id,content:this.state.text,service_groups:'2',service_id:this.state.service,anonymous:'0',adapter:this.state.user.status,images:img};
+        let post_params={author_id:this.state.user.id,content:this.state.text,service_groups:'2',service_id:this.state.service,anonymous:this.state.quiz,adapter:this.state.user.status,images:img};
         let url=constants.url+"/v1/problem?uuid="+this.state.user.uuid;
         let urlSigned = getSingedUrl(url, this.state.user.uuid);
         var dataEncrypt = getEncryptParam(post_params);
@@ -146,16 +152,6 @@ export default class Find extends Component{
 
     //提交问题
     putIn(){
-        //获取匿名提问还是公开提问
-        if(this.state.trueSwitchIsOn){
-            this.setState({
-                quiz:0
-            })
-        }else {
-            this.setState({
-                quiz:1
-            })
-        }
         this._loadInitialUser();
     }
 
@@ -193,7 +189,6 @@ export default class Find extends Component{
             camera:condition
         })
     }
-
     render(){
         const { state } = this.props.navigation;
         return(
@@ -219,7 +214,7 @@ export default class Find extends Component{
                     <View style={{backgroundColor:'#fff',height:40,paddingTop:5}}>
                         <View style={{flex:1,flexDirection:'row',paddingLeft:15}}>
                             <View>
-                                <Switch onValueChange={(value) => this.setState({trueSwitchIsOn: value})}
+                                <Switch onValueChange={(value) => this.isChange(value)}
                                         value={this.state.trueSwitchIsOn}/>
                             </View>
                             {this.changeFont()}

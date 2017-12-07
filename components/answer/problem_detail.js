@@ -91,11 +91,20 @@ export default class Problem extends Component{
         let newArr=[];
         if( images!== null && images!== undefined){
             images.forEach(function(listItem,index){
-                newArr.push(
-                    <View key={index} style={{marginRight:10}}>
-                        <Image source={{uri:listItem}} style={{width:100,height:75}} />
-                    </View>
-                )
+                if(listItem.indexOf('http') == -1 ){
+                    newArr.push(
+                        <View key={index} style={{marginRight:10}}>
+                            <Image source={{uri:listItem}} style={{width:100,height:75}} />
+                        </View>
+                    )
+                }else {
+                    newArr.push(
+                        <View key={index} style={{marginRight:10}}>
+                            <Image source={{uri:'http://'+listItem}} style={{width:100,height:75}} />
+                        </View>
+                    )
+                }
+
             })
         }
         return newArr;
@@ -116,6 +125,7 @@ export default class Problem extends Component{
     }
     //请求数据
     requestData(id){
+        console.log(this.state.user)
         const url=constants.url+"/v1/problem?rid="+id+"&offset=0&limit=3&type=0&uuid="+this.state.user.uuid;
         const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
@@ -130,8 +140,8 @@ export default class Problem extends Component{
                     author:responseJson.data.hash_data
                 })
             })
-            .catch(() => {
-                console.error('数据请求失败');
+            .catch((err) => {
+                console.error('数据请求失败'+err);
             });
     }
     //控制分享组件显示
@@ -176,7 +186,7 @@ export default class Problem extends Component{
                             </View>
                         </View>
                     </View>
-                    <AnserList/>
+                    <AnserList reply={this.state.author.liulan_num} id={state.params.id}/>
                 </ScrollView>
                 <Share show={this.state.show} id={state.params.id} url="problem" title={this.state.author.content}/>
             </View>

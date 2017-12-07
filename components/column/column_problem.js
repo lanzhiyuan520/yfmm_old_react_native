@@ -90,57 +90,65 @@ export default class ProblemList extends Component {
 
     render() {
         var that=this;
-        return (
-            <View style={{backgroundColor:'#fff',paddingTop:15,marginBottom:50}}>
-                <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',paddingHorizontal:15}}>
-                    <View style={{flex:1}}>
-                        <Text style={{fontSize:12}}>{this.props.count}个问题</Text>
-                    </View>
-                    <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'flex-end'}}>
-                        <View>
-                            <TouchableWithoutFeedback onPress={() => this.changeSort('weight')}>
-                                <View>
-                                    <Text style={this.state.sort? styles.black_color:styles.light_color}>最热</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                        <View style={styles.division}></View>
-                        <View>
-                            <TouchableWithoutFeedback onPress={() => this.changeSort('create')}>
-                                <View>
-                                     <Text style={this.state.sort? styles.light_color:styles.black_color}>最新</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                    </View>
+        if(this.state.data.length==0){
+            return (
+                <View style={{backgroundColor:'#fff',flex:1,justifyContent:'center',alignItems:'center',height:500,marginBottom:10,marginTop:10}}>
+                    <Image style={{width:80,height:65}} source={require('../../img/app_nothing.png')} />
                 </View>
-                {
-                    <View>
-                        {this.state.data.map(function(listItem,index){
-                            return  (
-                                <View key={index}>
-                                    <TouchableWithoutFeedback>
-                                        <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
-                                            <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
-                                                <View style={{marginRight:10}}>
-                                                    <Image source={{uri:listItem.author_list.head_img}} style={{width:20,height:20,borderRadius:10}} />
-                                                </View>
-                                                <View><Text>{listItem.author_list.nickname}</Text></View>
-                                            </View>
-                                            <View><Text style={styles.show_two}>{listItem.content}</Text></View>
-                                            <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-                                                <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
-                                                <View><Text>{listItem.create_at}</Text></View>
-                                            </View>
-                                        </View>
-                                    </TouchableWithoutFeedback>
-                                </View>
-                            )
-                        })}
+            )
+        }else {
+            return (
+                <View style={{backgroundColor:'#fff',paddingTop:15,marginBottom:50}}>
+                    <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',paddingHorizontal:15}}>
+                        <View style={{flex:1}}>
+                            <Text style={{fontSize:12}}>{this.props.count}个问题</Text>
+                        </View>
+                        <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'flex-end'}}>
+                            <View>
+                                <TouchableWithoutFeedback onPress={() => this.changeSort('weight')}>
+                                    <View>
+                                        <Text style={this.state.sort? styles.black_color:styles.light_color}>最热</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>
+                            <View style={styles.division}></View>
+                            <View>
+                                <TouchableWithoutFeedback onPress={() => this.changeSort('create')}>
+                                    <View>
+                                        <Text style={this.state.sort? styles.light_color:styles.black_color}>最新</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>
+                        </View>
                     </View>
-                }
-            </View>
-        );
+                    {
+                        <View>
+                            {this.state.data.map(function(listItem,index){
+                                return  (
+                                    <View key={index}>
+                                        <TouchableWithoutFeedback>
+                                            <View style={{height:'auto',flex:1,justifyContent:'space-around',borderBottomWidth:0.5,borderBottomColor:'#f2f2f2',padding:15}}>
+                                                <View style={{flex:1,flexDirection:'row',height:20,marginBottom:10}}>
+                                                    <View style={{marginRight:10}}>
+                                                        <Image source={{uri:listItem.author_list.head_img}} style={{width:20,height:20,borderRadius:10}} />
+                                                    </View>
+                                                    <View><Text>{listItem.author_list.nickname}</Text></View>
+                                                </View>
+                                                <View><Text style={styles.show_two}>{listItem.content}</Text></View>
+                                                <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
+                                                    <View><Text>回答:{listItem.reply_num}   浏览:{listItem.liulan_num}</Text></View>
+                                                    <View><Text>{listItem.create_at}</Text></View>
+                                                </View>
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    </View>
+                                )
+                            })}
+                        </View>
+                    }
+                </View>
+            );
+        }
     }
 }
 
