@@ -164,9 +164,9 @@ export default class Column  extends Component {
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
                             onRefresh={()=>this._onRefresh()}
-                            tintColor="#ff0000"
+                            tintColor="#000"
                             title="加载中..."
-                            titleColor="#00ff00"
+                            titleColor="#000"
                             colors={['#999', '#999', '#999']}
                             progressBackgroundColor="#ffffff"
                         />

@@ -42,6 +42,7 @@ export default class Collect extends Component{
         collect_user_list(user.id,user.uuid,user.token,this.collect_success)
     }
     collect_success(responseText){
+        console.log(responseText)
         if (responseText.code == 995 && responseText.msg == "请求数据为空"){
             this.setState({
                 state:false
@@ -55,7 +56,6 @@ export default class Collect extends Component{
 
     }
     _renderItem=({item})=>{
-        console.log(item)
         if(item.type==2){
             return (
                     <View>

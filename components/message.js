@@ -42,7 +42,8 @@ export default class Message extends Component{
         super(props)
         this.state={
             message_list:[],
-            title:""
+            title:"",
+            state:true
         }
         this.message_success=this.message_success.bind(this)
         this.getLocalTime=this.getLocalTime.bind(this)
@@ -66,9 +67,17 @@ export default class Message extends Component{
         request_noticelist(user.uuid,user.token,this.message_success)
     }
     message_success(responseText){
-        this.setState({
-            message_list:responseText.data
-        })
+        if (responseText.code == 0){
+            this.setState({
+                message_list:responseText.data,
+                state:false
+            })
+        }else{
+            this.setState({
+                state:true
+            })
+        }
+
     }
     //格式化日期格式
     getLocalTime(nS) {
@@ -97,37 +106,45 @@ export default class Message extends Component{
     }
     render(){
         return(
-            <View style={{width:width,backgroundColor:"#f2f2f2"}}>
-                <FlatList
-                    data={this.state.message_list}
-                    renderItem={({item})=>{
-                        return (
-                            <TouchableWithoutFeedback onPress={()=>{
-                                this.props.navigation.navigate("Xfdetailed",{
-                                    id:item.content.page_param,
-                                    user:JSON.stringify(this.props.navigation.state.params.user),
-                                    list:this.list
-                                })
-                                message(user,{time:item.time})
-                            }}>
-                                <View style={{width:width,height:100,marginBottom:15,backgroundColor:"#fff",flexDirection:"row",alignItems:"center",borderTopWidth:1,borderTopColor:"#f2f2f2",paddingRight:10,paddingLeft:10}}>
-                                    <View style={{marginRight:10}}>
-                                        <Image source={this.message_img(item.content.message_type)} style={{width:80,height:80,borderRadius:40}}/>
-                                    </View>
-                                    <View style={{width:width}}>
-                                        <View style={{flexDirection:"row"}}>
-                                            <Text style={{color:"#000",fontSize:14}}>{this.title(item)}</Text>
-                                            <Text style={{color:"#999",fontSize:12,position:"absolute",right:120}}>{this.getLocalTime(item.time)}</Text>
+            <View style={{width:width}}>
+                {
+                    this.state.state?
+                        <View style={{width:width,marginTop:15,justifyContent:"center",alignItems:"center"}}>
+                            <Text>暂时没有消息</Text>
+                        </View>
+                        :
+                        <FlatList
+                            data={this.state.message_list}
+                            renderItem={({item})=>{
+                                return (
+                                    <TouchableWithoutFeedback onPress={()=>{
+                                        this.props.navigation.navigate("Xfdetailed",{
+                                            id:item.content.page_param,
+                                            user:JSON.stringify(this.props.navigation.state.params.user),
+                                            list:this.list
+                                        })
+                                        message(user,{time:item.time})
+                                    }}>
+                                        <View style={{width:width,height:100,marginBottom:15,backgroundColor:"#fff",flexDirection:"row",alignItems:"center",borderTopWidth:1,borderTopColor:"#f2f2f2",paddingRight:10,paddingLeft:10}}>
+                                            <View style={{marginRight:10}}>
+                                                <Image source={this.message_img(item.content.message_type)} style={{width:80,height:80,borderRadius:40}}/>
+                                            </View>
+                                            <View style={{width:width}}>
+                                                <View style={{flexDirection:"row"}}>
+                                                    <Text style={{color:"#000",fontSize:14}}>{this.title(item)}</Text>
+                                                    <Text style={{color:"#999",fontSize:12,position:"absolute",right:120}}>{this.getLocalTime(item.time)}</Text>
+                                                </View>
+                                                <View>
+                                                    <Text style={{color:"#999",fontSize:13}}>{item.title}</Text>
+                                                </View>
+                                            </View>
                                         </View>
-                                        <View>
-                                            <Text style={{color:"#999",fontSize:13}}>{item.title}</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        )
-                    }}
-                />
+                                    </TouchableWithoutFeedback>
+                                )
+                            }}
+                        />
+                }
+
 
             </View>
         )

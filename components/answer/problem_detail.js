@@ -45,6 +45,7 @@ export default class Problem extends Component{
     componentDidMount(){
         const id=this.props.navigation.state.params.id;
         this._loadInitialState(id);
+        console.log(id)
     }
     //获取用户信息
     async _loadInitialUser(id){
@@ -68,6 +69,7 @@ export default class Problem extends Component{
     async _loadInitialState(id){
         try{
             var value=await AsyncStorage.getItem('userActionList');
+            console.log(value)
             if(value!=null){
                 result=JSON.parse(value);
                 if(result.shoucang.wenti.dataList.indexOf(id) !== -1){

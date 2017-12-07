@@ -22,19 +22,12 @@ import {request_professionals_content,request_professionals_reply_content} from 
 import {Circle,friends} from "../fenxiang/fenxiang"
 import {bounces} from "../bounces/bounces"
 import Btn from './../column/att_btn';
+import Header from "../commen/header"
+import Share from './../commen/share';
 var user
 export default class Expertsdetails extends Component{
     static navigationOptions = ({navigation}) => ({
-
-            title: `${navigation.state.params.expert}`,
-            headerTitleStyle:{
-                alignSelf:'center'
-            },
-        headerStyle:{
-            elevation: 0
-        },
-        headerRight: <TouchableWithoutFeedback onPress={()=>{navigation.state.params.navigatePress()}}><FontAwesome name="share-alt" style={{fontSize: 20, color: "#ff8080",marginRight:10}}/></TouchableWithoutFeedback>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        header:null
     });
     constructor(props){
         super(props)
@@ -45,13 +38,15 @@ export default class Expertsdetails extends Component{
             care_num:null,
             reply_num:null,
             sort:true,
-            problem_list:[]
+            problem_list:[],
+            show:false
         }
         this.handlePress = this.handlePress.bind(this)
         this.showActionSheet = this.showActionSheet.bind(this)
         this.experts_success = this.experts_success.bind(this)
         this._loadInitialState=this._loadInitialState.bind(this);
         this.problem=this.problem.bind(this);
+        this.shareShow=this.shareShow.bind(this);
     }
     componentDidMount(){
          user = this.props.navigation.state.params.user
@@ -81,6 +76,7 @@ export default class Expertsdetails extends Component{
             action_num:0,
             font:false
         },(responseText)=>{
+            console.log(responseText)
             this.setState({
                 problem_list:responseText.data.reply_msg
             })
@@ -125,9 +121,16 @@ export default class Expertsdetails extends Component{
         }
 
     }
+    //控制分享组件显示
+    shareShow(){
+        this.setState({
+            show:true
+        })
+    }
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#fff"}}>
+                <Header title={this.props.navigation.state.params.expert} share='true' id={this.state.experts_data.id}  back="true" isheart='true' shareShow={()=>this.shareShow()} navigation={this.props.navigation}/>
                 <ScrollView>
                 <View style={{
                     width:width,
@@ -202,11 +205,13 @@ export default class Expertsdetails extends Component{
                     <FlatList
                         data={this.state.problem_list}
                         renderItem={({item,index})=>{
+                            console.log(item)
                             return (
                                 <TouchableWithoutFeedback onPress={()=>{
                                     this.props.navigation.navigate("Problem",{
-                                        id:item.id,
-                                        author:item
+                                        id:item.problem_id,
+                                        author:item.author,
+                                        images:item.images
                                     })
                                 }}>
                                     <View style={{width:width,borderBottomWidth:1,borderBottomColor:"#f2f2f2",paddingBottom:5}}>
@@ -247,6 +252,7 @@ export default class Expertsdetails extends Component{
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
+                <Share show={this.state.show} id={this.state.experts_data.id} url="article" title={this.state.experts_data.title} type="999" />
             </View>
         )
     }

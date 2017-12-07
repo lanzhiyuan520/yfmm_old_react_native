@@ -99,6 +99,7 @@ export default class ProblemList extends Component {
                         {
                             <View>
                                 {this.state.data.map(function(listItem,index){
+                                    console.log(listItem)
                                     if(listItem.images==null){
                                         return  (
                                             <View key={index}>

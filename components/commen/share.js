@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
         height:height,
         backgroundColor:'rgba(0,0,0,0.5)',
         position:'absolute',
-        top:40,
+        top:(Platform.OS === 'ios' ? 60 : 40),
         left:0,
         zIndex:1000
     },

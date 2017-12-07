@@ -22,6 +22,7 @@ import {bounces} from "../bounces/bounces"
 import Btn from './../column/att_btn';
 import Header from "../commen/header"
 import HTMLView from "react-native-htmlview"
+import Share from './../commen/share';
 export default class DietList extends Component{
     static navigationOptions = ({navigation}) => ({
         header:null
@@ -113,7 +114,7 @@ export default class DietList extends Component{
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#fff"}}>
-                <Header share='true' title={this.props.navigation.state.params.title} id={this.state.detailed_data.id} heart={this.state.heart} back="true" isheart='true' navigation={this.props.navigation} shareShow={()=>this.shareShow()} />
+                <Header title={this.props.navigation.state.params.title} id={this.state.detailed_data.id}  heart={this.state.heart} back="true" isheart='true' navigation={this.props.navigation} shareShow={()=>this.shareShow()} />
                 <ScrollView>
                 <View>
                     <Image source={{uri:this.state.detailed_data.banner}} style={{width:width,height:250}}/>
@@ -154,7 +155,7 @@ export default class DietList extends Component{
                     stylesheet={styles}
                 />
                 </ScrollView>
-                <View>
+                {/*<View>
                     <ActionSheet
                         ref={o => this.ActionSheet = o}
                         options={Variable.options}
@@ -162,7 +163,8 @@ export default class DietList extends Component{
                         destructiveButtonIndex={Variable.DESTRUCTIVE_INDEX}
                         onPress={this.handlePress}
                     />
-                </View>
+                </View>*/}
+                <Share show={this.state.show} id={this.state.detailed_data.id} url="article" title={this.state.detailed_data.title} type="999" />
             </View>
         )
     }

@@ -49,7 +49,6 @@ export default class App extends Component<{}> {
       this.find=this.find.bind(this)
       this.behavior=this.behavior.bind(this)
   }
-
     componentDidMount(){
         WeChat.registerApp('wx825ecd9a849eef9d');
     }
