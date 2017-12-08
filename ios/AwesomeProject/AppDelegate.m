@@ -8,7 +8,7 @@
  */
 
 #import "AppDelegate.h"
-
+#import <AVFoundation/AVFoundation.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
@@ -17,8 +17,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-
+  
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+  
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"AwesomeProject"

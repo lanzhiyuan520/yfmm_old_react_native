@@ -153,7 +153,7 @@ export default class PersonalData extends Component{
                             <View>
                                 <Text style={{color:"#333"}}>用户名</Text>
                             </View>
-                            <View style={{position:"absolute",right:10,flexDirection:"row"}}>
+                            <View style={{position:"absolute",right:10,flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{color:"#666"}}>{this.props.navigation.state.params.name?this.props.navigation.state.params.name:"未设置"}</Text>
                                 <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
@@ -168,7 +168,7 @@ export default class PersonalData extends Component{
                             <View>
                                 <Text style={{color:"#333"}}>手机号</Text>
                             </View>
-                            <View style={{position:"absolute",right:10,flexDirection:"row"}}>
+                            <View style={{position:"absolute",right:10,flexDirection:"row",alignItems:"center"}}>
                                 <Text style={{color:"#666"}}>{this.props.navigation.state.params.phone?this.props.navigation.state.params.phone:"未绑定"}</Text>
                                 <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
                             </View>
@@ -187,9 +187,9 @@ export default class PersonalData extends Component{
                             <View>
                                 <Text style={{color:"#333"}}>地址</Text>
                             </View>
-                            <View style={{position:"absolute",right:10,flexDirection:"row"}}>
-                                <Text style={{color:"#666"}}>{this.props.navigation.state.params.address?this.props.navigation.state.params.address:"未设置"}</Text>
-                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginLeft:10}}/>
+                            <View style={{position:"absolute",width:width*0.7,right:10,flexDirection:"row",alignItems:"center"}}>
+                                <Text style={{color:"#666"}}  numberOfLines={1}>{this.props.navigation.state.params.address?this.props.navigation.state.params.address:"未设置"}</Text>
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginRight:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
