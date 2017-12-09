@@ -146,6 +146,7 @@ export default class State extends Component{
                 Text:"我的预产期",
                 text_color:false
             })
+        console.log(this.state.Text)
         this.state.state=true
     }
     birth(){
@@ -156,6 +157,7 @@ export default class State extends Component{
             Text:"宝宝生日",
             text_color:true
         })
+        console.log(this.state.Text)
         this.state.state=false
     }
     disabled(){

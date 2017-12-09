@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "GetuiConfigure": "node node_modules/react-native-getui/GetuiConfiguration.js",
-    "GetuiConfigure": "node node_modules/react-native-getui/GetuiConfiguration.js",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "lint": "eslint . --fix --format=node_modules/eslint-formatter-pretty --quiet"
