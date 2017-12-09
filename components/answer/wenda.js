@@ -37,7 +37,8 @@ export default class MinePage extends Component {
             finish:false,
             data:[],
             limit:this.props.problemLimit,
-            sort:true
+            sort:true,
+            oldAry:[]
         };
         this.requestData=this.requestData.bind(this);
         this.changeSort=this.changeSort.bind(this);
@@ -60,6 +61,7 @@ export default class MinePage extends Component {
                     user:result
                 });
                 that.requestData(orderby,offset);
+                that.requestExperts();
             }else{
                 console.log('无数据')
             }
@@ -89,7 +91,7 @@ export default class MinePage extends Component {
         var offset=0;
         this.requestData(orderby,offset)
     }
-
+    //请求列表数据
     requestData(orderby,offset){
         const url=constants.url+"/v1/problem?type=1&orderby="+orderby+"&offset="+offset+"&limit=4&uuid="+this.state.user.uuid;
         const urlSigned = getSingedUrl(url, this.state.user.uuid);
@@ -124,6 +126,27 @@ export default class MinePage extends Component {
             })
             .catch(() => {
                 console.error('数据请求失败');
+            });
+    }
+
+    //请求专家列表
+    requestExperts(){
+        const url=constants.url+"/v1/professionals?uuid="+this.state.user.uuid+"&offset=0&limit=4";
+        const urlSigned = getSingedUrl(url, this.state.user.uuid);
+        fetch(urlSigned,{
+            method:"GET",
+            headers:{
+                "Http-App-Token":this.state.user.token
+            }
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    oldAry:responseJson.data
+                })
+            })
+            .catch(() => {
+                console.error('数据请求失败！');
             });
     }
 
@@ -179,7 +202,7 @@ export default class MinePage extends Component {
                             </View>
                         </View>
                     </View>
-                    <ExpertList navigate={this.props.navigate}/>
+                    <ExpertList oldAry={this.state.oldAry} navigate={this.props.navigate}/>
                     <ProblemList changeSort={this.changeSort} sort={this.state.sort} requestData={this.requestData} data={this.state.data} isLoading={this.state.loadMore} actionNum={this.state.actionNum} navigate={this.props.navigate} />
                     <LoadingMore
                         finish={this.state.finish}

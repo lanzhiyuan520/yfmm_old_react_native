@@ -32,7 +32,7 @@ export default class ExpertList extends Component {
     componentWillMount(){
         this._loadInitialUser();
     }
-    //获取用户信息
+    // 获取用户信息
     async _loadInitialUser(){
         var that=this;
         try{
@@ -42,7 +42,6 @@ export default class ExpertList extends Component {
                 this.setState({
                     user:result
                 });
-                that.requestData()
             }else{
                 console.log('无数据')
             }
@@ -50,28 +49,10 @@ export default class ExpertList extends Component {
             this._appendMessage('AsyncStorage错误'+error.message);
         }
     }
-    requestData(){
-        const url=constants.url+"/v1/professionals?uuid="+this.state.user.uuid+"&offset=0&limit=4";
-        const urlSigned = getSingedUrl(url, this.state.user.uuid);
-        fetch(urlSigned,{
-            method:"GET",
-            headers:{
-                "Http-App-Token":this.state.user.token
-            }
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({
-                    oldAry:responseJson.data
-                })
-            })
-            .catch(() => {
-                console.error('数据请求失败！');
-            });
-    }
+
     renderItem(){
         var itemAry=[];
-        this.state.oldAry.map( (item,index)=> {
+        this.props.oldAry.map( (item,index)=> {
             itemAry.push(
                 <TouchableWithoutFeedback key={index} onPress={()=> {this.props.navigate('Expertsdetails',{
                     expert:item.name,
@@ -98,7 +79,7 @@ export default class ExpertList extends Component {
         return itemAry;
     }
     render() {
-        if(this.state.oldAry.length==0){
+        if(this.props.oldAry.length==0){
             return (
                 <View style={{backgroundColor:'#fff',flex:1,justifyContent:'center',alignItems:'center',height:162,marginBottom:10,}}>
                     <Image style={{width:80,height:65}} source={require('../../img/app_no_network.png')} />
