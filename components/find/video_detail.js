@@ -44,11 +44,11 @@ export default class VideoDetail extends Component{
     //视频加载成功后回调函数
     onLoad(info){
         // info == {currentTime,duration,...}
-        ToastAndroid.show('视频加载成功！', ToastAndroid.SHORT);
+        console.log("加载 成功")
     }
     //视频加载失败后回调函数
     onError(e){
-        ToastAndroid.show('视频加载错误！', ToastAndroid.SHORT);
+        console.log("加载失败 ")
     }
 
     onProgress(info){

@@ -35,6 +35,7 @@ export default class Smallfu extends Component{
         this.xiaofu_list=this.xiaofu_list.bind(this)
         this.xiaofu=this.xiaofu.bind(this)
         this.more=this.more.bind(this)
+        this.disabled=this.disabled.bind(this)
     }
     componentDidMount(){
         let offset = 0
@@ -58,13 +59,18 @@ export default class Smallfu extends Component{
 
     }
     more(){
-        this.props.loading(1)
-        this.setState({
-            actionNum:this.state.actionNum+1,
-            btn:"加载中..."
-        })
-        let offset = (this.state.actionNum+1)*5
-        this.xiaofu_list(offset)
+        if (this.state.btn == "没有更多了~~"){
+            return false
+        }else{
+            this.props.loading(1)
+            this.setState({
+                actionNum:this.state.actionNum+1,
+                btn:"加载中..."
+            })
+            let offset = (this.state.actionNum+1)*5
+            this.xiaofu_list(offset)
+        }
+
     }
     xiaofu(responseText){
         this.props.loading(2)
@@ -73,7 +79,8 @@ export default class Smallfu extends Component{
         if(!newArr){
             this.setState({
                 actionNum:this.state.actionNum-1,
-                btn:"没有更多了~~"
+                btn:"没有更多了~~",
+                disabled:true
             })
         }else {
             allArr =[...oldArr,...newArr];
@@ -82,6 +89,14 @@ export default class Smallfu extends Component{
                 btn:"加载更多"
             });
         }
+    }
+    disabled(){
+        this.setState({
+            disabled:true
+        })
+        setTimeout(()=>{
+            this.setState({disabled:false})
+        },500)
     }
     render(){
         return(
@@ -148,8 +163,11 @@ export default class Smallfu extends Component{
 
                     }
                 />
-                <TouchableWithoutFeedback onPress={()=>{
-                    this.more()
+                <TouchableWithoutFeedback
+                    disabled={this.state.disabled}
+                    onPress={()=>{
+                    this.more();
+                    this.disabled()
                 }}>
                     <View style={{
                         width:width,
