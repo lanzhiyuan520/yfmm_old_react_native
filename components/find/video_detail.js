@@ -14,7 +14,8 @@ import {
     ScrollView,
     FlatList,
     ToastAndroid,
-    AsyncStorage
+    AsyncStorage,
+    AlertIOS
 } from 'react-native';
 import Header from './../commen/header';
 import Btn from './../column/att_btn';
@@ -44,11 +45,19 @@ export default class VideoDetail extends Component{
     //视频加载成功后回调函数
     onLoad(info){
         // info == {currentTime,duration,...}
-        ToastAndroid.show('视频加载成功！', ToastAndroid.SHORT);
+        if (Platform.OS === "android") {
+            ToastAndroid.show('视频加载成功', ToastAndroid.SHORT);
+        } else if (Platform.OS === "ios") {
+            AlertIOS.alert('视频加载成功');
+        }
     }
     //视频加载失败后回调函数
     onError(e){
-        ToastAndroid.show('视频加载错误！', ToastAndroid.SHORT);
+        if (Platform.OS === "android") {
+            ToastAndroid.show('视频加载错误', ToastAndroid.SHORT);
+        } else if (Platform.OS === "ios") {
+            AlertIOS.alert('视频加载错误');
+        }
     }
 
     onProgress(info){
