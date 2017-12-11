@@ -160,16 +160,16 @@ export default class Header extends Component{
     renderHeart(){
         if(this.state.heart){
             return(
-                <TouchableWithoutFeedback onPress={() =>  this.changeHeart('1')}>
-                    <View>
+                <TouchableWithoutFeedback style={{flex:1}} onPress={() =>  this.changeHeart('1')}>
+                    <View style={{flex:1,alignItems:'flex-end'}}>
                         <FontAwesome name="heart-o" style={{fontSize:15,color:"#ff8080",marginRight:8}} />
                     </View>
                 </TouchableWithoutFeedback>
             )
         }else {
             return(
-                <TouchableWithoutFeedback onPress={() =>  this.changeHeart('2')}>
-                    <View>
+                <TouchableWithoutFeedback style={{flex:1}} onPress={() =>  this.changeHeart('2')}>
+                    <View style={{flex:1,alignItems:'flex-end'}}>
                         <FontAwesome name="heart" style={{fontSize:15,color:"#ff8080",marginRight:8}} />
                     </View>
                 </TouchableWithoutFeedback>
@@ -189,9 +189,12 @@ export default class Header extends Component{
         }else if (this.props.isheart) {
             return (
                     <View style={[styles.sub_container, styles.pr]}>
+                        <View style={{flex:1}}></View>
                         {this.renderHeart()}
                         <TouchableWithoutFeedback onPress={() => this.props.shareShow()}>
-                             <FontAwesome name="share-alt" style={{fontSize: 15, color: "#ff8080",}}/>
+                            <View style={{flex:1,alignItems:'flex-end'}}>
+                                <FontAwesome name="share-alt" style={{fontSize: 15, color: "#ff8080",}}/>
+                            </View>
                         </TouchableWithoutFeedback>
                     </View>
             )
@@ -248,7 +251,7 @@ export default class Header extends Component{
 
 const styles = StyleSheet.create({
     container:{
-        height:40,
+        height:48,
         backgroundColor:'rgba(255, 255, 255, 0.6)',
         borderBottomColor:'#f2f2f2',
         borderBottomWidth:1,
