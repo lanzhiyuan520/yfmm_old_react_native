@@ -45,9 +45,6 @@
 		4A15F94FDF0B46ADA5DDAC99 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4A7828ECAC04BE5A08167A3 /* Ionicons.ttf */; };
 		4CB3B81DCDF0491AA6301DD1 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EF5036E97CE4BBBA31A0AFF /* EvilIcons.ttf */; };
 		5673D050DE8040D4BC7E7CAF /* libthird-party.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38AA99C89BCA4E368EBD550A /* libthird-party.a */; };
-		5BEBDAC91FDE28DD000500E5 /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BEBDACA1FDE28DD000500E5 /* QBImagePicker.framework */; };
-		5BEBDACB1FDE28E7000500E5 /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BEBDACC1FDE28E7000500E5 /* RSKImageCropper.framework */; };
-		5BEBDACD1FDE28FC000500E5 /* RSKImageCropper.framework in enabled frameworks */ = {isa = PBXBuildFile; fileRef = 5BEBDACC1FDE28E7000500E5 /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5BEBDACE1FDE28FF000500E5 /* QBImagePicker.framework in enabled frameworks */ = {isa = PBXBuildFile; fileRef = 5BEBDACA1FDE28DD000500E5 /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5BEBDAD11FDE2B79000500E5 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F92E071A1FC56C86007EC8FC /* libRCTWeChat.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -66,6 +63,7 @@
 		F92E07111FC56A81007EC8FC /* ios in Resources */ = {isa = PBXBuildFile; fileRef = F92E07101FC56A81007EC8FC /* ios */; };
 		F92E07211FC57579007EC8FC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F92E07201FC57579007EC8FC /* libz.tbd */; };
 		F92E07231FC57586007EC8FC /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F92E07221FC57586007EC8FC /* libsqlite3.tbd */; };
+		F9F926041FDE34EC002B48F7 /* RSKImageCropper.framework in enabled frameworks */ = {isa = PBXBuildFile; fileRef = 5BEBDACC1FDE28E7000500E5 /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FBEF276509494D7D84E96769 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B5F27363C654D1EBEA087F4 /* FontAwesome.ttf */; };
 /* End PBXBuildFile section */
 
@@ -401,7 +399,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5BEBDACD1FDE28FC000500E5 /* RSKImageCropper.framework in enabled frameworks */,
+				F9F926041FDE34EC002B48F7 /* RSKImageCropper.framework in enabled frameworks */,
 				5BEBDACE1FDE28FF000500E5 /* QBImagePicker.framework in enabled frameworks */,
 			);
 			name = "enabled frameworks";
@@ -483,8 +481,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BEBDACB1FDE28E7000500E5 /* RSKImageCropper.framework in Frameworks */,
-				5BEBDAC91FDE28DD000500E5 /* QBImagePicker.framework in Frameworks */,
 				F903E8331FC65ADD009B1964 /* libRNVectorIcons.a in Frameworks */,
 				F92E07231FC57586007EC8FC /* libsqlite3.tbd in Frameworks */,
 				F92E07211FC57579007EC8FC /* libz.tbd in Frameworks */,
