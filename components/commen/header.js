@@ -23,7 +23,8 @@ export default class Header extends Component{
         super(props);
         this.state={
             heart:this.props.heart,
-            user:{}
+            user:{},
+            btn_state:false
         }
     }
 
@@ -120,7 +121,8 @@ export default class Header extends Component{
                         }
                         this.getActionList();
                         this.setState({
-                            heart:false
+                            heart:false,
+                            btn_state:!this.state.btn_state
                         });
                     }else {
                         if (Platform.OS === "android") {
@@ -204,8 +206,20 @@ export default class Header extends Component{
             )
         }
     }
+
+
     //返回按钮
     goBack(){
+        //判断是否刷新页面
+        if (!this.state.btn_state){
+            if (this.props.daren){
+                this.props.daren()
+            }else if (this.props.zhuanjia){
+                this.props.zhuanjia()
+            }else if (this.props.zhuanlan){
+                this.props.zhuanlan()
+            }
+        }
         if( this.props.changeBtn){
             this.props.changeBtn();
             this.props.navigation.goBack(null);

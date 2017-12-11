@@ -21,15 +21,18 @@ export default class Attention extends Component{
             daren:[]
         }
         this.attention_list=this.attention_list.bind(this)
+        this.daren=this.daren.bind(this)
     }
     componentDidMount(){
+        this.daren()
+    }
+    daren(){
         this.props.load(1)
         this.setState({
             user:this.props.user
         })
         request_user_action_list(this.props.user.id,this.props.user.uuid,this.props.user.token,this.attention_list)
     }
-
     attention_list(responseText){
         this.setState({
             daren:responseText.data.dataList
@@ -50,7 +53,8 @@ export default class Attention extends Component{
                                     img:item.img,
                                     name:item.name,
                                     care_num:item.care_num,
-                                    content:item.content
+                                    content:item.content,
+                                    daren:this.daren
                                 })}}>
                                     <View style={{width:width,height:120,justifyContent:"center",backgroundColor:"#fff",borderTopWidth:1,borderTopColor:"#f2f2f2"}}>
                                         <View style={{

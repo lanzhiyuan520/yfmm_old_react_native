@@ -20,8 +20,12 @@ export default class Specialist extends Component{
             collect_experts:[]
         }
         this.collect_success=this.collect_success.bind(this)
+        this.zhuanjia=this.zhuanjia.bind(this)
     }
     componentDidMount(){
+        this.zhuanjia()
+    }
+    zhuanjia(){
         this.props.load(1)
         request_user_collect(this.props.user.id,this.props.user.uuid,this.props.user.token,this.collect_success)
     }
@@ -51,7 +55,8 @@ export default class Specialist extends Component{
                                 <TouchableWithoutFeedback onPress={()=>{this.props.navigate.navigate("Expertsdetails",{
                                     expert:item.name,
                                     user:this.props.user,
-                                    id:item.id
+                                    id:item.id,
+                                    zhuanjia:this.zhuanjia
                                 });this.disabled()}}>
                                     <View style={{width:width,height:120,justifyContent:"center",backgroundColor:"#fff",borderTopWidth:1,borderTopColor:"#f2f2f2"}}>
                                         <View style={{
@@ -81,7 +86,8 @@ export default class Specialist extends Component{
                                                     onPress={()=>{this.props.navigate.navigate("Expertsdetails",{
                                                         expert:item.name,
                                                         user:this.props.user,
-                                                        id:item.id
+                                                        id:item.id,
+                                                        zhuanjia:this.zhuanjia
                                                     });this.disabled()}}>
                                                     <View style={{
                                                         width:80,

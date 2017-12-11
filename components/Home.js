@@ -56,6 +56,7 @@ export default class Home extends Component{
         this.disabled=this.disabled.bind(this)
         this.answer_success=this.answer_success.bind(this)
         this.suggest_success=this.suggest_success.bind(this)
+        this._onRefresh_state=this._onRefresh_state.bind(this)
         /*this.message_success=this.message_success.bind(this)
         this.message_list=this.message_list.bind(this)*/
     }
@@ -146,7 +147,15 @@ export default class Home extends Component{
         }
     }*/
     _onRefresh(){
-        alert("刷新成功")
+        /*this.setState({
+            isRefreshing:true
+        })
+        this.refs.xiaofu.xiaofu_list()*/
+    }
+    _onRefresh_state(){
+        /*this.setState({
+            isRefreshing:false
+        })*/
     }
     disabled(){
         this.setState({
@@ -371,7 +380,7 @@ export default class Home extends Component{
                         }
                     </View>
                     <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
-                    <Smallfu loading={this.loading}  user={this.props.user} navigate={this.props.navigate} disabled={this.state.disabled} disabled_fun={this.disabled}/>
+                    <Smallfu ref='xiaofu' _onRefresh_state={this._onRefresh_state} loading={this.loading}  user={this.props.user} navigate={this.props.navigate} disabled={this.state.disabled} disabled_fun={this.disabled}/>
                 </ScrollView>
             </View>
         )

@@ -20,8 +20,12 @@ export default class Column extends Component{
             column_list:[]
         }
         this.column_success=this.column_success.bind(this)
+        this.zhuanlan=this.zhuanlan.bind(this)
     }
     componentDidMount(){
+        this.zhuanlan()
+    }
+    zhuanlan(){
         this.props.load(1)
         request_user_column(this.props.user.id,this.props.user.uuid,this.props.user.token,this.column_success)
     }
@@ -40,7 +44,8 @@ export default class Column extends Component{
                         renderItem={({item})=>{
                             return (
                                 <TouchableWithoutFeedback onPress={()=>{this.props.navigate.navigate("ColumnDetail",{
-                                    id:item.id
+                                    id:item.id,
+                                    zhuanlan:this.zhuanlan
                                 })}}>
                                     <View style={{width:width,height:120,justifyContent:"center",backgroundColor:"#fff",borderTopWidth:1,borderTopColor:"#f2f2f2"}}>
                                         <View style={{
