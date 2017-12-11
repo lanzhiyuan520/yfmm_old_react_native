@@ -218,6 +218,8 @@ export default class Header extends Component{
                 this.props.zhuanjia()
             }else if (this.props.zhuanlan){
                 this.props.zhuanlan()
+            }else if (this.props._loadInitialState){
+                this.props._loadInitialState()
             }
         }
         if( this.props.changeBtn){

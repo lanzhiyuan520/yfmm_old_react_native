@@ -252,7 +252,8 @@ export default class Home extends Component{
                                     onPress={()=>{
                                         this.props.navigate('Required',{
                                             user:this.state.user,
-                                            status:this.state.sta
+                                            status:this.state.sta,
+                                            navigation:this.props.navigation
                                         })
                                         this.setState({disabled:true})
                                         setTimeout(()=>{

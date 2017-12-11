@@ -21,6 +21,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 var selectTableWarp = {}
 var user
 import DatePicker from 'react-native-datepicker'
+import {bounces} from "../bounces/bounces"
+import Toast, {DURATION} from 'react-native-easy-toast'
 export default class State extends Component{
     static navigationOptions = ({navigation}) => ({
         title: "我的状态",
@@ -112,7 +114,7 @@ export default class State extends Component{
                 selectTableWarp.userStatus=3
             }
             if(!selectTableWarp.confinementDate){
-                alert("请选择时间")
+                bounces("请选择时间",this)
                 return false
             }
             console.log(selectTableWarp)
@@ -122,7 +124,7 @@ export default class State extends Component{
     }
     state_success(responseText){
         if(responseText.code != 0){
-            alert(responseText.msg)
+            bounces(responseText.msg,this)
         }else{
             //用户状态更改成功的话从新获取用户状态并存储
             user_status(user.id,user.uuid,user.token,this.user)
@@ -173,6 +175,7 @@ export default class State extends Component{
         let statetext = this.state.text_color?styles.text:styles.pinkText;
         return(
             <View style={{flex:1,backgroundColor:"#fff",borderTopColor:"#f2f2f2",borderTopWidth:1}}>
+                <Toast ref="toast"/>
                 <View style={{width:width,height:45,justifyContent:"center",alignItems:"center"}}>
                     <Text>状态选择</Text>
                 </View>

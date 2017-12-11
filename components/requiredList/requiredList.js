@@ -115,10 +115,10 @@ export default class RequiredList extends Component{
     }
     onLoad(info){
         // info == {currentTime,duration,...}
-        bounces('视频加载成功！', this);
+        bounces('视频加载成功！');
     }
     onError(e){
-        bounces('视频加载错误！',this);
+        bounces('视频加载错误！');
     }
 
     onProgress(info){
@@ -156,12 +156,21 @@ export default class RequiredList extends Component{
                     </View>
                     <View style={{width:width,height:80,flexDirection:"row",alignItems:"center",borderColor:"#f2f2f2",borderTopWidth:1,borderBottomWidth:1}}>
                         <View style={{width:width,flexDirection:"row",paddingLeft:10,paddingRight:10,alignItems:"center"}}>
-                            <View style={{marginRight:10}}>
-                                <Image source={{uri:this.state.suggest_data.author_img}} style={{width:30,height:30,borderRadius:15}} />
-                            </View>
-                            <View>
-                                <Text style={{color:"#333",fontSize:13}}>{this.state.suggest_data.author_name}</Text>
-                            </View>
+                            <TouchableWithoutFeedback onPress={()=>{
+                                this.props.navigation.navigate("ExpertDetail",{
+                                    id:this.state.suggest_data.author_id,
+                                    daren:this._loadInitialState
+                                })
+                            }}>
+                                <View style={{flexDirection:"row",alignItems:"center"}}>
+                                    <View style={{marginRight:10}}>
+                                        <Image source={{uri:this.state.suggest_data.author_img}} style={{width:30,height:30,borderRadius:15}} />
+                                    </View>
+                                    <View>
+                                        <Text style={{color:"#333",fontSize:13}}>{this.state.suggest_data.author_name}</Text>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         <View style={{position:"absolute",right:10}}>
                             <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.suggest_data.author_id}/>

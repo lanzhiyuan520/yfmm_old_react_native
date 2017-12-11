@@ -137,7 +137,8 @@ export default class DietList extends Component{
                 <View style={{paddingLeft:10,paddingRight:10,flexDirection:"row",height:70,alignItems:"center",justifyContent:"space-between"}}>
                     <TouchableWithoutFeedback onPress={()=>{
                         this.props.navigation.navigate("ExpertDetail",{
-                            id:this.state.detailed_data.author_id
+                            id:this.state.detailed_data.author_id,
+                            daren:this._loadInitialState
                         })
                     }}>
                         <View style={{flexDirection:"row"}}>
