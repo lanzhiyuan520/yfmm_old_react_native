@@ -310,38 +310,40 @@ export default class Login extends Component {
                         />
 
                     </View>
-                    <View style={{
-                        flexDirection:"row",
-                        justifyContent:"center",
-                        paddingLeft:15,
-                        paddingRight:15
-                    }}>
-                        <TextInput
-                            style={styles.validation}
-                            placeholder="请输入验证码"
-                            value={this.state.validation}
-                            onChangeText={(validation) => {
-                                this.setState({validation})
-                            }}
-                        />
-                        <TouchableOpacity
-                            disabled={this.state.disabled}
-                            style={{
-                                flex:1,
-                                width:100,
-                                height:45,
-                                backgroundColor:"#fff",
-                                borderRadius:5,
-                                flexDirection:"row",
-                                justifyContent:"center",
-                                alignItems:"center",
-                                borderWidth:1,
-                                borderColor:"#f2f2f2",
-                                marginLeft:10
-                        }} onPress={this.send}>
-                            <Text style={once}>{this.state.verify}</Text>
-                        </TouchableOpacity>
+                    <View style={{width:width,justifyContent:"space-between",alignItems:"center"}}>
+                        <View style={{
+                            flexDirection:"row",
+                            justifyContent:"center",
+                            width:width*0.9
+                        }}>
+                            <TextInput
+                                style={styles.validation}
+                                placeholder="请输入验证码"
+                                value={this.state.validation}
+                                onChangeText={(validation) => {
+                                    this.setState({validation})
+                                }}
+                                maxLength={6}
+                            />
+                            <TouchableOpacity
+                                disabled={this.state.disabled}
+                                style={{
+                                    flex:1,
+                                    height:45,
+                                    backgroundColor:"#fff",
+                                    borderRadius:5,
+                                    flexDirection:"row",
+                                    justifyContent:"center",
+                                    alignItems:"center",
+                                    borderWidth:1,
+                                    borderColor:"#f2f2f2",
+                                    marginLeft:10
+                                }} onPress={this.send}>
+                                <Text style={once}>{this.state.verify}</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
+
                     <View style={{
                         marginTop:10,
                         flexDirection:"row",
@@ -393,19 +395,20 @@ export default class Login extends Component {
 
 
                     </View>
+                    <View style={{
+                        flexDirection:"row",
+                        justifyContent:"center",
+                        marginTop:20,
+                    }}>
 
-                    <View style={{flexDirection:"row",justifyContent:"center",marginTop:80,marginBottom:40}}>
-                        <Text style={{fontSize:16,color:"#7A767A"}}>使用社交账号登录</Text>
-                    </View>
+                        <TouchableWithoutFeedback onPress={()=>{
+                            this.social();
+                        }}>
+                            <View style={{width:width*0.9,height:45,backgroundColor:"#01b488",justifyContent:"center",alignItems:"center"}}>
+                                <Text style={{color:"#fff",fontSize:17}}>微信登录</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
 
-                    <View style={{flexDirection:"row",justifyContent:"center"}}>
-                        <View style={{width:335,flexDirection:"row",justifyContent:"center"}}>
-                            <TouchableWithoutFeedback
-                                disabled={this.state.disabled}
-                                onPress={this.social}><Image source={require("../../img/mm.png")}
-                                                                                  style={{width:80,height:80}}
-                            /></TouchableWithoutFeedback>
-                        </View>
                     </View>
                 </View>
             </View>
@@ -435,8 +438,7 @@ const styles = StyleSheet.create({
         paddingLeft:30
     },
     validation:{
-        flex:2,
-        width:width*0.5,
+        flex:3,
         height:45,
         backgroundColor:"#f8f8f8",
         borderRadius:5,
