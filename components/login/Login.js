@@ -323,6 +323,7 @@ export default class Login extends Component {
                                 onChangeText={(validation) => {
                                     this.setState({validation})
                                 }}
+                                maxLength={6}
                             />
                             <TouchableOpacity
                                 disabled={this.state.disabled}
