@@ -149,6 +149,7 @@ export default class VideoDetail extends Component{
                                 maximumTrackTintColor='#2175bc'
                                 thumbTintColor="#2175bc"
                             />
+                            
                             <View>
                                 <Text style={{color:'#999'}}>{this.state.current} : {this._formatTime(Math.floor(this.state.duration))}</Text>
                             </View>
