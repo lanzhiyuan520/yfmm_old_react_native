@@ -130,44 +130,44 @@ export default class Find extends Component{
                 </View>
             )
         }else {
-        this.state.dataSource.map((item,index)=>{
-            oldArr.push(
-                <View key={index}>
-                    <TouchableWithoutFeedback onPress={()=>this.props.navigate('VideoDetail',{id:item.id,author:item})}>
-                        <View style={styles.container}>
-                            <View style={styles.rightContainer}>
-                                <Image source={{uri:item.banner}} style={styles.pic}/>
-                                {/*<View style={styles.mask}></View>*/}
-                            </View>
-                            <View style={{flex:1,flexDirection:'row',marginVertical:5}}>
-                                <View style={{marginRight:5}}>
-                                    <Text style={{color:'#999',fontSize:14}}>#{item.tags_name}</Text>
+            this.state.dataSource.map((item,index)=>{
+                oldArr.push(
+                    <View key={index}>
+                        <TouchableWithoutFeedback onPress={()=>this.props.navigate('VideoDetail',{id:item.id,author:item})}>
+                            <View style={styles.container}>
+                                <View style={styles.rightContainer}>
+                                    <Image onLoadStart={()=>console.log(item.banner)} source={{uri:item.banner}} style={styles.pic}/>
+                                    {/*<View style={styles.mask}></View>*/}
                                 </View>
-                                <View>
-                                    <Text style={{color:'#444',fontSize:14}}>{item.title}</Text>
-                                </View>
-                            </View>
-                            <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
-                                <View>
-                                    <View style={{flex:1,flexDirection:'row'}}>
-                                        <View style={{marginRight:5}}>
-                                            <Image source={{uri:item.author_img}} style={{width:20,height:20,borderRadius:10}} />
-                                        </View>
-                                        <View>
-                                            <Text style={{color:'#999',fontSize:12}}>{item.author_name}</Text>
-                                        </View>
+                                <View style={{flex:1,flexDirection:'row',marginVertical:5}}>
+                                    <View style={{marginRight:5}}>
+                                        <Text style={{color:'#999',fontSize:14}}>#{item.tags_name}</Text>
+                                    </View>
+                                    <View>
+                                        <Text style={{color:'#444',fontSize:14}}>{item.title}</Text>
                                     </View>
                                 </View>
-                                <View>
-                                    <Text style={{color:'#999',fontSize:12}}>播放{item.visit_num}</Text>
+                                <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
+                                    <View>
+                                        <View style={{flex:1,flexDirection:'row'}}>
+                                            <View style={{marginRight:5}}>
+                                                <Image source={{uri:item.author_img}} style={{width:20,height:20,borderRadius:10}} />
+                                            </View>
+                                            <View>
+                                                <Text style={{color:'#999',fontSize:12}}>{item.author_name}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <View>
+                                        <Text style={{color:'#999',fontSize:12}}>播放{item.visit_num}</Text>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            )
-        })
-        return oldArr;
+                        </TouchableWithoutFeedback>
+                    </View>
+                )
+            })
+            return oldArr;
         }
     }
 

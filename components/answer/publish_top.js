@@ -35,7 +35,7 @@ export default class Find extends Component{
 
 const styles = StyleSheet.create({
     container:{
-        height:40,
+        height:48,
         backgroundColor:'#fff',
         borderBottomColor:'#f2f2f2',
         borderBottomWidth:1,
