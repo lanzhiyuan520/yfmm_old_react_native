@@ -15,6 +15,8 @@ import {
     FlatList,
     ToastAndroid,
     AsyncStorage,
+    Slider,
+    TouchableOpacity,
     AlertIOS
 } from 'react-native';
 import Header from './../commen/header';
@@ -24,6 +26,7 @@ import ExpertDetail from './expert_detail';
 import Video from 'react-native-video';
 var {width} = Dimensions.get('window');
 import Share from './../commen/share';
+import Icon from 'react-native-vector-icons/FontAwesome'
 export default class VideoDetail extends Component{
 
     static navigationOptions = {
@@ -37,9 +40,17 @@ export default class VideoDetail extends Component{
             play:false,
             attend:'false',
             show:false,
-            heart:true
+            heart:true,
+            videoPause: false,
+            sliderValue: 0,
+            duration:0,
+            current:'00:00',
+            playButton: 'pause-circle'
         };
         this._loadInitialState=this._loadInitialState.bind(this);
+        this.onLoad=this.onLoad.bind(this);
+        this.onProgress=this.onProgress.bind(this);
+        this._formatTime=this._formatTime.bind(this);
     }
 
     //视频加载成功后回调函数
@@ -50,6 +61,9 @@ export default class VideoDetail extends Component{
         } else if (Platform.OS === "ios") {
             AlertIOS.alert('视频加载成功');
         }
+        this.setState({
+            duration:info.duration
+        })
     }
     //视频加载失败后回调函数
     onError(e){
@@ -60,24 +74,87 @@ export default class VideoDetail extends Component{
         }
     }
 
-    onProgress(info){
-        // info == {currentTime: 0, playableDuration: 0}
+    onProgress(data){
+        // data == {currentTime: 0, playableDuration: 0}
+        let val = parseInt(data.currentTime)
+        this.setState({
+            sliderValue: val,
+            current: this._formatTime(Math.floor(data.currentTime))
+        })
+    }
+    //时间转换
+    _formatTime(time) {
+        // 71s -> 01:11
+        let min = Math.floor(time / 60)
+        let second = time - min * 60
+        min = min >= 10 ? min : '0' + min
+        second = second >= 10 ? second : '0' + second
+        return min + ':' + second
+    }
+    //点击播放按钮
+    _playButton() {
+        this.setState({
+            playButton: this.state.videoPause ? 'pause-circle' : 'play-circle',
+            videoPause: !this.state.videoPause
+        })
     }
     //点击播放按钮视频播放
     showVideo(){
         let author=this.props.navigation.state.params.author;
         if(this.state.play){
             return(
-                <View style={{flex:1}}>
+                <View style={{width:width}}>
                     <Video
-                    ref="myvideo"
+                    ref="video"
                     resizeMode='cover'
                     source={{uri:author.video,type: 'mp4'}}
                     style={{width:width,height:200}}
                     onLoad={this.onLoad}
                     onError={this.onError}
                     onProgress={this.onProgress}
+                    paused={this.state.videoPause}
+                    onEnd={() => {
+                        this.setState({
+                            sliderValue: 0,
+                            current: '00:00'
+                        })
+                    }}
                     />
+                    <View style={{position:'absolute',bottom:0,width:width}}>
+                        <View style={styles.playingControl}>
+                            <TouchableOpacity onPress={this._playButton.bind(this)}>
+                                <Icon name={this.state.playButton} size={30} color='#999' />
+                            </TouchableOpacity>
+                            <Slider
+                                ref='slider'
+                                style={{flex: 1, marginLeft: 10, marginRight: 10}}
+                                value={this.state.sliderValue}
+                                minimumValue = {0} //最小之
+                                maximumValue = {Math.floor(this.state.duration)} //最大值
+                                onValueChange={(value) => {
+                                    this.setState({
+                                        videoPause: true,
+                                        current: this._formatTime(Math.floor(value))
+                                    })
+                                }
+                                }
+                                onSlidingComplete={(value) => {
+                                    this.refs.video.seek(value)
+                                    // 判断是否处于播放状态
+                                    if (this.state.playButton === 'pause-circle') this.setState({videoPause: false})
+                                }
+                                }
+                                step={1}
+                                minimumTrackTintColor='#999'
+                                maximumTrackTintColor='#2175bc'
+                                thumbTintColor="#2175bc"
+                            />
+                            
+                            <View>
+                                <Text style={{color:'#999'}}>{this.state.current} : {this._formatTime(Math.floor(this.state.duration))}</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
             )
         }else {
@@ -234,5 +311,13 @@ const styles = StyleSheet.create({
         backgroundColor:'rgba(0,0,0,0.5)',
         position:'absolute',
         left:0
+    },
+    playingControl: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 20
     }
 })
