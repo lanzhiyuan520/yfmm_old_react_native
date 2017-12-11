@@ -76,10 +76,13 @@ export default class Find extends Component{
     //刷新函数
     _onRefresh(){
         let offset=0;
-        this._loadInitialUser(offset);
+        if(this.state.dataSource.length ==0){
+            this._loadInitialUser(offset);
+        }
     }
 
     requestData(offset){
+        console.log(offset)
         const url=constants.url+"/v1/article?uuid="+this.state.user.uuid+"&articleType=4&orderBy=createTimeDesc&limit="+this.state.limit+"&offset="+offset;
         const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
