@@ -168,7 +168,9 @@ export default class MinePage extends Component {
     _onRefresh(){
         const orderby='weight';
         const offset=0;
-        this._loadInitialUser(orderby,offset);
+        if(this.state.data.length==0 || this.state.oldAry.length==0){
+            this._loadInitialUser(orderby,offset);
+        }
     }
 
     render() {

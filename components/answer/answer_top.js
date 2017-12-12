@@ -46,8 +46,10 @@ export default class Newtop extends Component {
 const styles = StyleSheet.create({
     container:{
         alignItems: 'center',
-        backgroundColor: '#f1f1f1',
-        height:40,
+        backgroundColor:'rgba(255, 255, 255, 0.6)',
+        borderBottomColor:'#f2f2f2',
+        borderBottomWidth:1,
+        height:48,
     },
     rowstyle:{
         flex:1,
