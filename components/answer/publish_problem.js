@@ -215,11 +215,11 @@ export default class Find extends Component{
                 <View style={{backgroundColor:'#fff',marginBottom:15,paddingHorizontal:15,paddingVertical:10}}>
                     <View style={{flex:1,flexDirection:'row'}}>
                         <View style={{marginRight:10}}>
-                            <Image source={{uri:author.img}} style={{width:30,height:30,borderRadius:15}} />
+                            <Image source={{uri:author.img}} style={{width:60,height:60,borderRadius:30}} />
                         </View>
-                        <View style={{paddingTop:2}}>
-                            <View><Text style={{fontSize:10}}>{author.name}</Text></View>
-                            <View><Text style={{fontSize:8,color:'#999'}}>{author.title}</Text></View>
+                        <View style={{height:50,flex:1,justifyContent:'space-between',paddingTop:10}}>
+                            <View><Text style={{fontSize:15}}>{author.name}</Text></View>
+                            <View><Text style={{fontSize:12,color:'#999'}}>{author.title}</Text></View>
                         </View>
                     </View>
                 </View>

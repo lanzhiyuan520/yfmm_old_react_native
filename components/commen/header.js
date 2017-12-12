@@ -188,11 +188,11 @@ export default class Header extends Component{
             )
         }else if (this.props.isheart) {
             return (
-                    <View style={[styles.sub_container, styles.pr]}>
+                    <View style={[styles.sub_container]}>
                         <View style={{flex:1}}></View>
                         {this.renderHeart()}
                         <TouchableWithoutFeedback onPress={() => this.props.shareShow()}>
-                            <View style={{flex:1,alignItems:'flex-end'}}>
+                            <View style={{flex:1,alignItems:'flex-end',paddingRight:15}}>
                                 <FontAwesome name="share-alt" style={{fontSize: 15, color: "#ff8080",}}/>
                             </View>
                         </TouchableWithoutFeedback>
