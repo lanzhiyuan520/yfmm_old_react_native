@@ -106,11 +106,11 @@ export default class Problem extends Component{
     header(){
         if (this.props.navigation.state.params.removeItem){
             return (
-                <Header title={this.state.author.group_name} changeBtn={this.props.navigation.state.params.removeItem}  back="true" navigation={this.props.navigation} />
+                <Header zhuanlan={this.props.navigation.state.params.zhuanlan} title={this.state.author.group_name} changeBtn={this.props.navigation.state.params.removeItem}  back="true" navigation={this.props.navigation} />
             )
         }else{
             return (
-                <Header title={this.state.author.group_name}   back="true" navigation={this.props.navigation} />
+                <Header zhuanlan={this.props.navigation.state.params.zhuanlan} title={this.state.author.group_name}   back="true" navigation={this.props.navigation} />
             )
         }
     }

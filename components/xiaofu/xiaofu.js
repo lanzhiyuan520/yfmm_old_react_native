@@ -74,6 +74,7 @@ export default class Smallfu extends Component{
     }
     xiaofu(responseText){
         this.props.loading(2)
+        /*this.props._onRefresh_state()*/
         let oldArr= this.state.xiaofu_list
         let newArr=responseText.data.dataList;
         if(!newArr){

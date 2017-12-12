@@ -213,10 +213,17 @@ export default class XfDetailed extends Component{
                         borderBottomWidth:1,
                         borderBottomColor:"#f5f5f5"
                     }}>
-                        <View style={{flexDirection:"row",alignItems:"center"}}>
-                            <Image source={{uri:this.state.xiaofu.author_img}} style={{width:46,height:46,borderRadius:23}}/>
-                            <Text style={{marginLeft:10}}>{this.state.xiaofu.author_name}</Text>
-                        </View>
+                        <TouchableWithoutFeedback onPress={()=>{
+                            this.props.navigation.navigate("ExpertDetail",{
+                                id:this.state.xiaofu.author_id,
+                                daren:this._loadInitialState
+                            })
+                        }}>
+                            <View style={{flexDirection:"row",alignItems:"center"}}>
+                                <Image source={{uri:this.state.xiaofu.author_img}} style={{width:46,height:46,borderRadius:23}}/>
+                                <Text style={{marginLeft:10}}>{this.state.xiaofu.author_name}</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                         <View style={{position:"absolute",right:10}}>
                             <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.xiaofu.author_id}/>
                         </View>

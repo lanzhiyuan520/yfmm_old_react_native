@@ -175,11 +175,11 @@ export default class Expert extends Component{
     header(){
         if(this.props.navigation.state.params.changeBtn){
             return (
-                 <Header title={this.state.author.name} attend={this.state.attend} back="true" changeBtn={this.props.navigation.state.params.changeBtn}  navigation={this.props.navigation}  />
+                 <Header daren={this.props.navigation.state.params.daren} title={this.state.author.name} attend={this.state.attend} back="true" changeBtn={this.props.navigation.state.params.changeBtn}  navigation={this.props.navigation}  />
             )
         }else{
         return(
-                <Header title={this.state.author.name} attend={this.state.attend} back="true" navigation={this.props.navigation} />
+                <Header daren={this.props.navigation.state.params.daren} title={this.state.author.name} attend={this.state.attend} back="true" navigation={this.props.navigation} />
             )
         }
     }
