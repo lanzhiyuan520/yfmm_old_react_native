@@ -105,7 +105,7 @@ export default class Required extends Component{
                    {
                        this.state.sta.map((tab,i)=>{
                            return (
-                               <RequiredList key={i} tabLabel={tab} user={this.props.navigation.state.params.user} index={this.state.index}/>
+                               <RequiredList navigation={this.props.navigation} key={i} tabLabel={tab} user={this.props.navigation.state.params.user} index={this.state.index}/>
                            )
                        })
                     }

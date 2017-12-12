@@ -187,9 +187,9 @@ export default class PersonalData extends Component{
                             <View>
                                 <Text style={{color:"#333"}}>地址</Text>
                             </View>
-                            <View style={{position:"absolute",width:width*0.7,right:10,flexDirection:"row",alignItems:"center"}}>
+                            <View style={{position:"absolute",width:width*0.7,right:0,flexDirection:"row",alignItems:"center",justifyContent:"flex-end"}}>
                                 <Text style={{color:"#666"}}  numberOfLines={1}>{this.props.navigation.state.params.address?this.props.navigation.state.params.address:"未设置"}</Text>
-                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginRight:10}}/>
+                                <FontAwesome name="angle-right" style={{fontSize: 22, color: "#000",marginRight:10,marginLeft:10}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>

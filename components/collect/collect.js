@@ -177,7 +177,7 @@ export default class Collect extends Component{
                         <View style={{width:width,height:40,paddingLeft:10,paddingRight:10,justifyContent:"center"}}>
                             <View style={{flexDirection:"row"}}>
                                 <View style={{marginRight:10}}>
-                                    <Text style={{fontSize:14,color:"#999"}}>回答 {item.author_nickname}</Text>
+                                    <Text style={{fontSize:14,color:"#999"}}>回答 {item.parent}</Text>
                                 </View>
                                 <View>
                                     <Text style={{fontSize:14,color:"#999"}}>浏览 {item.visit_num}</Text>

@@ -61,7 +61,6 @@ export default class Questions extends Component{
     }
     for_image(item){
         item.map((data)=>{
-
             if (data != null){
                 return (
                     <Image source={{uri:data}} style={{width:80,height:70,marginRight:5}} />
@@ -93,32 +92,41 @@ export default class Questions extends Component{
                 data={this.state.reply_list}
                 renderItem={({item})=>{
                     return (
-                        <View style={{marginBottom:15}}>
-                            <View style={{width:width,height:40,backgroundColor:"#fff",flexDirection:"row",alignItems:"center",paddingRight:10,paddingLeft:10}}>
-                                <View style={{marginRight:10}}>
-                                    <Image source={{uri:item.author_list.head_img}} style={{width:22,height:22,borderRadius:10}} />
-                                </View>
+                        <View  style={{marginBottom:15}}>
+                            <TouchableWithoutFeedback onPress={()=>{
+                                this.props.navigation.navigate("Problem",{
+                                    id:item.id,
+                                    author:item
+                                })
+                            }}>
                                 <View>
-                                    <Text style={{color:"#666"}}>{item.author_list.nickname}</Text>
+                                    <View style={{width:width,height:40,backgroundColor:"#fff",flexDirection:"row",alignItems:"center",paddingRight:10,paddingLeft:10}}>
+                                        <View style={{marginRight:10}}>
+                                            <Image source={{uri:item.author_list.head_img}} style={{width:22,height:22,borderRadius:10}} />
+                                        </View>
+                                        <View>
+                                            <Text style={{color:"#666"}}>{item.author_list.nickname}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{paddingBottom:10,paddingTop:5,backgroundColor:"#fff",paddingLeft:10,paddingRight:10}}>
+                                        <View style={{marginBottom:10}}>
+                                            <Text style={{color:"#333"}}>{item.content}</Text>
+                                        </View>
+                                        {
+                                            this.image(item)
+                                        }
+                                    </View>
+                                    <View style={{width:width,paddingBottom:15,flexDirection:"row",paddingLeft:10,paddingRight:10,backgroundColor:"#fff",justifyContent:"space-between"}}>
+                                        <View style={{flexDirection:"row"}}>
+                                            <Text style={{color:"#666",marginRight:15}}>回答 30</Text>
+                                            <Text style={{color:"#666"}}>浏览 30</Text>
+                                        </View>
+                                        <View>
+                                            <Text style={{color:"#666"}}>{item.create_at}</Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={{paddingBottom:10,paddingTop:5,backgroundColor:"#fff",paddingLeft:10,paddingRight:10}}>
-                                <View style={{marginBottom:10}}>
-                                    <Text style={{color:"#333"}}>{item.content}</Text>
-                                </View>
-                                {
-                                    this.image(item)
-                                }
-                            </View>
-                            <View style={{width:width,paddingBottom:15,flexDirection:"row",paddingLeft:10,paddingRight:10,backgroundColor:"#fff",justifyContent:"space-between"}}>
-                                <View style={{flexDirection:"row"}}>
-                                    <Text style={{color:"#666",marginRight:15}}>回答 30</Text>
-                                    <Text style={{color:"#666"}}>浏览 30</Text>
-                                </View>
-                                <View>
-                                    <Text style={{color:"#666"}}>{item.create_at}</Text>
-                                </View>
-                            </View>
+                            </TouchableWithoutFeedback>
                         </View>
                     )
                 }}

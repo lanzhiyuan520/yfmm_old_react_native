@@ -131,7 +131,7 @@ export default class Expertsdetails extends Component{
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#fff"}}>
-                <Header title={this.props.navigation.state.params.expert} share='true' id={this.state.experts_data.id}  back="true" isheart='true' shareShow={()=>this.shareShow()} navigation={this.props.navigation}/>
+                <Header zhuanjia={this.props.navigation.state.params.zhuanjia} title={this.props.navigation.state.params.expert} share='true' id={this.state.experts_data.id}  back="true" isheart='true' shareShow={()=>this.shareShow()} navigation={this.props.navigation}/>
                 <ScrollView>
                 <View style={{
                     width:width,
