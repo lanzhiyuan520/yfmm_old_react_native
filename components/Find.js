@@ -97,16 +97,16 @@ export default class Find extends Component{
                 let newArr=responseJson.data.dataList;
                 if(newArr.length<5 && newArr.length>=0){
                     count++;
+                    this.setState({
+                        finish:true,
+                        actionNum:this.state.actionNum-1
+                    });
                     if(count==1){
                         let allArr=[...oldArr,...newArr];
                         this.setState({
                             dataSource:allArr
                         });
                     }
-                    this.setState({
-                        finish:true,
-                        actionNum:this.state.actionNum-1
-                    });
                 }else {
                     allArr=[...oldArr,...newArr];
                     this.setState({
