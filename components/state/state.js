@@ -117,7 +117,6 @@ export default class State extends Component{
                 bounces("请选择时间",this)
                 return false
             }
-            console.log(selectTableWarp)
             //更改用户状态
             request_user_status(user,selectTableWarp,this.state_success)
         })
