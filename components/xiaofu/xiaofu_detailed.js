@@ -27,6 +27,7 @@ import Btn from './../column/att_btn';
 import Header from './../commen/header';
 import HTMLView from "react-native-htmlview"
 import Share from './../commen/share';
+import Load from "../loading/loading"
 export default class XfDetailed extends Component{
     static navigationOptions = ({navigation}) => ({
         header:null
@@ -61,7 +62,8 @@ export default class XfDetailed extends Component{
             user_behavior: null,
             attend:"false",
             heart:true,
-            show:false
+            show:false,
+            loading:true
         }
         WeChat.registerApp('wx825ecd9a849eef9d')
         this.showActionSheet = this.showActionSheet.bind(this)
@@ -89,10 +91,10 @@ export default class XfDetailed extends Component{
         this.props.navigation.setParams({navigatePress:this.showActionSheet,collect:this.collect})
     }
     xiaofu_detailed(responseText){
-        console.log(responseText)
         this.setState({
             xiaofu:responseText.data,
-            heart:false
+            heart:false,
+            loading:false
         })
         this._loadInitialState();
     }
@@ -180,71 +182,78 @@ export default class XfDetailed extends Component{
         return(
             <View style={{width:width,backgroundColor:"#fff",flex:1}}>
                 <Header title="小福精选" id={this.state.xiaofu.id} heart={this.state.heart} back="true" isheart='true' shareShow={()=>this.shareShow()} navigation={this.props.navigation}/>
-                  <ScrollView>
-                <View style={{
-                    width:width,
-                    height:80,
-                    paddingLeft:10,
-                    justifyContent:"center",
-                    borderTopColor:"#f5f5f5",
-                    borderTopWidth:1
-                }}>
-                    <View style={{width:width,height:50,justifyContent:"space-between",paddingRight:10}}>
-                        <View>
-                            <Text style={{fontSize:16,color:"#333",fontWeight:"bold"}}>{this.state.xiaofu.title}</Text>
-                        </View>
-                        <View style={{flexDirection:"row"}}>
-                            <Text style={{color:"#999"}}> {this.state.xiaofu.created_at} </Text>
-                            <Text style={{color:"#999",marginLeft:20}}>阅读 {this.state.xiaofu.visit_num}</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={{width:width,height:70}}>
-                    <View style={{
-                        width:width,
-                        height:70,
-                        paddingLeft:10,
-                        paddingRight:10,
-                        flexDirection:"row",
-                        justifyContent:"space-between",
-                        alignItems:"center",
-                        borderTopWidth:1,
-                        borderTopColor:"#f5f5f5",
-                        borderBottomWidth:1,
-                        borderBottomColor:"#f5f5f5"
-                    }}>
-                        <TouchableWithoutFeedback onPress={()=>{
-                            this.props.navigation.navigate("ExpertDetail",{
-                                id:this.state.xiaofu.author_id,
-                                daren:this._loadInitialState
-                            })
-                        }}>
-                            <View style={{flexDirection:"row",alignItems:"center"}}>
-                                <Image source={{uri:this.state.xiaofu.author_img}} style={{width:46,height:46,borderRadius:23}}/>
-                                <Text style={{marginLeft:10}}>{this.state.xiaofu.author_name}</Text>
+
+                {
+                    this.state.loading?
+                        <Load loading={this.state.loading} />
+                        :
+                        <ScrollView>
+                            <View style={{
+                                width:width,
+                                height:80,
+                                paddingLeft:10,
+                                justifyContent:"center",
+                                borderTopColor:"#f5f5f5",
+                                borderTopWidth:1
+                            }}>
+                                <View style={{width:width,height:50,justifyContent:"space-between",paddingRight:10}}>
+                                    <View>
+                                        <Text style={{fontSize:16,color:"#333",fontWeight:"bold"}}>{this.state.xiaofu.title}</Text>
+                                    </View>
+                                    <View style={{flexDirection:"row"}}>
+                                        <Text style={{color:"#999"}}> {this.state.xiaofu.created_at} </Text>
+                                        <Text style={{color:"#999",marginLeft:20}}>阅读 {this.state.xiaofu.visit_num}</Text>
+                                    </View>
+                                </View>
                             </View>
-                        </TouchableWithoutFeedback>
-                        <View style={{position:"absolute",right:10}}>
-                            <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.xiaofu.author_id}/>
-                        </View>
-                    </View>
-                </View>
-                  <View style={{width:width}}>
-                      <HTMLView
-                          value={this.state.xiaofu.content}
-                          stylesheet={styles}
-                      />
-                  </View>
-                <View>
-                    <ActionSheet
-                        ref={o => this.ActionSheet = o}
-                        options={options}
-                        cancelButtonIndex={CANCEL_INDEX}
-                        destructiveButtonIndex={DESTRUCTIVE_INDEX}
-                        onPress={this.handlePress}
-                    />
-                </View>
-              </ScrollView>
+                            <View style={{width:width,height:70}}>
+                                <View style={{
+                                    width:width,
+                                    height:70,
+                                    paddingLeft:10,
+                                    paddingRight:10,
+                                    flexDirection:"row",
+                                    justifyContent:"space-between",
+                                    alignItems:"center",
+                                    borderTopWidth:1,
+                                    borderTopColor:"#f5f5f5",
+                                    borderBottomWidth:1,
+                                    borderBottomColor:"#f5f5f5"
+                                }}>
+                                    <TouchableWithoutFeedback onPress={()=>{
+                                        this.props.navigation.navigate("ExpertDetail",{
+                                            id:this.state.xiaofu.author_id,
+                                            daren:this._loadInitialState
+                                        })
+                                    }}>
+                                        <View style={{flexDirection:"row",alignItems:"center"}}>
+                                            <Image source={{uri:this.state.xiaofu.author_img}} style={{width:46,height:46,borderRadius:23}}/>
+                                            <Text style={{marginLeft:10}}>{this.state.xiaofu.author_name}</Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                    <View style={{position:"absolute",right:10}}>
+                                        <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.xiaofu.author_id}/>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={{width:width}}>
+                                <HTMLView
+                                    value={this.state.xiaofu.content}
+                                    stylesheet={styles}
+                                />
+                            </View>
+                            <View>
+                                <ActionSheet
+                                    ref={o => this.ActionSheet = o}
+                                    options={options}
+                                    cancelButtonIndex={CANCEL_INDEX}
+                                    destructiveButtonIndex={DESTRUCTIVE_INDEX}
+                                    onPress={this.handlePress}
+                                />
+                            </View>
+                        </ScrollView>
+                }
+
                 <Share show={this.state.show} id={this.state.xiaofu.id} url="article" title={this.state.xiaofu.title} type="999" />
             </View>
         )

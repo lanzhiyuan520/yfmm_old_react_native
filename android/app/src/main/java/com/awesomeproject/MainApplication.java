@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.theweflex.react.WeChatPackage;
+import com.lwansbrough.RCTCamera.RCTCameraPackage;
+import com.theweflex.react.WeChatPackage;
 
 import com.getui.reactnativegetui.GetuiModule;
 import com.getui.reactnativegetui.GetuiPackage;
@@ -34,6 +36,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new WeChatPackage(),
+            new RCTCameraPackage(),
             new WeChatPackage(),
             new GetuiPackage(true),
             new RNDeviceInfo(),

@@ -206,7 +206,6 @@ export default class Expertsdetails extends Component{
                     <FlatList
                         data={this.state.problem_list}
                         renderItem={({item,index})=>{
-                            console.log(item)
                             return (
                                 <TouchableWithoutFeedback onPress={()=>{
                                     this.props.navigation.navigate("Problem",{

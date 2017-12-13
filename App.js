@@ -38,7 +38,8 @@ import {bounces} from "./components/bounces/bounces"
 export default class App extends Component<{}> {
     static navigationOptions = {
         title: 'Welcome',
-        header:null
+        header:null,
+        gesturesEnabled:false
     };
   constructor(props){
     super(props);

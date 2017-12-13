@@ -98,9 +98,9 @@ android {
 
     defaultConfig {
     manifestPlaceholders = [
-                        GETUI_APP_ID : "FVJsSFRlCw8daG9yzx9yE9",
-                        GETUI_APP_KEY : "JgAJJwZI4O6duPKqqZ0kb1",
-                        GETUI_APP_SECRET : "ApOUan5Cyh8RWEKK5GL7F8"
+                        GETUI_APP_ID : "QFSHRfUXz1Ar0rQfZRgpq2",
+                        GETUI_APP_KEY : "J4OXKuZCfl5zLSvUVCp9G",
+                        GETUI_APP_SECRET : "wiIYiJMa989mFZZEW7km41"
                     ]
        vectorDrawables.useSupportLibrary = true
         applicationId "com.awesomeproject"
@@ -154,6 +154,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-wechat')
+    compile project(':react-native-camera')
     compile project(':react-native-image-picker')
     compile project(':RCTWeChat')
     compile project(':react-native-share')

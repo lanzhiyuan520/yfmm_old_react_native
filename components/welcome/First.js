@@ -37,7 +37,6 @@ export default class First extends Component {
     };
     componentDidMount(){
         var uuid = DeviceInfo.getUniqueID()
-        console.log(uuid)
         if(uuid != 36){
             uuid = CryptoJS.MD5(uuid).toString();
             uuid = uuid.replace(/(\S)(?=((\S{7})+)$)/g,'$1-');

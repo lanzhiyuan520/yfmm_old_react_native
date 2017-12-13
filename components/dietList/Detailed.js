@@ -23,6 +23,7 @@ import Btn from './../column/att_btn';
 import Header from "../commen/header"
 import HTMLView from "react-native-htmlview"
 import Share from './../commen/share';
+import Load from "../loading/loading"
 export default class DietList extends Component{
     static navigationOptions = ({navigation}) => ({
         header:null
@@ -34,7 +35,8 @@ export default class DietList extends Component{
             user_behavior:null,
             detailed_data:{},
             heart:false,
-            show:false
+            show:false,
+            loading: true,
         }
         this.showActionSheet = this.showActionSheet.bind(this)
         this.handlePress = this.handlePress.bind(this)
@@ -50,7 +52,8 @@ export default class DietList extends Component{
     //饮食详情成功回调
     yinshi_detailed_success(responseText){
         this.setState({
-            detailed_data:responseText.data
+            detailed_data:responseText.data,
+            loading:false
         })
         this._loadInitialState()
     }
@@ -115,47 +118,52 @@ export default class DietList extends Component{
         return(
             <View style={{flex:1,backgroundColor:"#fff"}}>
                 <Header title={this.props.navigation.state.params.title} id={this.state.detailed_data.id}  heart={this.state.heart} back="true" isheart='true' navigation={this.props.navigation} shareShow={()=>this.shareShow()} />
-                <ScrollView>
-                <View>
-                    <Image source={{uri:this.state.detailed_data.banner}} style={{width:width,height:250}}/>
-                </View>
-                <View style={{paddingLeft:10,paddingRight:10,borderBottomWidth:1,borderBottomColor:"#f5f5f5"}}>
-                    <View style={{width:width,alignItems:"center",flexDirection:"row",height:35}}>
-                        <Text style={{fontSize:16,color:"#333"}}>#</Text>
-                        <Text style={{color:"#999",fontSize:16}}>福滋味</Text>
-                        <Text style={{color:"#333",fontSize:16}}>{this.state.detailed_data.title}</Text>
-                    </View>
-                    <View style={{flexDirection:"row",justifyContent:"space-between",height:35}}>
-                        <View>
-                            <Text>{this.state.detailed_data.created_at}</Text>
-                        </View>
-                        <View>
-                            <Text>浏览{this.state.detailed_data.visit_num}</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={{paddingLeft:10,paddingRight:10,flexDirection:"row",height:70,alignItems:"center",justifyContent:"space-between"}}>
-                    <TouchableWithoutFeedback onPress={()=>{
-                        this.props.navigation.navigate("ExpertDetail",{
-                            id:this.state.detailed_data.author_id,
-                            daren:this._loadInitialState
-                        })
-                    }}>
-                        <View style={{flexDirection:"row"}}>
-                            <Image source={{uri:this.state.detailed_data.author_img}} style={{width:36,height:20}}/>
-                            <Text style={{marginLeft:5,color:"#333",fontSize:16}}>{this.state.detailed_data.tags_name}</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <View style={{position:"absolute",right:10}}>
-                        <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.detailed_data.author_id}/>
-                    </View>
-                </View>
-                <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
-                <HTMLView
-                    value={this.state.detailed_data.content}
-                    stylesheet={styles}
-                />
-                </ScrollView>
+                {
+                    this.state.loading?
+                        <Load loading={this.state.loading}/>:
+                        <ScrollView>
+                            <View>
+                                <Image source={{uri:this.state.detailed_data.banner}} style={{width:width,height:250}}/>
+                            </View>
+                            <View style={{paddingLeft:10,paddingRight:10,borderBottomWidth:1,borderBottomColor:"#f5f5f5"}}>
+                                <View style={{width:width,alignItems:"center",flexDirection:"row",height:35}}>
+                                    <Text style={{fontSize:16,color:"#333"}}>#</Text>
+                                    <Text style={{color:"#999",fontSize:16}}>福滋味</Text>
+                                    <Text style={{color:"#333",fontSize:16}}>{this.state.detailed_data.title}</Text>
+                                </View>
+                                <View style={{flexDirection:"row",justifyContent:"space-between",height:35}}>
+                                    <View>
+                                        <Text>{this.state.detailed_data.created_at}</Text>
+                                    </View>
+                                    <View>
+                                        <Text>浏览{this.state.detailed_data.visit_num}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={{paddingLeft:10,paddingRight:10,flexDirection:"row",height:70,alignItems:"center",justifyContent:"space-between"}}>
+                                <TouchableWithoutFeedback onPress={()=>{
+                                    this.props.navigation.navigate("ExpertDetail",{
+                                        id:this.state.detailed_data.author_id,
+                                        daren:this._loadInitialState
+                                    })
+                                }}>
+                                    <View style={{flexDirection:"row"}}>
+                                        <Image source={{uri:this.state.detailed_data.author_img}} style={{width:36,height:20}}/>
+                                        <Text style={{marginLeft:5,color:"#333",fontSize:16}}>{this.state.detailed_data.tags_name}</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <View style={{position:"absolute",right:10}}>
+                                    <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.detailed_data.author_id}/>
+                                </View>
+                            </View>
+                            <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
+                            <HTMLView
+                                value={this.state.detailed_data.content}
+                                stylesheet={styles}
+                            />
+                        </ScrollView>
+                }
+
                 {/*<View>
                     <ActionSheet
                         ref={o => this.ActionSheet = o}
