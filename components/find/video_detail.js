@@ -102,6 +102,7 @@ export default class VideoDetail extends Component{
     showVideo(){
         let author=this.props.navigation.state.params.author;
         if(this.state.play){
+            console.log(this.state.playButton)
             return(
                 <View style={{width:width}}>
                     <Video
@@ -116,7 +117,9 @@ export default class VideoDetail extends Component{
                     onEnd={() => {
                         this.setState({
                             sliderValue: 0,
-                            current: '00:00'
+                            current: '00:00',
+                            playButton:'play-circle',
+                            videoPause: true
                         })
                     }}
                     />
@@ -139,7 +142,7 @@ export default class VideoDetail extends Component{
                                 }
                                 }
                                 onSlidingComplete={(value) => {
-                                    this.refs.video.seek(value)
+                                    this.refs.video.seek(value);
                                     // 判断是否处于播放状态
                                     if (this.state.playButton === 'pause-circle') this.setState({videoPause: false})
                                 }
@@ -149,7 +152,7 @@ export default class VideoDetail extends Component{
                                 maximumTrackTintColor='#2175bc'
                                 thumbTintColor="#2175bc"
                             />
-                            
+
                             <View>
                                 <Text style={{color:'#999'}}>{this.state.current} : {this._formatTime(Math.floor(this.state.duration))}</Text>
                             </View>
