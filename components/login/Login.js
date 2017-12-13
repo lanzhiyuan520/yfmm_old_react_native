@@ -163,12 +163,10 @@ export default class Login extends Component {
     }
     //获取微信access_token
     wx_access_token(code,appid,secret){
-        console.log("wx_access_token")
         access_token(code,appid,secret,this.wx_access_token_success)
     }
     //获取微信access_token成功回调
     wx_access_token_success(responseText){
-        console.log("wx_access_token_success")
         wx_user_access_token = responseText.access_token
         openid = responseText.openid
         refresh_token=responseText.refresh_token
@@ -176,12 +174,10 @@ export default class Login extends Component {
     }
     //获取微信用户信息
     wx_user(wx_user_access_token,openid){
-        console.log("wx_user")
         weixin_user(wx_user_access_token,openid,this.wx_user_success)
     }
     //获取微信用户信息成功回调
     wx_user_success(responseText){
-        console.log("wx_user_success")
         var responseText = responseText
         responseText.support = 1
         let wx_data = responseText
@@ -193,7 +189,6 @@ export default class Login extends Component {
     }
     //微信登录成功回调
     wx_login_success(responseText){
-        console.log("wx_login_success")
        /* var data = JSON.stringify(responseText)
         var url = `http://test.www.ayi800.com/test/demodemo?content=${data}`
         fetch(url)
@@ -216,15 +211,12 @@ export default class Login extends Component {
         WeChat.isWXAppInstalled()
             .then( ( isInstalled ) => {
                 if ( isInstalled ) {
-                    console.log("ha")
                     WeChat.sendAuthRequest("snsapi_userinfo","123")
                         .then(responseCode => {
                             //返回code码，通过code获取access_token
-                            var code = responseCode.code
-                            var appid = "wx4185c118f9757414"
-                            var secret = "5d046ff2594c09a4b867f8810eb103b6"
-                            console.log(code)
-                            alert(code)
+                            let code = responseCode.code
+                            let appid = "wx4185c118f9757414"
+                            let secret = "5d046ff2594c09a4b867f8810eb103b6"
                             this.wx_access_token(code,appid,secret)
                         })
                         .catch(err => {
@@ -396,7 +388,9 @@ export default class Login extends Component {
                         marginTop:20,
                     }}>
 
-                            <TouchableWithoutFeedback onPress={()=>{
+                            <TouchableWithoutFeedback
+                                disabled={this.state.disabled2}
+                                onPress={()=>{
                                 this.click();
                             }}>
                                 <View style={{width:width*0.9,height:45,backgroundColor:"#ff8080",justifyContent:"center",alignItems:"center"}}>

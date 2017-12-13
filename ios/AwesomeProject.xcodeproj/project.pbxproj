@@ -52,7 +52,6 @@
 		4A15F94FDF0B46ADA5DDAC99 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4A7828ECAC04BE5A08167A3 /* Ionicons.ttf */; };
 		4CB3B81DCDF0491AA6301DD1 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EF5036E97CE4BBBA31A0AFF /* EvilIcons.ttf */; };
 		5673D050DE8040D4BC7E7CAF /* libthird-party.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38AA99C89BCA4E368EBD550A /* libthird-party.a */; };
-		5B2CF72F1FE0D52D00D7BA00 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B2CF72E1FE0D52D00D7BA00 /* bundle */; };
 		5B59B5AB1FDFCBFA0084DFC5 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F94BD2311FC56093001D8824 /* libRCTVideo.a */; };
 		5B59B5DE1FDFCED00084DFC5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6073750C77141FCAD2E38AF /* AVFoundation.framework */; };
 		5B59B5E11FDFCEDF0084DFC5 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B59B5DF1FDFCEDF0084DFC5 /* Contacts.framework */; };
@@ -60,6 +59,8 @@
 		5B59B5E51FDFCEEF0084DFC5 /* VideoSubscriberAccount.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B59B5E31FDFCEEF0084DFC5 /* VideoSubscriberAccount.framework */; };
 		5B59B5E61FDFCEEF0084DFC5 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B59B5E41FDFCEEF0084DFC5 /* VideoToolbox.framework */; };
 		5B59B5E81FDFCF8D0084DFC5 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B59B5E71FDFCF8D0084DFC5 /* CoreVideo.framework */; };
+		5BA2647D1FE116E900E201F2 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5BA2647C1FE116E900E201F2 /* bundle */; };
+		5BA2647E1FE1280A00E201F2 /* libRCTGetuiModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC635DD1FDFCAE300D4046D /* libRCTGetuiModule.a */; };
 		5BEBDACE1FDE28FF000500E5 /* QBImagePicker.framework in enabled frameworks */ = {isa = PBXBuildFile; fileRef = 5BEBDACA1FDE28DD000500E5 /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5BEBDAD11FDE2B79000500E5 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F92E071A1FC56C86007EC8FC /* libRCTWeChat.a */; };
 		5E89DAE87C0F4A3A922B8451 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD08327A35495DBB3D1842 /* libc++.tbd */; };
@@ -502,13 +503,13 @@
 		4B690DE4D1D4406EA399DECA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		503ACF6D9F6C4B9C9C7C0DD4 /* libdouble-conversion.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libdouble-conversion.a"; sourceTree = "<group>"; };
 		58F396FED4F04FFCB38BBC80 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		5B2CF72E1FE0D52D00D7BA00 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		5B59B5DB1FDFCC610084DFC5 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		5B59B5DF1FDFCEDF0084DFC5 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		5B59B5E01FDFCEDF0084DFC5 /* ContactsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ContactsUI.framework; path = System/Library/Frameworks/ContactsUI.framework; sourceTree = SDKROOT; };
 		5B59B5E31FDFCEEF0084DFC5 /* VideoSubscriberAccount.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoSubscriberAccount.framework; path = System/Library/Frameworks/VideoSubscriberAccount.framework; sourceTree = SDKROOT; };
 		5B59B5E41FDFCEEF0084DFC5 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		5B59B5E71FDFCF8D0084DFC5 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		5BA2647C1FE116E900E201F2 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		5BEBDACA1FDE28DD000500E5 /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BEBDACC1FDE28E7000500E5 /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C875E6F096747C5B7A86904 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
@@ -608,6 +609,7 @@
 				D4853493A9EA412B8AD3AC8C /* CoreTelephony.framework in Frameworks */,
 				65BCA3EB43F04213A2DABD4E /* JavaScriptCore.framework in Frameworks */,
 				E8AA6E6801164C74A296DED1 /* UserNotifications.framework in Frameworks */,
+				5BA2647E1FE1280A00E201F2 /* libRCTGetuiModule.a in Frameworks */,
 				E8EDD1EBA14B461A8955107F /* CoreLocation.framework in Frameworks */,
 				496FC0A37C834E42AC23B0E0 /* AdSupport.framework in Frameworks */,
 				309D1A94F3774A75BFFADC1C /* CoreFoundation.framework in Frameworks */,
@@ -725,7 +727,7 @@
 		13B07FAE1A68108700A75B9A /* AwesomeProject */ = {
 			isa = PBXGroup;
 			children = (
-				5B2CF72E1FE0D52D00D7BA00 /* bundle */,
+				5BA2647C1FE116E900E201F2 /* bundle */,
 				F92E07101FC56A81007EC8FC /* ios */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1103,6 +1105,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = YY7LP5FMG7;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1598,7 +1605,7 @@
 				A4CF656BAC24461C90CFED66 /* Foundation.ttf in Resources */,
 				4A15F94FDF0B46ADA5DDAC99 /* Ionicons.ttf in Resources */,
 				3F671D681DFD4CD6930A254A /* MaterialCommunityIcons.ttf in Resources */,
-				5B2CF72F1FE0D52D00D7BA00 /* bundle in Resources */,
+				5BA2647D1FE116E900E201F2 /* bundle in Resources */,
 				E9866DB8626540AEBD84C2C7 /* MaterialIcons.ttf in Resources */,
 				7C3205E2D51047CF8B075E02 /* Octicons.ttf in Resources */,
 				3D0B6D6DB64F4F95BC1FA379 /* SimpleLineIcons.ttf in Resources */,
@@ -1729,11 +1736,21 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)..\node_modules\neact-native-videoios",
-					"$(SRCROOT)..\node_modules\neact-native-wechatios",
-					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
-					"$(SRCROOT)..\node_modules\neact-native-image-crop-pickerios/**",
-					"$(SRCROOT)..\node_modules\neact-native-device-infoRNDeviceInfo",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-videoios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-wechatios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-image-pickerios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-image-crop-pickerios/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-device-infoRNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 					"$(SRCROOT)/../node_modules/react-native-getui/ios/RCTGetuiModule/RCTGetuiModule",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
@@ -1778,11 +1795,21 @@
 				DEVELOPMENT_TEAM = YY7LP5FMG7;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)..\node_modules\neact-native-videoios",
-					"$(SRCROOT)..\node_modules\neact-native-wechatios",
-					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
-					"$(SRCROOT)..\node_modules\neact-native-image-crop-pickerios/**",
-					"$(SRCROOT)..\node_modules\neact-native-device-infoRNDeviceInfo",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-videoios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-wechatios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-image-pickerios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-image-crop-pickerios/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-device-infoRNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 					"$(SRCROOT)/../node_modules/react-native-getui/ios/RCTGetuiModule/RCTGetuiModule",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
@@ -1860,15 +1887,26 @@
 				DEVELOPMENT_TEAM = YY7LP5FMG7;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)..\node_modules\neact-native-videoios",
-					"$(SRCROOT)..\node_modules\neact-native-wechatios",
-					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
-					"$(SRCROOT)..\node_modules\neact-native-image-crop-pickerios/**",
-					"$(SRCROOT)..\node_modules\neact-native-device-infoRNDeviceInfo",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-videoios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-wechatios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-image-pickerios",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-image-crop-pickerios/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-device-infoRNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 					"$(SRCROOT)/../node_modules/react-native-getui/ios/RCTGetuiModule/RCTGetuiModule",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-swRefresh/RefreshDemo/ios/RefreshDemo",
+					"$(SRCROOT)/../node_modules/react-native-getui/ios/RCTGetuiModule",
 				);
 				INFOPLIST_FILE = AwesomeProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
