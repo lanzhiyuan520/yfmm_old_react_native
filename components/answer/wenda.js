@@ -194,7 +194,7 @@ export default class MinePage extends Component {
                     <View style={styles.top_container}>
                         <View style={{flex:1,flexDirection:'row',paddingTop:20,paddingLeft:33}}>
                             <View><Image source={{uri:'http://cdn.ayi800.com/app_wenda/wenda.png'}} style={styles.top_pic}/></View>
-                            <View style={{flex:1,alignItems:'center'}}>
+                            <View style={{flex:1,alignItems:'center',paddingTop:15}}>
                                 <View><Text>免费问答，快速提问</Text></View>
                                 <TouchableWithoutFeedback onPress={()=> {this.props.navigate('PublishProblem',{navigate:this.props.navigate})} }>
                                 <View style={{width:70,height:24,borderColor:'#ff8080',borderWidth:1,borderRadius:12,marginTop:16,overflow:'hidden'}} >
