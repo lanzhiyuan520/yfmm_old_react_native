@@ -76,7 +76,7 @@ export default class VideoDetail extends Component{
     //点击视频回调
     onProgress(data){
         // data == {currentTime: 0, playableDuration: 0}
-        let val = parseInt(data.currentTime)
+        let val = parseInt(data.currentTime);
         this.setState({
             sliderValue: val,
             current: this._formatTime(Math.floor(data.currentTime))
@@ -85,11 +85,11 @@ export default class VideoDetail extends Component{
     //时间转换
     _formatTime(time) {
         // 71s -> 01:11
-        let min = Math.floor(time / 60)
-        let second = time - min * 60
-        min = min >= 10 ? min : '0' + min
-        second = second >= 10 ? second : '0' + second
-        return min + ':' + second
+        let min = Math.floor(time / 60);
+        let second = time - min * 60;
+        min = min >= 10 ? min : '0' + min;
+        second = second >= 10 ? second : '0' + second;
+        return min + ':' + second;
     }
     //点击播放按钮
     _playButton() {
