@@ -214,7 +214,7 @@ export default class MinePage extends Component {
                             this.requestData(this.state.orderby,offset);
                         }}
                     />
-                    <View style={{height:40,width:width}}></View>
+                    <View style={{height:55,width:width}}></View>
                 </ScrollView>
             </View>
         );

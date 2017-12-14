@@ -31,7 +31,8 @@ export default class Find extends Component{
             actionNum:0,
             loadMore:false,
             isRefreshing: false,
-            finish:false
+            finish:false,
+            count:0
         }
         this.renderList=this.renderList.bind(this);
     }
@@ -65,12 +66,16 @@ export default class Find extends Component{
         let height = event.nativeEvent.layoutMeasurement.height;
         let contentHeight = event.nativeEvent.contentSize.height;
         if(y+height>=contentHeight-20){
-            this.setState({
-                loadMore:true,
-                actionNum:this.state.actionNum+1
-            });
-            let offset=(this.state.actionNum+1)*5;
-            this._loadInitialUser(offset);
+            if(this.state.count==1){
+                console.log("数据加载完成")
+            }else {
+                this.setState({
+                    loadMore:true,
+                    actionNum:this.state.actionNum+1
+                });
+                let offset=(this.state.actionNum+1)*5;
+                this._loadInitialUser(offset);
+            }
         }
     }
     //刷新函数
@@ -82,7 +87,6 @@ export default class Find extends Component{
     }
 
     requestData(offset){
-        console.log(offset)
         const url=constants.url+"/v1/article?uuid="+this.state.user.uuid+"&articleType=4&orderBy=createTimeDesc&limit="+this.state.limit+"&offset="+offset;
         const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
@@ -96,12 +100,12 @@ export default class Find extends Component{
                 let oldArr=this.state.dataSource;
                 let newArr=responseJson.data.dataList;
                 if(newArr.length<5 && newArr.length>=0){
-                    count++;
                     this.setState({
+                        count:1,
                         finish:true,
                         actionNum:this.state.actionNum-1
                     });
-                    if(count==1){
+                    if(this.state.count==1){
                         let allArr=[...oldArr,...newArr];
                         this.setState({
                             dataSource:allArr
@@ -118,6 +122,8 @@ export default class Find extends Component{
             .catch((err) => {
                 console.error('数据请求失败:'+err);
             });
+
+
     }
 
     //列表加载
@@ -205,7 +211,7 @@ export default class Find extends Component{
                             this.requestData(offset);
                         }}
                     />
-                    <View style={{height:40,width:width,marginTop:10}}></View>
+                    <View style={{height:45,width:width,marginTop:10}}></View>
                 </ScrollView>
             </View>
         )

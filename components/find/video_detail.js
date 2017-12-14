@@ -73,7 +73,7 @@ export default class VideoDetail extends Component{
             AlertIOS.alert('视频加载错误');
         }
     }
-
+    //点击视频回调
     onProgress(data){
         // data == {currentTime: 0, playableDuration: 0}
         let val = parseInt(data.currentTime)
