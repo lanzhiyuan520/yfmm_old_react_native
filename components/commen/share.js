@@ -24,7 +24,7 @@ export default class Home extends Component{
     constructor(props){
         super(props);
         this.state={
-            show:false,
+            show:this.props.show,
             url:constants.PROBLEM_URL
         };
         this.shearPlate=this.shearPlate.bind(this);

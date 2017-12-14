@@ -62,7 +62,8 @@ export default class VideoDetail extends Component{
             AlertIOS.alert('视频加载成功');
         }
         this.setState({
-            duration:info.duration
+            duration:info.duration,
+            show:false
         })
     }
     //视频加载失败后回调函数
@@ -73,36 +74,37 @@ export default class VideoDetail extends Component{
             AlertIOS.alert('视频加载错误');
         }
     }
-
+    //点击视频回调
     onProgress(data){
         // data == {currentTime: 0, playableDuration: 0}
-        let val = parseInt(data.currentTime)
+        let val = parseInt(data.currentTime);
         this.setState({
             sliderValue: val,
-            current: this._formatTime(Math.floor(data.currentTime))
+            current: this._formatTime(Math.floor(data.currentTime)),
+            show:false
         })
     }
     //时间转换
     _formatTime(time) {
         // 71s -> 01:11
-        let min = Math.floor(time / 60)
-        let second = time - min * 60
-        min = min >= 10 ? min : '0' + min
-        second = second >= 10 ? second : '0' + second
-        return min + ':' + second
+        let min = Math.floor(time / 60);
+        let second = time - min * 60;
+        min = min >= 10 ? min : '0' + min;
+        second = second >= 10 ? second : '0' + second;
+        return min + ':' + second;
     }
     //点击播放按钮
     _playButton() {
         this.setState({
             playButton: this.state.videoPause ? 'pause-circle' : 'play-circle',
-            videoPause: !this.state.videoPause
+            videoPause: !this.state.videoPause,
+            show:false
         })
     }
     //点击播放按钮视频播放
     showVideo(){
         let author=this.props.navigation.state.params.author;
         if(this.state.play){
-            console.log(this.state.playButton)
             return(
                 <View style={{width:width}}>
                     <Video
@@ -119,7 +121,8 @@ export default class VideoDetail extends Component{
                             sliderValue: 0,
                             current: '00:00',
                             playButton:'play-circle',
-                            videoPause: true
+                            videoPause: true,
+                            show:false
                         })
                     }}
                     />
@@ -137,19 +140,20 @@ export default class VideoDetail extends Component{
                                 onValueChange={(value) => {
                                     this.setState({
                                         videoPause: true,
-                                        current: this._formatTime(Math.floor(value))
+                                        current: this._formatTime(Math.floor(value)),
+                                        show:false
                                     })
                                 }
                                 }
                                 onSlidingComplete={(value) => {
                                     this.refs.video.seek(value);
                                     // 判断是否处于播放状态
-                                    if (this.state.playButton === 'pause-circle') this.setState({videoPause: false})
+                                    if (this.state.playButton === 'pause-circle') this.setState({videoPause: false,show:false})
                                 }
                                 }
                                 step={1}
-                                minimumTrackTintColor='#999'
-                                maximumTrackTintColor='#2175bc'
+                                minimumTrackTintColor='#2175bc'
+                                maximumTrackTintColor='#999'
                                 thumbTintColor="#2175bc"
                             />
 
@@ -164,7 +168,7 @@ export default class VideoDetail extends Component{
             return(
                 <View style={{width:width}}>
                     <Image style={{width:width,height:200}} source={{uri:author.banner}}/>
-                    <TouchableWithoutFeedback onPress={()=>this.setState({play:true})}>
+                    <TouchableWithoutFeedback onPress={()=>this.setState({play:true,show:false})}>
                         <View style={{position:'absolute',left:width/2,top:100,marginLeft:-25,marginTop:-25,zIndex:999}}>
                             <Image style={{width:50,height:50}} source={{uri:"http://cdn.ayi800.com/app_faxian/@2px_btn_play_big.png"}}/>
                         </View>

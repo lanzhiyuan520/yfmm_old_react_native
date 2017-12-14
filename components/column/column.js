@@ -182,7 +182,7 @@ export default class Column  extends Component {
                     isLoading={this.state.loadMore}
                     onLoading={()=>this.loadeMore()}
                 />
-                <View style={{height:40,width:width}}></View>
+                <View style={{height:55,width:width}}></View>
                 </ScrollView>
             </View>
         );
