@@ -11,7 +11,9 @@ import {
     Dimensions,
     ToastAndroid,
     WebView,
-    ScrollView
+    ScrollView,
+    TouchableOpacity,
+    Slider
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import {requestTodayView} from "../api"
@@ -22,6 +24,7 @@ import Toast, {DURATION} from 'react-native-easy-toast'
 import HTMLView from "react-native-htmlview"
 import Load from "../loading/loading"
 var user
+import Icon from 'react-native-vector-icons/FontAwesome'
 export default class RequiredList extends Component{
     constructor(props){
         super(props)
@@ -50,10 +53,19 @@ export default class RequiredList extends Component{
             },
             attend:"false",
             play:false,
-            loading:true
+            loading:true,
+            playButton: 'pause-circle',
+            sliderValue: 0,
+            duration:0,
+            videoPause:false,
+            current:'00:00',
         }
         this.suggest_success=this.suggest_success.bind(this)
         this._loadInitialState=this._loadInitialState.bind(this);
+        this.encodeURI=this.encodeURI.bind(this);
+        this._formatTime=this._formatTime.bind(this);
+        this.onProgress=this.onProgress.bind(this);
+        this.onLoad=this.onLoad.bind(this);
     }
     componentDidMount(){
          user = this.props.user
@@ -63,23 +75,93 @@ export default class RequiredList extends Component{
             requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
         })
     }
-    loadStart(data){
-        console.log(data)
+    //时间转换
+    _formatTime(time) {
+        // 71s -> 01:11
+        let min = Math.floor(time / 60)
+        let second = time - min * 60
+        min = min >= 10 ? min : '0' + min
+        second = second >= 10 ? second : '0' + second
+        return min + ':' + second
+    }
+    //视频url转码
+    encodeURI(u){
+        let url = encodeURI(u)
+        return url
+    }
+    //点击播放按钮
+    _playButton() {
+        this.setState({
+            playButton: this.state.videoPause ? 'pause-circle' : 'play-circle',
+            videoPause: !this.state.videoPause
+        })
+    }
+    onProgress(data){
+        // data == {currentTime: 0, playableDuration: 0}
+        let val = parseInt(data.currentTime)
+        this.setState({
+            sliderValue: val,
+            current: this._formatTime(Math.floor(data.currentTime))
+        })
     }
     showVideo(){
         if(this.state.play){
             return(
                 <View style={{flex:1}}>
                     <Video
-                        ref="myvideo"
+                        ref="video"
                         resizeMode='cover'
-                        source={{uri:"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",type:"mp4"}}
+                        source={{uri:this.encodeURI(this.state.suggest_data.video),type:"mp4"}}
                         style={{width:width,height:200,backgroundColor:"#fff"}}
+                        playInBackground={true}
                         onLoad={this.onLoad}
                         onError={this.onError}
                         onProgress={this.onProgress}
-                        onLoadStart={this.loadStart}
+                        paused={this.state.videoPause}
+                        onEnd={() => {
+                            this.setState({
+                                sliderValue: 0,
+                                current: '00:00',
+                                playButton:'play-circle',
+                                videoPause: true
+                            })
+                        }}
                     />
+                    <View style={{position:'absolute',bottom:0,width:width}}>
+                        <View style={styles.playingControl}>
+                            <TouchableOpacity onPress={this._playButton.bind(this)}>
+                                <Icon name={this.state.playButton} size={30} color='#999' style={{backgroundColor:"transparent"}} />
+                            </TouchableOpacity>
+                            <Slider
+                                ref='slider'
+                                style={{flex: 1, marginLeft: 10, marginRight: 10}}
+                                value={this.state.sliderValue}
+                                minimumValue = {0} //最小之
+                                maximumValue = {Math.floor(this.state.duration)} //最大值
+                                onValueChange={(value) => {
+                                    this.setState({
+                                        videoPause: true,
+                                        current: this._formatTime(Math.floor(value))
+                                    })
+                                }
+                                }
+                                onSlidingComplete={(value) => {
+                                    this.refs.video.seek(value);
+                                    // 判断是否处于播放状态
+                                    if (this.state.playButton === 'pause-circle') this.setState({videoPause: false})
+                                }
+                                }
+                                step={1}
+                                minimumTrackTintColor='#999'
+                                maximumTrackTintColor='#2175bc'
+                                thumbTintColor="#2175bc"
+                            />
+
+                            <View>
+                                <Text style={{color:'#999',backgroundColor:"transparent"}}>{this.state.current} : {this._formatTime(Math.floor(this.state.duration))}</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
             )
         }else {
@@ -122,14 +204,12 @@ export default class RequiredList extends Component{
     onLoad(info){
         // info == {currentTime,duration,...}
         bounces('视频加载成功！');
+        this.setState({
+            duration:info.duration
+        })
     }
     onError(e){
-        console.log(e)
         bounces('视频加载错误');
-    }
-
-    onProgress(info){
-        // info == {currentTime: 0, playableDuration: 0}
     }
     suggest_success(responseText){
         if(responseText.code != 0){
@@ -213,5 +293,13 @@ const styles = StyleSheet.create({
         backgroundColor:'rgba(0,0,0,0.5)',
         position:'absolute',
         left:0
-    }
+    },
+        playingControl: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingTop: 10,
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingBottom: 20
+        }
 })

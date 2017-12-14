@@ -206,7 +206,6 @@ export default class Login extends Component {
     }
     //微信登录
     social(){
-        console.log("hello")
         this.disabled(1)
         WeChat.isWXAppInstalled()
             .then( ( isInstalled ) => {

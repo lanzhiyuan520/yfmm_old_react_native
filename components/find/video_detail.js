@@ -51,6 +51,7 @@ export default class VideoDetail extends Component{
         this.onLoad=this.onLoad.bind(this);
         this.onProgress=this.onProgress.bind(this);
         this._formatTime=this._formatTime.bind(this);
+        this.encodeURI=this.encodeURI.bind(this);
     }
 
     //视频加载成功后回调函数
@@ -98,6 +99,10 @@ export default class VideoDetail extends Component{
             videoPause: !this.state.videoPause
         })
     }
+    encodeURI(u){
+        let url = encodeURI(u)
+        return url
+    }
     //点击播放按钮视频播放
     showVideo(){
         let author=this.props.navigation.state.params.author;
@@ -108,7 +113,7 @@ export default class VideoDetail extends Component{
                     <Video
                     ref="video"
                     resizeMode='cover'
-                    source={{uri:author.video,type: 'mp4'}}
+                    source={{uri:this.encodeURI(author.video),type: 'mp4'}}
                     style={{width:width,height:200}}
                     onLoad={this.onLoad}
                     onError={this.onError}
@@ -126,7 +131,7 @@ export default class VideoDetail extends Component{
                     <View style={{position:'absolute',bottom:0,width:width}}>
                         <View style={styles.playingControl}>
                             <TouchableOpacity onPress={this._playButton.bind(this)}>
-                                <Icon name={this.state.playButton} size={30} color='#999' />
+                                <Icon style={{backgroundColor:"transparent"}} name={this.state.playButton} size={30} color='#999' />
                             </TouchableOpacity>
                             <Slider
                                 ref='slider'
@@ -154,7 +159,7 @@ export default class VideoDetail extends Component{
                             />
 
                             <View>
-                                <Text style={{color:'#999'}}>{this.state.current} : {this._formatTime(Math.floor(this.state.duration))}</Text>
+                                <Text style={{color:'#999',backgroundColor:"transparent"}}>{this.state.current} : {this._formatTime(Math.floor(this.state.duration))}</Text>
                             </View>
                         </View>
                     </View>

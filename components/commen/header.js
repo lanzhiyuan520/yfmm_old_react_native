@@ -24,7 +24,8 @@ export default class Header extends Component{
         this.state={
             heart:this.props.heart,
             user:{},
-            btn_state:false
+            btn_state:false,
+            disabled:false
         }
     }
 
@@ -233,11 +234,22 @@ export default class Header extends Component{
         }
 
     }
+    //防止多次点击
+    disabled(){
+        this.setState({
+            disabled:true
+        })
+        setTimeout(()=>{
+            this.setState({disabled:false})
+        },500)
+    }
     //头部左边渲染
     hasLeft(){
         if (this.props.back=="true") {
             return (
-                <TouchableWithoutFeedback onPress={()=> this.goBack()}>
+                <TouchableWithoutFeedback
+                    disabled={this.state.disabled}
+                    onPress={()=> this.goBack()}>
                     <View style={[styles.sub_container,styles.pl]}>
                         <FontAwesome name="angle-left" style={{fontSize:30,color:"#ff8080"}} />
                     </View>

@@ -42,7 +42,6 @@ export default class Required extends Component{
             data:[]
         }
         this.fun=this.fun.bind(this)
-        this.nav_list = this.nav_list.bind(this)
         this.shareShow = this.shareShow.bind(this)
     }
     componentWillMount(){
@@ -57,12 +56,6 @@ export default class Required extends Component{
                 this.state.sta=this.state.yuer
                 this.state.index = 2
             }
-
-    }
-    componentDidMount(){
-        this.nav_list()
-    }
-    nav_list(){
 
     }
     //切换导航获取不同的数据
@@ -116,7 +109,7 @@ export default class Required extends Component{
                    {
                        this.state.sta.map((tab,i)=>{
                            return (
-                               <RequiredList navigation={this.props.navigation} key={i} tabLabel={tab} user={this.props.navigation.state.params.user} index={this.state.index}/>
+                               <RequiredList ref="list" navigation={this.props.navigation} key={i} tabLabel={tab} user={this.props.navigation.state.params.user} index={this.state.index}/>
                            )
                        })
                     }
