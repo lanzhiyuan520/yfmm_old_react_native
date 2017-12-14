@@ -12,7 +12,7 @@ export function Circle(obj){
                         ToastAndroid(error.message);
                     });
             } else {
-                bounces('没有安装微信软件，请您安装微信之后再试');
+                bounces('没有安装微信软件,请您安装微信之后再试');
             }
         });
 }

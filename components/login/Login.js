@@ -39,7 +39,8 @@ import Toast, {DURATION} from 'react-native-easy-toast'
 import {bounces} from "../bounces/bounces"
 export default class Login extends Component {
     static navigationOptions = ({navigation}) => ({
-        header:null
+        header:null,
+        gesturesEnabled:false
     });
     constructor(props){
         super(props)
@@ -112,6 +113,7 @@ export default class Login extends Component {
     //手机登录成功回调
     user_success(responseText){
         console.log(responseText)
+        console.log("user_success")
         if(responseText.code != 0){
             bounces(responseText.msg,this)
             return false
@@ -132,6 +134,7 @@ export default class Login extends Component {
                         })
                 }
             }else {
+                console.log("user=0")
                 this.props.navigation.navigate("Userstate",{
                     user:JSON.stringify(this.state.user),
                     navigate:this.props.navigation.navigate
@@ -143,6 +146,7 @@ export default class Login extends Component {
     }
     //获取用户状态回调
     user_information(responseText){
+        console.log("user_information")
         //存入用户状态
         AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))
             .then(()=>{
@@ -202,19 +206,21 @@ export default class Login extends Component {
     }
     //微信登录
     social(){
+        console.log("hello")
         this.disabled(1)
         WeChat.isWXAppInstalled()
             .then( ( isInstalled ) => {
                 if ( isInstalled ) {
-                    WeChat.sendAuthRequest("snsapi_userinfo", "123")
+                    WeChat.sendAuthRequest("snsapi_userinfo","123")
                         .then(responseCode => {
                             //返回code码，通过code获取access_token
-                            var code = responseCode.code
-                            var appid = "wx4185c118f9757414"
-                            var secret = "5d046ff2594c09a4b867f8810eb103b6"
+                            let code = responseCode.code
+                            let appid = "wx4185c118f9757414"
+                            let secret = "5d046ff2594c09a4b867f8810eb103b6"
                             this.wx_access_token(code,appid,secret)
                         })
                         .catch(err => {
+                            console.log(err)
                             Alert.alert('登录授权发生错误：', err.message, [
                                 {text: '确定'}
                             ]);
@@ -224,7 +230,10 @@ export default class Login extends Component {
                             {text: '确定'}
                         ])
                 }
-            } );
+            } )
+            .catch((error)=>{
+                console.log(error)
+            })
     }
     //勾选用户条款
     checked(){
@@ -379,7 +388,9 @@ export default class Login extends Component {
                         marginTop:20,
                     }}>
 
-                            <TouchableWithoutFeedback onPress={()=>{
+                            <TouchableWithoutFeedback
+                                disabled={this.state.disabled2}
+                                onPress={()=>{
                                 this.click();
                             }}>
                                 <View style={{width:width*0.9,height:45,backgroundColor:"#ff8080",justifyContent:"center",alignItems:"center"}}>

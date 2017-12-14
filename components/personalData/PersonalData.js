@@ -75,9 +75,7 @@ export default class PersonalData extends Component{
                 cropperCircleOverlay:true,
                 showCropGuidelines:false
             }).then(image => {
-                this.setState({
-                    img:image.path
-                })
+                z
                 user_img(user.uuid,user.token,image.path,this.user_image)
             });
         }  else if(i==2){

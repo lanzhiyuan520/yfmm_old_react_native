@@ -20,6 +20,7 @@ import Video from 'react-native-video';
 import {bounces} from "../bounces/bounces"
 import Toast, {DURATION} from 'react-native-easy-toast'
 import HTMLView from "react-native-htmlview"
+import Load from "../loading/loading"
 var user
 export default class RequiredList extends Component{
     constructor(props){
@@ -48,7 +49,8 @@ export default class RequiredList extends Component{
                 video:"http://cdn.ayi800.com/产后按摩.mp4"
             },
             attend:"false",
-            play:false
+            play:false,
+            loading:true
         }
         this.suggest_success=this.suggest_success.bind(this)
         this._loadInitialState=this._loadInitialState.bind(this);
@@ -61,6 +63,9 @@ export default class RequiredList extends Component{
             requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
         })
     }
+    loadStart(data){
+        console.log(data)
+    }
     showVideo(){
         if(this.state.play){
             return(
@@ -68,11 +73,12 @@ export default class RequiredList extends Component{
                     <Video
                         ref="myvideo"
                         resizeMode='cover'
-                        source={{uri:this.state.suggest_data.video,type: 'mp4'}}
+                        source={{uri:"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",type:"mp4"}}
                         style={{width:width,height:200,backgroundColor:"#fff"}}
                         onLoad={this.onLoad}
                         onError={this.onError}
                         onProgress={this.onProgress}
+                        onLoadStart={this.loadStart}
                     />
                 </View>
             )
@@ -118,7 +124,8 @@ export default class RequiredList extends Component{
         bounces('视频加载成功！');
     }
     onError(e){
-        bounces('视频加载错误！');
+        console.log(e)
+        bounces('视频加载错误');
     }
 
     onProgress(info){
@@ -127,11 +134,13 @@ export default class RequiredList extends Component{
     suggest_success(responseText){
         if(responseText.code != 0){
             this.setState({
-                suggest_data:this.state.suggest_data
+                suggest_data:this.state.suggest_data,
+                loading:false
             })
         }else{
             this.setState({
-                suggest_data:responseText.data.articleData
+                suggest_data:responseText.data.articleData,
+                loading:false
             })
             this._loadInitialState();
         }
@@ -141,50 +150,58 @@ export default class RequiredList extends Component{
         return(
             <View style={{flex:1,width:width,backgroundColor:"#fff"}}>
                 <Toast ref="toast"/>
-                <ScrollView>
-                <View>
-                    <View style={{width:width,height:15,backgroundColor:"#f5f5f5"}}></View>
-                        <View style={{width:width,justifyContent:"space-around",height:80,paddingRight:10,paddingLeft:10}}>
-                            <View style={{width:width}}>
-                                <Text style={{fontSize:14,color:"#000"}}>{this.state.suggest_data.title}</Text>
-                            </View>
-                            <View style={{flexDirection:"row"}}>
-                                <Text style={{fontSize:12,color:"#999",marginRight:10}}>{/*{this.state.suggest_data.created_at}*/}</Text>
-                                <Text style={{fontSize:12,color:"#999"}}>阅读 {this.state.suggest_data.created_at}</Text>
-                            </View>
+                {
+                    this.state.loading?
+                        <View style={{position:"absolute",top:-100}}>
+                            <Load loading={this.state.loading} />
                         </View>
-                    </View>
-                    <View style={{width:width,height:80,flexDirection:"row",alignItems:"center",borderColor:"#f2f2f2",borderTopWidth:1,borderBottomWidth:1}}>
-                        <View style={{width:width,flexDirection:"row",paddingLeft:10,paddingRight:10,alignItems:"center"}}>
-                            <TouchableWithoutFeedback onPress={()=>{
-                                this.props.navigation.navigate("ExpertDetail",{
-                                    id:this.state.suggest_data.author_id,
-                                    daren:this._loadInitialState
-                                })
-                            }}>
-                                <View style={{flexDirection:"row",alignItems:"center"}}>
-                                    <View style={{marginRight:10}}>
-                                        <Image source={{uri:this.state.suggest_data.author_img}} style={{width:30,height:30,borderRadius:15}} />
+                        :
+                        <ScrollView>
+                            <View>
+                                <View style={{width:width,height:15,backgroundColor:"#f5f5f5"}}></View>
+                                <View style={{width:width,justifyContent:"space-around",height:80,paddingRight:10,paddingLeft:10}}>
+                                    <View style={{width:width}}>
+                                        <Text style={{fontSize:14,color:"#000"}}>{this.state.suggest_data.title}</Text>
                                     </View>
-                                    <View>
-                                        <Text style={{color:"#333",fontSize:13}}>{this.state.suggest_data.author_name}</Text>
+                                    <View style={{flexDirection:"row"}}>
+                                        <Text style={{fontSize:12,color:"#999",marginRight:10}}>{/*{this.state.suggest_data.created_at}*/}</Text>
+                                        <Text style={{fontSize:12,color:"#999"}}>阅读 {this.state.suggest_data.created_at}</Text>
                                     </View>
                                 </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                        <View style={{position:"absolute",right:10}}>
-                            <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.suggest_data.author_id}/>
-                        </View>
-                    </View>
-                    <View>
-                        {this.showVideo()}
-                    </View>
-                    <View>
-                        <HTMLView
-                            value={this.state.suggest_data.content}
-                        />
-                    </View>
-                </ScrollView>
+                            </View>
+                            <View style={{width:width,height:80,flexDirection:"row",alignItems:"center",borderColor:"#f2f2f2",borderTopWidth:1,borderBottomWidth:1}}>
+                                <View style={{width:width,flexDirection:"row",paddingLeft:10,paddingRight:10,alignItems:"center"}}>
+                                    <TouchableWithoutFeedback onPress={()=>{
+                                        this.props.navigation.navigate("ExpertDetail",{
+                                            id:this.state.suggest_data.author_id,
+                                            daren:this._loadInitialState
+                                        })
+                                    }}>
+                                        <View style={{flexDirection:"row",alignItems:"center"}}>
+                                            <View style={{marginRight:10}}>
+                                                <Image source={{uri:this.state.suggest_data.author_img}} style={{width:30,height:30,borderRadius:15}} />
+                                            </View>
+                                            <View>
+                                                <Text style={{color:"#333",fontSize:13}}>{this.state.suggest_data.author_name}</Text>
+                                            </View>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                </View>
+                                <View style={{position:"absolute",right:10}}>
+                                    <Btn title="关注" subtitle="已关注" attend={this.state.attend} collect="care" operateType="8" id={this.state.suggest_data.author_id}/>
+                                </View>
+                            </View>
+                            <View>
+                                {this.showVideo()}
+                            </View>
+                            <View>
+                                <HTMLView
+                                    value={this.state.suggest_data.content}
+                                />
+                            </View>
+                        </ScrollView>
+                }
+
                 </View>
         )
     }

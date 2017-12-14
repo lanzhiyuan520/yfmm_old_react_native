@@ -9,6 +9,12 @@
 
 #import <UIKit/UIKit.h>
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+#import <UserNotifications/UserNotifications.h>
+#define kGtAppId @"QFSHRfUXz1Ar0rQfZRgpq2"
+#define kGtAppKey @"J4OXKuZCfl5zLSvUVCp9G"
+#define kGtAppSecret @"wiIYiJMa989mFZZEW7km41"
+#endif
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
