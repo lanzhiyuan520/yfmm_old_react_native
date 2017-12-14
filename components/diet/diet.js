@@ -89,7 +89,8 @@ export default class Diet extends Component{
                                                 onPress={()=>{this.props.navigate('Detailed',{
                                                 id:item.id,
                                                 user:this.state.user,
-                                                title:item.title
+                                                title:item.title,
+                                                img:item.banner
                                             });
                                                     this.props.disabled_fun()
                                                 }}>
