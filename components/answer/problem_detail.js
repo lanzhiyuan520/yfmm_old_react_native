@@ -38,7 +38,6 @@ export default class Problem extends Component{
     }
 
     componentWillMount(){
-        console.log(1)
         const id=this.props.navigation.state.params.id;
         // this.requestData(id);
         this._loadInitialUser(id);
@@ -47,7 +46,6 @@ export default class Problem extends Component{
     componentDidMount(){
         const id=this.props.navigation.state.params.id;
         this._loadInitialState(id);
-        console.log(id)
     }
     //获取用户信息
     async _loadInitialUser(id){
@@ -156,7 +154,6 @@ export default class Problem extends Component{
     }
 
     render(){
-        console.log(2)
         const { state } = this.props.navigation;
         return(
             <View>

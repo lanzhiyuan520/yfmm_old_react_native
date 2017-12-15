@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
-import ImagePicker from 'react-native-image-crop-picker';
 const {width,height}=Dimensions.get('window');
 import {
     Platform,
