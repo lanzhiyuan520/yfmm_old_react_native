@@ -35,6 +35,7 @@ const instructions = Platform.select({
 import TabNavigator from 'react-native-tab-navigator';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {bounces} from "./components/bounces/bounces"
+import Getui from 'react-native-getui'
 export default class App extends Component<{}> {
     static navigationOptions = {
         title: 'Welcome',
@@ -50,20 +51,54 @@ export default class App extends Component<{}> {
       this.find=this.find.bind(this)
       this.behavior=this.behavior.bind(this)
   }
-    componentDidMount(){
-        WeChat.registerApp('wx825ecd9a849eef9d');
+
+    componentWillMount() {
+        //判断机型并监听物理返回键
+        if (Platform.OS === 'android') {
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
+        }
+        //订阅消息通知
+        var { NativeAppEventEmitter } = require('react-native');
+        var resigsteClientIdSub = NativeAppEventEmitter.addListener(
+            'registeClientId',
+            (clientId) => {
+                Alert.alert(clientId);
+            }
+        )
+        var receiveRemoteNotificationSub = NativeAppEventEmitter.addListener(
+            'receiveRemoteNotification',
+            (notification) => {
+                //消息类型分为 APNs 和 payload 透传消息，具体的消息体格式会有差异
+                switch (notification.type) {
+                    case "apns":
+                        Alert.alert('APNs 消息通知',JSON.stringify(notification))
+                        break;
+                    case "payload":
+                        Alert.alert('payload 消息通知',JSON.stringify(notification))
+                        break;
+                    default:
+                }
+            }
+        );
+
+        var clickRemoteNotificationSub = NativeAppEventEmitter.addListener(
+            'clickRemoteNotification',
+            (notification) => {
+                Alert.alert('点击通知',JSON.stringify(notification))
+            }
+        );
+    }
+    componentWillUnMount() {
+        //记得在此处移除监听
+        receiveRemoteNotificationSub.remove()
+        clickRemoteNotificationSub.remove()
+        resigsteClientIdSub.remove()
     }
     //更改底部导航位置
     find () {
         this.setState({
             selectedTab: "发现"
         })
-    }
-    componentWillMount() {
-        //判断机型并监听物理返回键
-        if (Platform.OS === 'android') {
-            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
-        }
     }
     //双击退出应用
     onBackAndroid(){
@@ -76,6 +111,7 @@ export default class App extends Component<{}> {
         return true;
     }
     componentDidMount() {
+        WeChat.registerApp('wx825ecd9a849eef9d');
         //获取用户信息
         var user = JSON.parse(this.props.navigation.state.params.user)
         //获取用户行为

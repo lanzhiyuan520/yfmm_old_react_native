@@ -390,6 +390,7 @@ export default class Login extends Component {
                             <TouchableWithoutFeedback
                                 disabled={this.state.disabled2}
                                 onPress={()=>{
+                                this.disabled(2)
                                 this.click();
                             }}>
                                 <View style={{width:width*0.9,height:45,backgroundColor:"#ff8080",justifyContent:"center",alignItems:"center"}}>

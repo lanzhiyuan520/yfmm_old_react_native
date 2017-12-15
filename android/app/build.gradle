@@ -98,9 +98,9 @@ android {
 
     defaultConfig {
     manifestPlaceholders = [
-                        GETUI_APP_ID : "QFSHRfUXz1Ar0rQfZRgpq2",
-                        GETUI_APP_KEY : "J4OXKuZCfl5zLSvUVCp9G",
-                        GETUI_APP_SECRET : "wiIYiJMa989mFZZEW7km41"
+                        GETUI_APP_ID : "GVA23Sfmmw9zZHSL77Uoh5",
+                        GETUI_APP_KEY : "5PcLAnFa7d9Qlzu6LJUXS9",
+                        GETUI_APP_SECRET : "596q8Hcx0B6MInRexJYaK2"
                     ]
        vectorDrawables.useSupportLibrary = true
         applicationId "com.awesomeproject"
