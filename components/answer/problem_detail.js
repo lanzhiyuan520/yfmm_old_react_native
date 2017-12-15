@@ -137,6 +137,7 @@ export default class Problem extends Component{
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
                 this.setState({
                     author:responseJson.data.hash_data
                 })

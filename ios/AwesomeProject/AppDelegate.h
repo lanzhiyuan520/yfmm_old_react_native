@@ -8,15 +8,15 @@
  */
 
 #import <UIKit/UIKit.h>
-
+#import <RCTGetuiModule/RCTGetuiModule.h>
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 #import <UserNotifications/UserNotifications.h>
-#define kGtAppId @"QFSHRfUXz1Ar0rQfZRgpq2"
-#define kGtAppKey @"J4OXKuZCfl5zLSvUVCp9G"
-#define kGtAppSecret @"wiIYiJMa989mFZZEW7km41"
 #endif
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+#define kGtAppId @"GVA23Sfmmw9zZHSL77Uoh5"
+#define kGtAppKey @"5PcLAnFa7d9Qlzu6LJUXS9"
+#define kGtAppSecret @"596q8Hcx0B6MInRexJYaK2"
 
+@interface AppDelegate : UIResponder <UIApplicationDelegate,UNUserNotificationCenterDelegate,GeTuiSdkDelegate>
 @property (nonatomic, strong) UIWindow *window;
 
 @end
