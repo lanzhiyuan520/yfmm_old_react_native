@@ -158,11 +158,11 @@ const styles = StyleSheet.create({
     },
     black_color:{
         color:'#333',
-        fontSize:12
+        fontSize:14
     },
     light_color:{
         color:'#999',
-        fontSize:12
+        fontSize:14
     },
 
 });

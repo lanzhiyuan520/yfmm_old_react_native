@@ -31,7 +31,8 @@ export default class Problem extends Component{
             author:{},
             attend:'false',
             show:false,
-            user:{}
+            user:{},
+            expert:{}
         };
         this._loadInitialState=this._loadInitialState.bind(this);
     }
@@ -45,7 +46,6 @@ export default class Problem extends Component{
     componentDidMount(){
         const id=this.props.navigation.state.params.id;
         this._loadInitialState(id);
-        console.log(id)
     }
     //获取用户信息
     async _loadInitialUser(id){
@@ -69,7 +69,6 @@ export default class Problem extends Component{
     async _loadInitialState(id){
         try{
             var value=await AsyncStorage.getItem('userActionList');
-            console.log(value)
             if(value!=null){
                 result=JSON.parse(value);
                 if(result.shoucang.wenti.dataList.indexOf(id) !== -1){
@@ -139,7 +138,8 @@ export default class Problem extends Component{
             .then((responseJson) => {
                 console.log(responseJson)
                 this.setState({
-                    author:responseJson.data.hash_data
+                    author:responseJson.data.hash_data,
+                    expert:responseJson.data.hash_data.author_list
                 })
             })
             .catch((err) => {
@@ -165,7 +165,7 @@ export default class Problem extends Component{
                                 <View style={[styles.flex_row,styles.space_between]}>
                                     <View style={styles.flex_row}>
                                         <View style={{marginRight:10}}>
-                                            <Image source={{uri:state.params.author.head_img}} style={{width:30,height:30,borderRadius:15}} />
+                                            <Image source={{uri:this.state.expert.head_img}} style={{width:30,height:30,borderRadius:15}} />
                                         </View>
                                         <View><Text style={{lineHeight:25,fontSize:12}}>{state.params.author.nickname}</Text></View>
                                     </View>
