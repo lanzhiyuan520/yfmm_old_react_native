@@ -332,6 +332,7 @@ export default class Login extends Component {
                                     this.setState({validation})
                                 }}
                                 maxLength={6}
+                                underlineColorAndroid="transparent"
                             />
                             <TouchableOpacity
                                 disabled={this.state.disabled}
