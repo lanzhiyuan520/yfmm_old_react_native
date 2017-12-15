@@ -62,7 +62,7 @@ export default class App extends Component<{}> {
         var resigsteClientIdSub = NativeAppEventEmitter.addListener(
             'registeClientId',
             (clientId) => {
-                Alert.alert(clientId);
+                /*Alert.alert(clientId);*/
             }
         )
         var receiveRemoteNotificationSub = NativeAppEventEmitter.addListener(
