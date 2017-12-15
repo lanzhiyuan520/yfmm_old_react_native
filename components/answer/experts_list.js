@@ -90,7 +90,7 @@ export default class ExpertList extends Component {
             return (
                 <View style={[styles.scroll_box]}>
                     <View style={styles.article_item}>
-                        <View style={{flex:1}}><Text style={styles.font_12}>专家推荐</Text></View>
+                        <View style={{flex:1}}><Text style={styles.font_14}>专家推荐</Text></View>
                         <View style={{flex:1}}>
                             <TouchableWithoutFeedback onPress={()=>this.props.navigate('ExpertsList', {navigate: this.props.navigate, user: this.state.user})}>
                                 <FontAwesome name="angle-right" style={styles.font_10} />
@@ -127,12 +127,12 @@ const styles = StyleSheet.create({
         height:220,
     },
     font_10:{
-        fontSize:18,
+        fontSize:20,
         lineHeight:13,
         textAlign:'right'
     },
-    font_12:{
-        fontSize:12
+    font_14:{
+        fontSize:14
     },
     black_color:{
         color:'#262626'

@@ -69,7 +69,6 @@ export default class Problem extends Component{
     async _loadInitialState(id){
         try{
             var value=await AsyncStorage.getItem('userActionList');
-            console.log(value)
             if(value!=null){
                 result=JSON.parse(value);
                 if(result.shoucang.wenti.dataList.indexOf(id) !== -1){
