@@ -28,6 +28,8 @@ import {request_professionals_list, requestTodayView, request_noticelist, reques
 import {PullView} from 'react-native-pull';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Load from "./loading/loading";
+import {bounces} from "./bounces/bounces";
+import Toast, {DURATION} from 'react-native-easy-toast'
 export default class Home extends Component{
     constructor(props){
         super(props)
@@ -147,15 +149,16 @@ export default class Home extends Component{
         }
     }*/
     _onRefresh(){
-        /*this.setState({
+        this.setState({
             isRefreshing:true
         })
-        this.refs.xiaofu.xiaofu_list()*/
+        this.refs.xiaofu.xiaofu_list(0)
     }
     _onRefresh_state(){
-        /*this.setState({
+        this.setState({
             isRefreshing:false
-        })*/
+        })
+        bounces("刷新成功",this)
     }
     disabled(){
         this.setState({
@@ -168,6 +171,7 @@ export default class Home extends Component{
     render(){
         return(
             <View style={{position:"relative"}}>
+                <Toast ref="toast"/>
                     <Load loading={this.state.loading}/>
                 <ScrollView
                     refreshControl={
@@ -381,7 +385,7 @@ export default class Home extends Component{
                         }
                     </View>
                     <View style={{width:width,height:15,backgroundColor:"#f3f3f3"}}></View>
-                    <Smallfu ref='xiaofu' _onRefresh_state={this._onRefresh_state} loading={this.loading}  user={this.props.user} navigate={this.props.navigate} disabled={this.state.disabled} disabled_fun={this.disabled}/>
+                    <Smallfu ref='xiaofu' isRefreshing={this.state.isRefreshing} _onRefresh_state={this._onRefresh_state} loading={this.loading}  user={this.props.user} navigate={this.props.navigate} disabled={this.state.disabled} disabled_fun={this.disabled}/>
                 </ScrollView>
             </View>
         )

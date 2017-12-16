@@ -15,6 +15,8 @@ var postData = {}
 var {width} = Dimensions.get('window')
 import {address} from "../api"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {bounces} from "../bounces/bounces"
+import Toast, {DURATION} from 'react-native-easy-toast'
 export default class Phone extends Component{
     static navigationOptions = ({navigation}) => ({
         title: "地址",
@@ -44,8 +46,11 @@ export default class Phone extends Component{
     }
     preservation(){
         var user = this.props.navigation.state.params.user
-        if(!this.state.text){
+        var str = this.state.text.replace(/\s+/g,"");
+        if(!str){
+            bounces("您还没有输入内容",this)
             return false
+
         }
         address(user,postData,this.address_success)
     }
@@ -65,6 +70,7 @@ export default class Phone extends Component{
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#f8f8f8"}}>
+                <Toast ref="toast"/>
                 <View style={{width:width,height:150,borderBottomColor:"#f2f2f2",borderBottomWidth:1,borderTopColor:"#f2f2f2",borderTopWidth:1,backgroundColor:"#fff"}}>
                     <TextInput
                         onChangeText={(text) => {

@@ -67,14 +67,26 @@ export default class App extends Component<{}> {
         )
         var receiveRemoteNotificationSub = NativeAppEventEmitter.addListener(
             'receiveRemoteNotification',
-            (notification) => {
+            (msg) => {
                 //消息类型分为 APNs 和 payload 透传消息，具体的消息体格式会有差异
-                switch (notification.type) {
+                switch (msg.type) {
                     case "apns":
                         Alert.alert('APNs 消息通知',JSON.stringify(notification))
                         break;
                     case "payload":
-                        Alert.alert('payload 消息通知',JSON.stringify(notification))
+                        this.props.navigation.navigate("Xfdetailed",{
+                            id:263,
+                            user:this.props.navigation.state.params.user
+                        })
+                        /*Alert.alert('消息通知',JSON.stringify(msg),[
+                            {text:'取消',onPress:()=>{}},
+                            {text:'查看',onPress:()=>{
+                                    this.props.navigation.navigate("Xfdetailed",{
+                                        id:263,
+                                        user:this.props.navigation.state.params.user
+                                    })
+                                }}
+                        ])*/
                         break;
                     default:
                 }
