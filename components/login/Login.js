@@ -297,6 +297,7 @@ export default class Login extends Component {
         return (
             <View style={{backgroundColor:"#fff",paddingBottom:100,flex:1}}>
                 <Toast ref="toast"/>
+
                 <View style={styles.header}>
                     <Text style={styles.title}>快速登录</Text>
                 </View>
@@ -308,6 +309,7 @@ export default class Login extends Component {
                     }}>
                         <TextInput
                             style={styles.phone}
+                            clearButtonMode={"while-editing"}
                             placeholder="请输入手机号"
                             onChangeText={(text) => {
                                 this.setState({text})
@@ -326,6 +328,7 @@ export default class Login extends Component {
                         }}>
                             <TextInput
                                 style={styles.validation}
+                                clearButtonMode={"while-editing"}
                                 placeholder="请输入验证码"
                                 value={this.state.validation}
                                 onChangeText={(validation) => {

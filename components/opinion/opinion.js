@@ -15,6 +15,7 @@ import {user_opinion} from "../api"
 var user
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {bounces} from "../bounces/bounces"
+import Toast, {DURATION} from 'react-native-easy-toast'
 export default class Opinion extends Component{
     static navigationOptions = ({navigation}) => ({
 
@@ -37,6 +38,7 @@ export default class Opinion extends Component{
             text:null
         }
         this.submit=this.submit.bind(this)
+        this.opinion_success=this.opinion_success.bind(this)
     }
 
     componentDidMount(){
@@ -44,8 +46,9 @@ export default class Opinion extends Component{
         user = this.props.navigation.state.params.user
     }
     submit(){
-        if(!this.state.text){
-            bounces("请输入内容")
+        var str = this.state.text.replace(/\s+/g,"");
+        if(!str){
+            bounces("请输入内容",this)
             return false
         }
         var data = {data:this.state.text}
@@ -66,6 +69,7 @@ export default class Opinion extends Component{
     render(){
         return(
             <View style={{width:width,flex:1,backgroundColor:"#f5f5f5"}}>
+                <Toast ref="toast"/>
                 <View style={{width:width,height:300,backgroundColor:"#fff",paddingRight:10,paddingLeft:10}}>
                     <TextInput
                         style={{height: 45,backgroundColor:"#fff"}}

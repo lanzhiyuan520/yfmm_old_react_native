@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import {username} from "../api"
+import {bounces} from "../bounces/bounces"
+import Toast, {DURATION} from 'react-native-easy-toast'
 var postData = {}
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default class Username extends Component{
@@ -33,7 +35,7 @@ export default class Username extends Component{
     constructor(props){
         super(props)
         this.state={
-            text:null,
+            text:"",
             user:null
         }
         this.preservation=this.preservation.bind(this)
@@ -43,7 +45,9 @@ export default class Username extends Component{
         this.props.navigation.setParams({preservation:this.preservation})
     }
     preservation(){
-        if(!this.state.text){
+        var str = this.state.text.replace(/\s+/g,"");
+        if(!str){
+            bounces("您还没有输入内容",this)
             return false
         }
         var user = this.props.navigation.state.params.user
@@ -65,6 +69,7 @@ export default class Username extends Component{
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#f5f5f5"}}>
+                <Toast ref="toast"/>
                 <TextInput
                     style={{
                         width:width,

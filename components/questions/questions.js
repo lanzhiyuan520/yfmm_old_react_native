@@ -13,6 +13,8 @@ import {
 var {width} = Dimensions.get('window')
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {request_zhuanlan_reply} from "../api"
+import {bounces} from "../bounces/bounces"
+import Toast, {DURATION} from 'react-native-easy-toast'
 var user
 export default class Questions extends Component{
     static navigationOptions = ({navigation}) => ({
@@ -34,19 +36,36 @@ export default class Questions extends Component{
         super(props)
         this.state={
             reply_list:[],
-            state:false
+            state:false,
+            refreshing:false
         }
         this.reply=this.reply.bind(this)
         this._renderItem=this._renderItem.bind(this)
         this.image=this.image.bind(this)
         this.for_image=this.for_image.bind(this)
+        this.quiz=this.quiz.bind(this)
+        this._onRefresh=this._onRefresh.bind(this)
     }
     componentDidMount(){
-
+        this.quiz()
+    }
+    quiz(){
         user = this.props.navigation.state.params.user
         request_zhuanlan_reply(user.token,user.uuid,2,user.id,"create",0,1000,this.reply)
     }
+    _onRefresh(){
+        this.setState({
+            refreshing:true
+        })
+        this.quiz()
+    }
     reply(responseText){
+        if (this.state.refreshing){
+            bounces("刷新成功",this)
+            this.setState({
+                refreshing:false
+            })
+        }
         if(responseText.code != 0){
             this.setState({
                 state:false
@@ -89,6 +108,8 @@ export default class Questions extends Component{
      _renderItem(){
         return (
             <FlatList
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
                 data={this.state.reply_list}
                 renderItem={({item})=>{
                     return (
@@ -136,6 +157,7 @@ export default class Questions extends Component{
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#f8f8f8"}}>
+                <Toast ref="toast"/>
                 {this.state.state?
                     this._renderItem()
                     :
