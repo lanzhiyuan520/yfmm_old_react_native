@@ -119,7 +119,6 @@ export default class Find extends Component{
                 quiz:0
             })
         }
-        console.log(this.state.quiz)
     }
 
     //提交数据
@@ -128,7 +127,6 @@ export default class Find extends Component{
         if(this.state.picArr.length==0){
             console.log('没有上传照片')
         } else {
-            console.log(this.state.picArr)
             img=[];
             for(var i = 0;i<this.state.picArr.length;i++){
                 var uri = this.state.picArr[i];
@@ -139,7 +137,6 @@ export default class Find extends Component{
         let url=constants.url+"/v1/problem?uuid="+this.state.user.uuid;
         let urlSigned = getSingedUrl(url, this.state.user.uuid);
         var dataEncrypt = getEncryptParam(post_params);
-        console.log(post_params);
         fetch(urlSigned,{
             method:"PATCH",
             headers: {
@@ -150,7 +147,6 @@ export default class Find extends Component{
             body:`param=${dataEncrypt.param}`
         }).then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 if(responseJson.code==0){
                     if (Platform.OS === "android") {
                         ToastAndroid.show('提问成功', ToastAndroid.SHORT);

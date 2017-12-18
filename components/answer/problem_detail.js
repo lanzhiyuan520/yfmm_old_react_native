@@ -46,7 +46,6 @@ export default class Problem extends Component{
 
     componentWillMount(){
         const id=this.props.navigation.state.params.id;
-        // this.requestData(id);
         this._loadInitialUser(id);
     }
 
@@ -109,7 +108,6 @@ export default class Problem extends Component{
     renderPic(){
         let that =this;
         let images=this.props.navigation.state.params.images;
-        console.log(images)
         let newArr=[];
         if( images!== null && images!== undefined){
             images.forEach(function(listItem,index){
@@ -135,6 +133,7 @@ export default class Problem extends Component{
         }
         return newArr;
     }
+    //头部组件渲染
     renderTop(){
         return (
             <View>

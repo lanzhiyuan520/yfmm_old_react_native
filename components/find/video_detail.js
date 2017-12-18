@@ -102,8 +102,9 @@ export default class VideoDetail extends Component{
             show:false
         })
     }
+    //视频url转换
     encodeURI(u){
-        let url = encodeURI(u)
+        let url = encodeURI(u);
         return url
     }
     //点击播放按钮视频播放
@@ -121,6 +122,7 @@ export default class VideoDetail extends Component{
                     onError={this.onError}
                     onProgress={this.onProgress}
                     paused={this.state.videoPause}
+                    playInBackground={true}
                     onEnd={() => {
                         this.setState({
                             sliderValue: 0,
@@ -128,7 +130,7 @@ export default class VideoDetail extends Component{
                             playButton:'play-circle',
                             videoPause: true,
                             show:false
-                        })
+                        });
                     }}
                     />
                     <View style={{position:'absolute',bottom:0,width:width}}>
@@ -148,14 +150,12 @@ export default class VideoDetail extends Component{
                                         current: this._formatTime(Math.floor(value)),
                                         show:false
                                     })
-                                }
-                                }
+                                }}
                                 onSlidingComplete={(value) => {
                                     this.refs.video.seek(value);
                                     // 判断是否处于播放状态
                                     if (this.state.playButton === 'pause-circle') this.setState({videoPause: false,show:false})
-                                }
-                                }
+                                }}
                                 step={1}
                                 minimumTrackTintColor={Platform.OS === 'ios' ? '#2175bc' : '#999'}
                                 maximumTrackTintColor={Platform.OS === 'ios' ? '#999' : '#2175bc'}
@@ -225,19 +225,6 @@ export default class VideoDetail extends Component{
         }
     }
 
-
-    //监听按钮改变和播放按钮是否播放
-    // shouldComponentUpdate(nextProps,nextState){
-    //     if(this.state.attend !== nextState.attend){
-    //         return true;
-    //     }
-    //     if(this.state.play !== nextState.play){
-    //         return true;
-    //     }
-    //     if(this.state.show !== nextState.show){
-    //         return true;
-    //     }
-    // }
     //显示分享组件
     shareShow(){
         this.setState({
