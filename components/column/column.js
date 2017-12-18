@@ -117,7 +117,7 @@ export default class Column  extends Component {
     }
     //请求数据
     requestData(offset){
-        const url=constants.url+'/v1/group?type=12312&offset='+offset+'&limit=4&orderby=weight&uuid='+this.state.user.uuid+'&action_num=1';
+        const url=constants.url+'/v1/group?type=12312&offset='+offset+'&limit=4&orderby=weight&uuid='+this.state.user.uuid+'&action_num=0';
         const urlSigned = getSingedUrl(url, this.state.user.uuid);
         fetch(urlSigned,{
             method:"GET",
