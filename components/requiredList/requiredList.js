@@ -68,7 +68,7 @@ export default class RequiredList extends Component{
         this.onLoad=this.onLoad.bind(this);
     }
     componentDidMount(){
-         user = this.props.user
+        user = this.props.user
         AsyncStorage.getItem("user_data",(error,result)=>{
             result = JSON.parse(result)
             //获取今日建议的文章
@@ -203,7 +203,7 @@ export default class RequiredList extends Component{
     }
     onLoad(info){
         // info == {currentTime,duration,...}
-        bounces('视频加载成功！');
+        bounces('视频加载成功',this);
         this.setState({
             duration:info.duration
         })
@@ -282,7 +282,7 @@ export default class RequiredList extends Component{
                         </ScrollView>
                 }
 
-                </View>
+            </View>
         )
     }
 }
@@ -294,12 +294,12 @@ const styles = StyleSheet.create({
         position:'absolute',
         left:0
     },
-        playingControl: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingTop: 10,
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingBottom: 20
-        }
+    playingControl: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 20
+    }
 })

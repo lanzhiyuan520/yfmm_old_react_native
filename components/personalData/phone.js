@@ -84,7 +84,7 @@ export default class Phone extends Component{
             bounces(responseText.msg)
             return false
         }else{
-            bounces('验证码已发出')
+            bounces('验证码已发出',this)
             this.setState({clear:false,liked:true})
             this.time = setInterval(()=>{
                 this.setState({verify:`${this.state.count}${this.state.countText}`})
@@ -103,7 +103,7 @@ export default class Phone extends Component{
             return false
         }else{
             if(!(/^1[34578]\d{9}$/.test(this.state.phone))){
-                bounces('手机号有误请重新填写')
+                bounces('手机号有误请重新填写',this)
                 return false;
             }else {
                 var phone_data = {

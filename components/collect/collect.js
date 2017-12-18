@@ -9,11 +9,14 @@ import {
     Image,
     Dimensions,
     FlatList,
-    ScrollView
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 var {width} = Dimensions.get('window')
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {collect_user_list} from "../api"
+import {bounces} from "../bounces/bounces"
+import Toast, {DURATION} from 'react-native-easy-toast'
 export default class Collect extends Component{
     static navigationOptions = ({navigation}) => ({
         title: "我的收藏",
@@ -33,24 +36,39 @@ export default class Collect extends Component{
         super(props)
         this.state={
             collect_list:[],
-            state:false
+            state:false,
+            refreshing:false
         }
         this.collect_success=this.collect_success.bind(this)
+        this.collect=this.collect.bind(this)
+        this._onRefresh=this._onRefresh.bind(this)
     }
     componentDidMount(){
+        this.collect()
+    }
+    _onRefresh(){
+        this.setState({
+            refreshing:true
+        })
+        this.collect()
+    }
+    collect(){
         var user = this.props.navigation.state.params.user
         collect_user_list(user.id,user.uuid,user.token,this.collect_success)
     }
     collect_success(responseText){
-        console.log(responseText)
         if (responseText.code == 995 && responseText.msg == "请求数据为空"){
             this.setState({
                 state:false
             })
         }else if (responseText.code == 0){
+            if (this.state.refreshing){
+                bounces("刷新成功",this)
+            }
             this.setState({
                 collect_list:responseText.data.dataList,
-                state:true
+                state:true,
+                refreshing:false
             })
         }
 
@@ -194,16 +212,17 @@ export default class Collect extends Component{
     render(){
         return(
             <View style={{flex:1,backgroundColor:"#f5f5f5"}}>
+                <Toast ref="toast"/>
                 {
                     this.state.state?
-                        <ScrollView>
                             <View style={{width:width}}>
                                 <FlatList
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this._onRefresh}
                                     data={this.state.collect_list}
                                     renderItem={this._renderItem}
                                 />
                             </View>
-                        </ScrollView>
                         :
                         <View style={{width:width,marginTop:10,justifyContent:"center",alignItems:"center"}}>
                             <Text>暂无收藏</Text>
