@@ -60,9 +60,10 @@ export default class ProblemList extends Component {
             })
             return newArr;
         }else {
-            <View></View>
+            return(
+                <View></View>
+            )
         }
-
     }
 
 

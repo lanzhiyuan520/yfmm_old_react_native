@@ -10,7 +10,8 @@ import {
     TouchableWithoutFeedback,
     Alert,
     Image,
-    ScrollView
+    ScrollView,
+    Dimensions
 } from 'react-native';
 import Header from './../commen/header';
 import Btn from './../column/att_btn';
@@ -19,6 +20,8 @@ import AnserList from './answer_list';
 import { AsyncStorage } from 'react-native';
 import Share from './../commen/share';
 import {getSingedUrl,getEncryptParam,decrypt} from "./../tools/tools";
+import Swiper from 'react-native-swiper';
+var {width,height} = Dimensions.get('window');
 export default class Problem extends Component{
 
     static navigationOptions = {
@@ -32,9 +35,13 @@ export default class Problem extends Component{
             attend:'false',
             show:false,
             user:{},
-            expert:{}
+            expert:{},
+            bigPic:false,
+            index:0
         };
         this._loadInitialState=this._loadInitialState.bind(this);
+        this.showSwiper=this.showSwiper.bind(this);
+        this.hideSwiper=this.hideSwiper.bind(this);
     }
 
     componentWillMount(){
@@ -84,25 +91,43 @@ export default class Problem extends Component{
         }
     }
 
-
+    //显示大图
+    showSwiper(index){
+        this.setState({
+            bigPic:true,
+            index:index
+        })
+    }
+    //隐藏大图
+    hideSwiper(){
+        this.setState({
+            bigPic:false
+        })
+    }
 
     //渲染图片
     renderPic(){
+        let that =this;
         let images=this.props.navigation.state.params.images;
+        console.log(images)
         let newArr=[];
         if( images!== null && images!== undefined){
             images.forEach(function(listItem,index){
-                if(listItem.indexOf('http') == -1 ){
+                if(listItem.indexOf('http') !== -1 ){
                     newArr.push(
-                        <View key={index} style={{marginRight:10}}>
-                            <Image source={{uri:listItem}} style={{width:100,height:75}} />
-                        </View>
+                        <TouchableWithoutFeedback key={index} onPress={()=>that.showSwiper(index)}>
+                            <View style={{marginRight:10}}>
+                                <Image source={{uri:listItem}} style={{width:100,height:75}} />
+                            </View>
+                        </TouchableWithoutFeedback>
                     )
                 }else {
                     newArr.push(
-                        <View key={index} style={{marginRight:10}}>
-                            <Image source={{uri:'http://'+listItem}} style={{width:100,height:75}} />
-                        </View>
+                        <TouchableWithoutFeedback key={index} onPress={()=>that.showSwiper(index)}>
+                            <View style={{marginRight:10}}>
+                                <Image source={{uri:"http://"+listItem}} style={{width:100,height:75}} />
+                            </View>
+                        </TouchableWithoutFeedback>
                     )
                 }
 
@@ -155,44 +180,75 @@ export default class Problem extends Component{
 
     render(){
         const { state } = this.props.navigation;
-        return(
-            <View>
-                <Header title="问题详情" back="true" share='true' navigation={this.props.navigation} shareShow={()=>this.shareShow()} />
-                <ScrollView>
-                    <View style={{backgroundColor:'#fff',marginBottom:10}}>
-                        <View style={{backgroundColor:'#fff'}}>
-                            <View style={styles.container}>
-                                <View style={[styles.flex_row,styles.space_between]}>
-                                    <View style={styles.flex_row}>
-                                        <View style={{marginRight:10}}>
-                                            <Image source={{uri:this.state.expert.head_img}} style={{width:30,height:30,borderRadius:15}} />
+        let that=this;
+        if(this.state.bigPic){
+            return(
+                <Swiper style={styles.wrapper} showsPagination={false} loop={false} index={this.state.index}>
+                    {
+                        state.params.images.map(function (listItem,index) {
+                            if(listItem.indexOf('http') !== -1 ){
+                                return(
+                                    <TouchableWithoutFeedback key={index} onPress={()=>that.hideSwiper()}>
+                                        <View style={styles.slide}>
+                                            <Image source={{uri:listItem}} style={{width:width,height:75*width/100,resizeMode:'cover'}} />
                                         </View>
-                                        <View><Text style={{lineHeight:25,fontSize:12}}>{state.params.author.nickname}</Text></View>
+                                    </TouchableWithoutFeedback>
+                                )
+                            }else {
+                                return(
+                                    <TouchableWithoutFeedback key={index} onPress={()=>that.hideSwiper()}>
+                                        <View style={styles.slide}>
+                                            <Image source={{uri:"http://"+listItem}} style={{width:width,height:75*width/100,resizeMode:'cover'}} />
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                )
+                            }
+
+                        })
+                    }
+                </Swiper>
+            )
+        }else {
+            return(
+                <View>
+                    <Header title="问题详情" back="true" share='true' navigation={this.props.navigation} shareShow={()=>this.shareShow()} />
+                    <ScrollView>
+                        <View style={{backgroundColor:'#fff',marginBottom:10}}>
+                            <View style={{backgroundColor:'#fff'}}>
+                                <View style={styles.container}>
+                                    <View style={[styles.flex_row,styles.space_between]}>
+                                        <View style={styles.flex_row}>
+                                            <View style={{marginRight:10}}>
+                                                <Image source={{uri:this.state.expert.head_img}} style={{width:30,height:30,borderRadius:15}} />
+                                            </View>
+                                            <View><Text style={{lineHeight:25,fontSize:12}}>{state.params.author.nickname}</Text></View>
+                                        </View>
+                                        <View>
+                                            <Btn title="收藏" attend={this.state.attend} subtitle="已收藏" collect="collect" operateType="5" id={state.params.id}/>
+                                        </View>
+                                    </View>
+                                </View>
+                                {this.renderTop()}
+                                <View style={[styles.flex_row,styles.space_between,styles.p_15]}>
+                                    <View>
+                                        <Text style={{fontSize:10}}>{this.state.author.create_at}</Text>
                                     </View>
                                     <View>
-                                        <Btn title="收藏" attend={this.state.attend} subtitle="已收藏" collect="collect" operateType="5" id={state.params.id}/>
-                                    </View>
-                                </View>
-                            </View>
-                                {this.renderTop()}
-                            <View style={[styles.flex_row,styles.space_between,styles.p_15]}>
-                                <View>
-                                    <Text style={{fontSize:10}}>{this.state.author.create_at}</Text>
-                                </View>
-                                <View>
-                                    <View style={[styles.flex_row]}>
-                                        <Text style={{fontSize:10,marginRight:5}}>回答 {this.state.author.reply_num}</Text>
-                                        <Text  style={{fontSize:10}}>浏览 {this.state.author.liulan_num}</Text>
+                                        <View style={[styles.flex_row]}>
+                                            <Text style={{fontSize:10,marginRight:5}}>回答 {this.state.author.reply_num}</Text>
+                                            <Text  style={{fontSize:10}}>浏览 {this.state.author.liulan_num}</Text>
+                                        </View>
                                     </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
-                    <AnserList reply={this.state.author.liulan_num} id={state.params.id}/>
-                </ScrollView>
-                <Share show={this.state.show} id={state.params.id} url="problem" title={this.state.author.content}/>
-            </View>
-        )
+                        <AnserList reply={this.state.author.liulan_num} id={state.params.id}/>
+                    </ScrollView>
+                    <Share show={this.state.show} id={state.params.id} url="problem" title={this.state.author.content}/>
+                </View>
+            )
+        }
+
     }
 }
 
@@ -226,4 +282,15 @@ const styles = StyleSheet.create({
     mb_15:{
         marginBottom:15
     },
+    slide: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#333'
+    },
+    text: {
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold'
+    }
 });
