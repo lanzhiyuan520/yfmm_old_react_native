@@ -157,8 +157,8 @@ export default class VideoDetail extends Component{
                                 }
                                 }
                                 step={1}
-                                minimumTrackTintColor='#2175bc'
-                                maximumTrackTintColor='#999'
+                                minimumTrackTintColor={Platform.OS === 'ios' ? '#2175bc' : '#999'}
+                                maximumTrackTintColor={Platform.OS === 'ios' ? '#999' : '#2175bc'}
                                 thumbTintColor="#2175bc"
                             />
 
