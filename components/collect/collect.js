@@ -215,14 +215,26 @@ export default class Collect extends Component{
                 <Toast ref="toast"/>
                 {
                     this.state.state?
+                        <ScrollView
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={()=>this._onRefresh()}
+                                    tintColor="#000"
+                                    title="加载中..."
+                                    titleColor="#000"
+                                    colors={['#999', '#999', '#999']}
+                                    progressBackgroundColor="#ffffff"
+                                />
+                            }
+                        >
                             <View style={{width:width}}>
                                 <FlatList
-                                    refreshing={this.state.refreshing}
-                                    onRefresh={this._onRefresh}
                                     data={this.state.collect_list}
                                     renderItem={this._renderItem}
                                 />
                             </View>
+                        </ScrollView>
                         :
                         <View style={{width:width,marginTop:10,justifyContent:"center",alignItems:"center"}}>
                             <Text>暂无收藏</Text>

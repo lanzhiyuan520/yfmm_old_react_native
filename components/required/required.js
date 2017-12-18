@@ -39,7 +39,8 @@ export default class Required extends Component{
             sta:null,
             show:false,
             hello:null,
-            data:[]
+            data:[],
+            count:0
         }
         this.fun=this.fun.bind(this)
         this.shareShow = this.shareShow.bind(this)
@@ -60,10 +61,11 @@ export default class Required extends Component{
     }
     //切换导航获取不同的数据
     fun(obj){
+        this.refs.list.stop_video()
         this.setState(
             {show:false}
         )
-        if(this.props.navigation.state.params.status ==3){
+        if(this.props.navigation.state.params.status == 3){
             this.setState({
                 index:obj.i+2
             })
@@ -81,7 +83,8 @@ export default class Required extends Component{
             //获取今日建议的文章
             requestTodayView(this.state.index,result.status,user.uuid,user.token,(responseText)=>{
                 this.setState({
-                    data:responseText.data.articleData
+                    data:responseText.data.articleData,
+                    selectedTab:null
                 })
             })
         })
@@ -93,27 +96,28 @@ export default class Required extends Component{
         return(
             <View style={{flex:1}}>
                 <Header share='true' title={"每日推荐"}  heart={this.state.heart} back="true"  navigation={this.props.navigation} shareShow={()=>this.shareShow()} />
-                <ScrollableTabView
-                    initialPage={0}
-                    scrollWithoutAnimation={true}
-                    renderTabBar={() => <ScrollableTabBar/>}
-                    tabBarPosition='top'
-                    tabBarUnderlineStyle={{backgroundColor:'transparent'}}
-                    tabBarActiveTextColor="#333"
-                    tabBarInactiveTextColor="#666"
-                    tabBarBackgroundColor="#fff"
-                    onChangeTab={(obj)=>{
-                        this.fun(obj)
-                    }}
-                >
-                   {
-                       this.state.sta.map((tab,i)=>{
-                           return (
-                               <RequiredList ref="list" navigation={this.props.navigation} key={i} tabLabel={tab} user={this.props.navigation.state.params.user} index={this.state.index}/>
-                           )
-                       })
-                    }
-                </ScrollableTabView>
+                    <ScrollableTabView
+                        initialPage={this.state.count}
+                        scrollWithoutAnimation={true}
+                        renderTabBar={() => <ScrollableTabBar/>}
+                        tabBarPosition='top'
+                        tabBarUnderlineStyle={{backgroundColor:'transparent'}}
+                        tabBarActiveTextColor="#333"
+                        tabBarInactiveTextColor="#666"
+                        tabBarBackgroundColor="#fff"
+                        onChangeTab={(obj)=>{
+                            this.refs.list.stop_video()
+                            this.fun(obj)
+                        }}
+                    >
+                       {
+                           this.state.sta.map((tab,i)=>{
+                               return (
+                                    <RequiredList ref="list" navigation={this.props.navigation} key={i} tabLabel={tab} user={this.props.navigation.state.params.user} index={this.state.index}/>
+                               )
+                           })
+                        }
+                    </ScrollableTabView>
                 <Share show={this.state.show} id={this.state.data.id} url="article" title={this.state.data.title} type="999" />
             </View>
         )

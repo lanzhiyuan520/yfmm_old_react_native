@@ -66,14 +66,11 @@ export default class RequiredList extends Component{
         this._formatTime=this._formatTime.bind(this);
         this.onProgress=this.onProgress.bind(this);
         this.onLoad=this.onLoad.bind(this);
-    }
+        this.suspend=this.suspend.bind(this)
+        this.stop_video=this.stop_video.bind(this)
+        }
     componentDidMount(){
-        user = this.props.user
-        AsyncStorage.getItem("user_data",(error,result)=>{
-            result = JSON.parse(result)
-            //获取今日建议的文章
-            requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
-        })
+        this.suspend()
     }
     //时间转换
     _formatTime(time) {
@@ -88,6 +85,19 @@ export default class RequiredList extends Component{
     encodeURI(u){
         let url = encodeURI(u)
         return url
+    }
+    stop_video(){
+        this.setState({
+            play:false
+        })
+    }
+    suspend(){
+        user = this.props.user
+        AsyncStorage.getItem("user_data",(error,result)=>{
+            result = JSON.parse(result)
+            //获取今日建议的文章
+            requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
+        })
     }
     //点击播放按钮
     _playButton() {
