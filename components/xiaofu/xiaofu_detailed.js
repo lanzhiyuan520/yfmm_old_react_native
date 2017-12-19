@@ -31,6 +31,7 @@ import Load from "../loading/loading"
 export default class XfDetailed extends Component{
     static navigationOptions = ({navigation}) => ({
         header:null
+    })
     constructor(props){
         super(props)
         this.state = {
