@@ -28,9 +28,6 @@ export default class Attention extends Component{
         }
         this.load = this.load.bind(this)
     }
-    componentDidMount(){
-        console.log(this.props)
-    }
     load(num){
         if(num==1){
             this.setState({

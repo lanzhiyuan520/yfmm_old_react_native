@@ -13,9 +13,11 @@ import {
     WebView,
     ScrollView,
     TouchableOpacity,
-    Slider
+    Slider,
+    Modal
 } from 'react-native';
 var {width} = Dimensions.get('window')
+var {height} = Dimensions.get('window')
 import {requestTodayView} from "../api"
 import Btn from './../column/att_btn';
 import Video from 'react-native-video';
@@ -59,6 +61,7 @@ export default class RequiredList extends Component{
             duration:0,
             videoPause:false,
             current:'00:00',
+            video_load:true
         }
         this.suggest_success=this.suggest_success.bind(this)
         this._loadInitialState=this._loadInitialState.bind(this);
@@ -66,14 +69,11 @@ export default class RequiredList extends Component{
         this._formatTime=this._formatTime.bind(this);
         this.onProgress=this.onProgress.bind(this);
         this.onLoad=this.onLoad.bind(this);
-    }
+        this.suspend=this.suspend.bind(this)
+        this.stop_video=this.stop_video.bind(this)
+        }
     componentDidMount(){
-        user = this.props.user
-        AsyncStorage.getItem("user_data",(error,result)=>{
-            result = JSON.parse(result)
-            //获取今日建议的文章
-            requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
-        })
+        this.suspend()
     }
     //时间转换
     _formatTime(time) {
@@ -88,6 +88,19 @@ export default class RequiredList extends Component{
     encodeURI(u){
         let url = encodeURI(u)
         return url
+    }
+    stop_video(){
+        this.setState({
+            play:false
+        })
+    }
+    suspend(){
+        user = this.props.user
+        AsyncStorage.getItem("user_data",(error,result)=>{
+            result = JSON.parse(result)
+            //获取今日建议的文章
+            requestTodayView(this.props.index,result.status,user.uuid,user.token,this.suggest_success)
+        })
     }
     //点击播放按钮
     _playButton() {
@@ -107,11 +120,24 @@ export default class RequiredList extends Component{
     showVideo(){
         if(this.state.play){
             return(
-                <View style={{flex:1}}>
+              <Modal
+                  animationType='slide'
+                  transparent={true}
+                  visible={this.state.play}
+              >
+                  <View style={{position:"absolute",top:30,right:10,zIndex:999}}>
+                      <TouchableOpacity onPress={()=>{this.setState({play:false})}}>
+                          <View>
+                              <Icon name="close" size={30} color='#fff' style={{backgroundColor:"transparent"}} />
+                          </View>
+                      </TouchableOpacity>
+                  </View>
+                  <Load loading={this.state.video_load}/>
+                <View style={{flex:1,marginTop:(Platform.OS === 'ios' ? 20 : 0),width:width,justifyContent:"center",backgroundColor:"#000"}}>
                     <Video
                         ref="video"
                         resizeMode='cover'
-                        source={{uri:this.encodeURI(this.state.suggest_data.video),type:"mp4"}}
+                        source={{uri:this.state.suggest_data.video?this.encodeURI(this.state.suggest_data.video):"http://cdn.ayi800.com/%E7%A6%8F%E6%BB%8B%E5%91%B325%E6%9C%9F.mp4",type:"mp4"}}
                         style={{width:width,height:200,backgroundColor:"#fff"}}
                         playInBackground={true}
                         onLoad={this.onLoad}
@@ -160,9 +186,11 @@ export default class RequiredList extends Component{
                             <View>
                                 <Text style={{color:'#999',backgroundColor:"transparent"}}>{this.state.current} : {this._formatTime(Math.floor(this.state.duration))}</Text>
                             </View>
+
                         </View>
                     </View>
                 </View>
+              </Modal>
             )
         }else {
             return(
@@ -205,11 +233,15 @@ export default class RequiredList extends Component{
         // info == {currentTime,duration,...}
         bounces('视频加载成功',this);
         this.setState({
-            duration:info.duration
+            duration:info.duration,
+            video_load:false
         })
     }
     onError(e){
         bounces('视频加载错误');
+        this.setState({
+            video_load:false
+        })
     }
     suggest_success(responseText){
         if(responseText.code != 0){

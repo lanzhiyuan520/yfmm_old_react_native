@@ -38,8 +38,8 @@ export default class Required extends Component{
             yunqi:["孕1周","孕2周","孕3周","孕4周","孕5周","孕6周","孕7周","孕8周","孕9周","孕10周","孕11周","孕12周","孕13周","孕14周","孕15周","孕16周","孕17周","孕18周","孕19周","孕20周","孕21周","孕22周","孕23周","孕24周","孕25周","孕26周","孕27周","孕28周","孕29周","孕30周","孕31周","孕32周","孕33周","孕34周","孕35周","孕36周","孕37周","孕38周","孕39周","孕40周",],
             sta:null,
             show:false,
-            hello:null,
-            data:[]
+            data:[],
+            count:0
         }
         this.fun=this.fun.bind(this)
         this.shareShow = this.shareShow.bind(this)
@@ -63,7 +63,7 @@ export default class Required extends Component{
         this.setState(
             {show:false}
         )
-        if(this.props.navigation.state.params.status ==3){
+        if(this.props.navigation.state.params.status == 3){
             this.setState({
                 index:obj.i+2
             })
@@ -93,27 +93,27 @@ export default class Required extends Component{
         return(
             <View style={{flex:1}}>
                 <Header share='true' title={"每日推荐"}  heart={this.state.heart} back="true"  navigation={this.props.navigation} shareShow={()=>this.shareShow()} />
-                <ScrollableTabView
-                    initialPage={0}
-                    scrollWithoutAnimation={true}
-                    renderTabBar={() => <ScrollableTabBar/>}
-                    tabBarPosition='top'
-                    tabBarUnderlineStyle={{backgroundColor:'transparent'}}
-                    tabBarActiveTextColor="#333"
-                    tabBarInactiveTextColor="#666"
-                    tabBarBackgroundColor="#fff"
-                    onChangeTab={(obj)=>{
-                        this.fun(obj)
-                    }}
-                >
-                   {
-                       this.state.sta.map((tab,i)=>{
-                           return (
-                               <RequiredList ref="list" navigation={this.props.navigation} key={i} tabLabel={tab} user={this.props.navigation.state.params.user} index={this.state.index}/>
-                           )
-                       })
-                    }
-                </ScrollableTabView>
+                    <ScrollableTabView
+                        initialPage={this.state.count}
+                        scrollWithoutAnimation={true}
+                        renderTabBar={() => <ScrollableTabBar/>}
+                        tabBarPosition='top'
+                        tabBarUnderlineStyle={{backgroundColor:'transparent'}}
+                        tabBarActiveTextColor="#333"
+                        tabBarInactiveTextColor="#666"
+                        tabBarBackgroundColor="#fff"
+                        onChangeTab={(obj)=>{
+                            this.fun(obj)
+                        }}
+                    >
+                       {
+                           this.state.sta.map((tab,i)=>{
+                               return (
+                                    <RequiredList ref="list" navigation={this.props.navigation} key={i} tabLabel={tab} user={this.props.navigation.state.params.user} index={this.state.index}/>
+                               )
+                           })
+                        }
+                    </ScrollableTabView>
                 <Share show={this.state.show} id={this.state.data.id} url="article" title={this.state.data.title} type="999" />
             </View>
         )

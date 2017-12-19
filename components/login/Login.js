@@ -17,7 +17,8 @@ import {
     Text,
     View ,
     ScrollView,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Modal
 } from 'react-native';
 var WeChat=require('react-native-wechat');
 import DeviceInfo from 'react-native-device-info'
@@ -37,6 +38,7 @@ var openid
 var refresh_token
 import Toast, {DURATION} from 'react-native-easy-toast'
 import {bounces} from "../bounces/bounces"
+import Load from "../loading/loading"
 export default class Login extends Component {
     static navigationOptions = ({navigation}) => ({
         header:null,
@@ -105,6 +107,9 @@ export default class Login extends Component {
             }
             //手机登录接口
             AsyncStorage.getItem("uuid",(error,result)=>{
+                this.setState({
+                    loading:true
+                })
                 var uuid = JSON.parse(result)
                 request_login_by_phone(uuid,{phone:phone_val,code:code_val,type:codeDomain},this.user_success)
             })
@@ -112,9 +117,10 @@ export default class Login extends Component {
     }
     //手机登录成功回调
     user_success(responseText){
-        console.log(responseText)
-        console.log("user_success")
         if(responseText.code != 0){
+            this.setState({
+                loading:false
+            })
             bounces(responseText.msg,this)
             return false
         }else{
@@ -134,7 +140,9 @@ export default class Login extends Component {
                         })
                 }
             }else {
-                console.log("user=0")
+                this.setState({
+                    loading:false
+                })
                 this.props.navigation.navigate("Userstate",{
                     user:JSON.stringify(this.state.user),
                     navigate:this.props.navigation.navigate
@@ -146,10 +154,12 @@ export default class Login extends Component {
     }
     //获取用户状态回调
     user_information(responseText){
-        console.log("user_information")
         //存入用户状态
         AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))
             .then(()=>{
+                    this.setState({
+                        loading:false
+                    })
                     this.props.navigation.navigate("App",{selectedTab:"首页",user:JSON.stringify(this.state.user)})
             })
             .catch(()=>{
@@ -189,19 +199,6 @@ export default class Login extends Component {
     }
     //微信登录成功回调
     wx_login_success(responseText){
-       /* var data = JSON.stringify(responseText)
-        var url = `http://test.www.ayi800.com/test/demodemo?content=${data}`
-        fetch(url)
-            .then((response) => {
-                return response.json();
-            })
-            .then((responseText) => {
-
-            })
-            .catch((error)=>{
-                console.log(error)
-                ToastAndroid.show('网络错误', ToastAndroid.SHORT)
-            })*/
         this.user_success(responseText)
     }
     //微信登录
@@ -216,6 +213,9 @@ export default class Login extends Component {
                             let code = responseCode.code
                             let appid = "wx4185c118f9757414"
                             let secret = "5d046ff2594c09a4b867f8810eb103b6"
+                            this.setState({
+                                loading:true
+                            })
                             this.wx_access_token(code,appid,secret)
                         })
                         .catch(err => {
@@ -297,7 +297,13 @@ export default class Login extends Component {
         return (
             <View style={{backgroundColor:"#fff",paddingBottom:100,flex:1}}>
                 <Toast ref="toast"/>
-
+                <Modal
+                    animationType={"none"}
+                    transparent={true}
+                    visible={this.state.loading}
+                >
+                    <Load loading={this.state.loading} />
+                </Modal>
                 <View style={styles.header}>
                     <Text style={styles.title}>快速登录</Text>
                 </View>

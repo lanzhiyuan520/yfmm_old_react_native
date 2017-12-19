@@ -162,6 +162,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-orientation')
     compile project(':react-native-wechat')
     compile project(':react-native-camera')
     compile project(':react-native-image-picker')

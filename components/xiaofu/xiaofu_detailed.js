@@ -31,29 +31,6 @@ import Load from "../loading/loading"
 export default class XfDetailed extends Component{
     static navigationOptions = ({navigation}) => ({
         header:null
-        /*title: "小福精选",
-        headerTitleStyle:{
-            alignSelf:'center',
-            color:"#333",
-            fontSize:18
-        },
-        headerStyle:{
-            elevation: 0,
-        },
-        headerRight: (
-            <View style={{flexDirection:"row"}}>
-            <TouchableWithoutFeedback
-                onPress={()=>{navigation.state.params.collect()}}>
-                <FontAwesome name="heart" style={{fontSize: 20, color: "#ff8080",marginRight:10}}/>
-            </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={()=>{navigation.state.params.navigatePress()}}>
-                    <FontAwesome name="share-alt" style={{fontSize: 20, color: "#ff8080",marginRight:10}}/>
-                </TouchableWithoutFeedback>
-           </View>
-        )
-        ,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 40, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,*/
-    })
     constructor(props){
         super(props)
         this.state = {
@@ -67,7 +44,6 @@ export default class XfDetailed extends Component{
         }
         WeChat.registerApp('wx825ecd9a849eef9d')
         this.showActionSheet = this.showActionSheet.bind(this)
-        this.handlePress = this.handlePress.bind(this)
         this.collect = this.collect.bind(this)
         this.xiaofu_detailed = this.xiaofu_detailed.bind(this)
         this._loadInitialState=this._loadInitialState.bind(this);
@@ -139,37 +115,6 @@ export default class XfDetailed extends Component{
             }
         }catch(error){
             console.log(error)
-        }
-    }
-    handlePress(i) {
-        if(i==0){
-            alert("点了取消")
-        } else if(i==1){
-            WeChat.isWXAppInstalled()
-                .then((isInstalled) => {
-                    if (isInstalled) {
-                        WeChat.shareToTimeline({type: "text",description:this.state.xiaofu.title})
-                            .catch((error) => {
-                                ToastAndroid(error.message);
-                            });
-                    } else {
-                        ToastAndroid('没有安装微信软件，请您安装微信之后再试');
-                    }
-                });
-        } else if(i==2){
-            WeChat.isWXAppInstalled()
-                .then((isInstalled) => {
-                    if (isInstalled) {
-                        WeChat.shareToSession({type: "text",description:this.state.xiaofu.title})
-                            .catch((error) => {
-                               console.log(error)
-                            });
-                    } else {
-                        console.log('没有安装微信软件，请您安装微信之后再试');
-                    }
-                });
-        } else if(i==3){
-            alert("点了剪切板")
         }
     }
     //控制分享组件显示

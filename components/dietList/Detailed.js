@@ -16,7 +16,6 @@ var {width} = Dimensions.get('window')
 import Variable from "../Variable/Variable"
 import ActionSheet from 'react-native-actionsheet'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {Circle,friends} from "../fenxiang/fenxiang"
 import {request_article_yinshi_xiangqing,request_user_action,user_behavior} from "../api"
 import {bounces} from "../bounces/bounces"
 import Btn from './../column/att_btn';
@@ -39,7 +38,6 @@ export default class DietList extends Component{
             loading: true,
         }
         this.showActionSheet = this.showActionSheet.bind(this)
-        this.handlePress = this.handlePress.bind(this)
         this.yinshi_detailed_success = this.yinshi_detailed_success.bind(this)
         this._loadInitialState=this._loadInitialState.bind(this)
     }
@@ -69,7 +67,6 @@ export default class DietList extends Component{
                     this.setState({
                         attend:'false'
                     })
-                    console.log("1");
                 }else {
                     this.setState({
                         attend:'true'
@@ -95,17 +92,6 @@ export default class DietList extends Component{
     }
     showActionSheet() {
         this.ActionSheet.show()
-    }
-    handlePress(i) {
-        if(i==0){
-            alert("点了取消")
-        } else if(i==1){
-            Circle({type:"text",description:"测试分享朋友圈"})
-        } else if(i==2){
-            friends({type:"text",description:"测试分享好友"})
-        } else if(i==3){
-            alert("点了剪切板")
-        }
     }
     //控制分享组件显示
     shareShow(){

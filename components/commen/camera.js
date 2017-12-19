@@ -62,7 +62,6 @@ export default class Home extends Component{
     }
     //上传照片
     uploadPic(image){
-        console.log(image)
         var url = constants.url+'/v1/upload?uuid='+this.state.user.uuid;
         let formData = new FormData();
         var uri = image.path;
@@ -73,7 +72,6 @@ export default class Home extends Component{
 
         // let file = {uri: path, type: 'multipart/form-data', name: 'image.jpg'};
         // formData.append("headImg",file);
-        console.log(formData)
         var urlSigned = getSingedUrl(url,this.state.user.uuid);
         fetch(urlSigned,{
             method:"POST",
