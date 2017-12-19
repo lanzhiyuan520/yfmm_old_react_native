@@ -3,6 +3,7 @@ package com.awesomeproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.yamill.orientation.OrientationPackage;
 import com.theweflex.react.WeChatPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new OrientationPackage(),
             new WeChatPackage(),
             new RCTCameraPackage(),
             new GetuiPackage(true),

@@ -13,9 +13,11 @@ import {
     WebView,
     ScrollView,
     TouchableOpacity,
-    Slider
+    Slider,
+    Modal
 } from 'react-native';
 var {width} = Dimensions.get('window')
+var {height} = Dimensions.get('window')
 import {requestTodayView} from "../api"
 import Btn from './../column/att_btn';
 import Video from 'react-native-video';
@@ -101,6 +103,7 @@ export default class RequiredList extends Component{
     }
     //点击播放按钮
     _playButton() {
+
         this.setState({
             playButton: this.state.videoPause ? 'pause-circle' : 'play-circle',
             videoPause: !this.state.videoPause
@@ -117,7 +120,19 @@ export default class RequiredList extends Component{
     showVideo(){
         if(this.state.play){
             return(
-                <View style={{flex:1}}>
+              <Modal
+                  animationType='slide'
+                  transparent={true}
+                  visible={this.state.play}
+              >
+                  <View style={{position:"absolute",top:20,right:10,zIndex:9999999}}>
+                      <TouchableOpacity onPress={()=>{this.setState({play:false})}}>
+                          <View>
+                              <Icon name="window-close" size={30} color='#999' style={{backgroundColor:"transparent"}} />
+                          </View>
+                      </TouchableOpacity>
+                  </View>
+                <View style={{flex:1,width:width,justifyContent:"center",backgroundColor:"#000"}}>
                     <Video
                         ref="video"
                         resizeMode='cover'
@@ -170,9 +185,11 @@ export default class RequiredList extends Component{
                             <View>
                                 <Text style={{color:'#999',backgroundColor:"transparent"}}>{this.state.current} : {this._formatTime(Math.floor(this.state.duration))}</Text>
                             </View>
+
                         </View>
                     </View>
                 </View>
+              </Modal>
             )
         }else {
             return(

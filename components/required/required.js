@@ -38,7 +38,6 @@ export default class Required extends Component{
             yunqi:["孕1周","孕2周","孕3周","孕4周","孕5周","孕6周","孕7周","孕8周","孕9周","孕10周","孕11周","孕12周","孕13周","孕14周","孕15周","孕16周","孕17周","孕18周","孕19周","孕20周","孕21周","孕22周","孕23周","孕24周","孕25周","孕26周","孕27周","孕28周","孕29周","孕30周","孕31周","孕32周","孕33周","孕34周","孕35周","孕36周","孕37周","孕38周","孕39周","孕40周",],
             sta:null,
             show:false,
-            hello:null,
             data:[],
             count:0
         }
@@ -61,7 +60,6 @@ export default class Required extends Component{
     }
     //切换导航获取不同的数据
     fun(obj){
-        this.refs.list.stop_video()
         this.setState(
             {show:false}
         )
@@ -83,8 +81,7 @@ export default class Required extends Component{
             //获取今日建议的文章
             requestTodayView(this.state.index,result.status,user.uuid,user.token,(responseText)=>{
                 this.setState({
-                    data:responseText.data.articleData,
-                    selectedTab:null
+                    data:responseText.data.articleData
                 })
             })
         })
@@ -106,7 +103,6 @@ export default class Required extends Component{
                         tabBarInactiveTextColor="#666"
                         tabBarBackgroundColor="#fff"
                         onChangeTab={(obj)=>{
-                            this.refs.list.stop_video()
                             this.fun(obj)
                         }}
                     >

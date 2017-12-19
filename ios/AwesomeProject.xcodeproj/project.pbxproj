@@ -82,6 +82,7 @@
 		E8EDD1EBA14B461A8955107F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 473466189CE74075B9A5400E /* CoreLocation.framework */; };
 		E9866DB8626540AEBD84C2C7 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58F396FED4F04FFCB38BBC80 /* MaterialIcons.ttf */; };
 		F12BA6437F52465D8AACBCC7 /* libRCTGetuiModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 67C578E6B8C24EE9B0F15230 /* libRCTGetuiModule.a */; };
+		F753EDCEC0954E069AF498E0 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A23A05F871742AC9D6E1F83 /* libRCTOrientation.a */; };
 		F903E8331FC65ADD009B1964 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F903E8321FC65ACC009B1964 /* libRNVectorIcons.a */; };
 		F9050244CAF34F2A87C093C8 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 051D43CF7FC74A87A4AACA55 /* libRNDeviceInfo.a */; };
 		F92E07111FC56A81007EC8FC /* ios in Resources */ = {isa = PBXBuildFile; fileRef = F92E07101FC56A81007EC8FC /* ios */; };
@@ -497,6 +498,7 @@
 		353C8CE554D940348F6CE4AC /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 		366740F8173245159728FF6B /* RNShare.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNShare.xcodeproj; path = "../node_modules/react-native-share/ios/RNShare.xcodeproj"; sourceTree = "<group>"; };
 		38AA99C89BCA4E368EBD550A /* libthird-party.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libthird-party.a"; sourceTree = "<group>"; };
+		3A23A05F871742AC9D6E1F83 /* libRCTOrientation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTOrientation.a; sourceTree = "<group>"; };
 		3D604852D95A42B9A77D413E /* AdSupport.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		447878C505ED4FE0B758D4F5 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		473466189CE74075B9A5400E /* CoreLocation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -618,6 +620,7 @@
 				0DD08048FF62424491DFC979 /* UIKit.framework in Frameworks */,
 				0D39C82F3B7E4977B705D950 /* libRNShare.a in Frameworks */,
 				0DF737A2146D4406AC0B241E /* libRCTActionSheet.a in Frameworks */,
+				F753EDCEC0954E069AF498E0 /* libRCTOrientation.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1011,6 +1014,7 @@
 				67C578E6B8C24EE9B0F15230 /* libRCTGetuiModule.a */,
 				D83CE4FDAD024170822C8954 /* libRNShare.a */,
 				ECAABC8FD1C84933AD3569BE /* libRCTActionSheet.a */,
+				3A23A05F871742AC9D6E1F83 /* libRCTOrientation.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1758,12 +1762,14 @@
 					"$(SRCROOT)/../node_modules/react-native-getui/ios/RCTGetuiModule/RCTGetuiModule",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-swRefresh/RefreshDemo/ios/RefreshDemo",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = AwesomeProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1817,12 +1823,14 @@
 					"$(SRCROOT)/../node_modules/react-native-getui/ios/RCTGetuiModule/RCTGetuiModule",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-swRefresh/RefreshDemo/ios/RefreshDemo",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = AwesomeProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1881,6 +1889,7 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-swRefresh/RefreshDemo/ios/RefreshDemo",
 					"$(SRCROOT)/../node_modules/react-native-getui/ios/RCTGetuiModule",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = AwesomeProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1930,6 +1939,7 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-swRefresh/RefreshDemo/ios/RefreshDemo",
 					"$(SRCROOT)/../node_modules/react-native-getui/ios/RCTGetuiModule",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = AwesomeProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1971,6 +1981,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2034,6 +2045,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.AwesomeProject-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2073,6 +2085,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.AwesomeProject-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2097,6 +2110,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
