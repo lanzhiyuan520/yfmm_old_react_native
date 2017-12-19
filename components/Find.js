@@ -146,7 +146,10 @@ export default class Find extends Component{
                             <View style={styles.container}>
                                 <View style={styles.rightContainer}>
                                     <Image onLoadStart={()=>console.log(item.banner)} source={{uri:item.banner}} style={styles.pic}/>
-                                    {/*<View style={styles.mask}></View>*/}
+                                    <View style={styles.mask}></View>
+                                    <View style={{position:'absolute',left:(width-30)/2,top:90,marginLeft:-25,marginTop:-25,zIndex:999}}>
+                                        <Image style={{width:50,height:50}} source={{uri:"http://cdn.ayi800.com/app_faxian/@2px_btn_play_big.png"}}/>
+                                    </View>
                                 </View>
                                 <View style={{flex:1,flexDirection:'row',marginVertical:5}}>
                                     <View style={{marginRight:5}}>
@@ -226,18 +229,18 @@ const styles = StyleSheet.create({
         padding:15
     },
     rightContainer: {
-        flex:1
+        position:'relative'
     },
     pic:{
-        flex:1,
+        // width:width,
         height:180,
     },
     mask:{
-        width:width,
+        width:width-30,
         height:180,
         backgroundColor:'rgba(0,0,0,0.5)',
         position:'absolute',
-        right:0,
+        left:0,
         top:0,
     }
 });
