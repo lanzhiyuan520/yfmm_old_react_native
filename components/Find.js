@@ -98,7 +98,8 @@ export default class Find extends Component{
             .then((response) => response.json())
             .then((responseJson) => {
                 let oldArr=this.state.dataSource;
-                let newArr=responseJson.data.dataList;
+                let newArr = [];
+                newArr=responseJson.data.dataList;
                 if(newArr.length<5 && newArr.length>=0){
                     this.setState({
                         count:1,

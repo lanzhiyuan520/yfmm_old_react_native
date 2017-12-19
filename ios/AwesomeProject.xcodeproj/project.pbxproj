@@ -59,7 +59,7 @@
 		5B59B5E51FDFCEEF0084DFC5 /* VideoSubscriberAccount.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B59B5E31FDFCEEF0084DFC5 /* VideoSubscriberAccount.framework */; };
 		5B59B5E61FDFCEEF0084DFC5 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B59B5E41FDFCEEF0084DFC5 /* VideoToolbox.framework */; };
 		5B59B5E81FDFCF8D0084DFC5 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B59B5E71FDFCF8D0084DFC5 /* CoreVideo.framework */; };
-		5B8EE6501FE51AC700054FE6 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B8EE64F1FE51AC600054FE6 /* bundle */; };
+		5B96D09D1FE8C06A00CCC474 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B96D09C1FE8C06900CCC474 /* bundle */; };
 		5BA2647E1FE1280A00E201F2 /* libRCTGetuiModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC635DD1FDFCAE300D4046D /* libRCTGetuiModule.a */; };
 		5BEBDACE1FDE28FF000500E5 /* QBImagePicker.framework in enabled frameworks */ = {isa = PBXBuildFile; fileRef = 5BEBDACA1FDE28DD000500E5 /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5BEBDAD11FDE2B79000500E5 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F92E071A1FC56C86007EC8FC /* libRCTWeChat.a */; };
@@ -82,7 +82,6 @@
 		E8EDD1EBA14B461A8955107F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 473466189CE74075B9A5400E /* CoreLocation.framework */; };
 		E9866DB8626540AEBD84C2C7 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58F396FED4F04FFCB38BBC80 /* MaterialIcons.ttf */; };
 		F12BA6437F52465D8AACBCC7 /* libRCTGetuiModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 67C578E6B8C24EE9B0F15230 /* libRCTGetuiModule.a */; };
-		F753EDCEC0954E069AF498E0 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A23A05F871742AC9D6E1F83 /* libRCTOrientation.a */; };
 		F903E8331FC65ADD009B1964 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F903E8321FC65ACC009B1964 /* libRNVectorIcons.a */; };
 		F9050244CAF34F2A87C093C8 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 051D43CF7FC74A87A4AACA55 /* libRNDeviceInfo.a */; };
 		F92E07111FC56A81007EC8FC /* ios in Resources */ = {isa = PBXBuildFile; fileRef = F92E07101FC56A81007EC8FC /* ios */; };
@@ -511,7 +510,7 @@
 		5B59B5E31FDFCEEF0084DFC5 /* VideoSubscriberAccount.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoSubscriberAccount.framework; path = System/Library/Frameworks/VideoSubscriberAccount.framework; sourceTree = SDKROOT; };
 		5B59B5E41FDFCEEF0084DFC5 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		5B59B5E71FDFCF8D0084DFC5 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		5B8EE64F1FE51AC600054FE6 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
+		5B96D09C1FE8C06900CCC474 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		5BB4A5371FE39AC800615B13 /* AwesomeProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AwesomeProject.entitlements; path = AwesomeProject/AwesomeProject.entitlements; sourceTree = "<group>"; };
 		5BEBDACA1FDE28DD000500E5 /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BEBDACC1FDE28E7000500E5 /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -620,7 +619,6 @@
 				0DD08048FF62424491DFC979 /* UIKit.framework in Frameworks */,
 				0D39C82F3B7E4977B705D950 /* libRNShare.a in Frameworks */,
 				0DF737A2146D4406AC0B241E /* libRCTActionSheet.a in Frameworks */,
-				F753EDCEC0954E069AF498E0 /* libRCTOrientation.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -731,7 +729,7 @@
 		13B07FAE1A68108700A75B9A /* AwesomeProject */ = {
 			isa = PBXGroup;
 			children = (
-				5B8EE64F1FE51AC600054FE6 /* bundle */,
+				5B96D09C1FE8C06900CCC474 /* bundle */,
 				5BB4A5371FE39AC800615B13 /* AwesomeProject.entitlements */,
 				F92E07101FC56A81007EC8FC /* ios */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -1612,7 +1610,7 @@
 				A4CF656BAC24461C90CFED66 /* Foundation.ttf in Resources */,
 				4A15F94FDF0B46ADA5DDAC99 /* Ionicons.ttf in Resources */,
 				3F671D681DFD4CD6930A254A /* MaterialCommunityIcons.ttf in Resources */,
-				5B8EE6501FE51AC700054FE6 /* bundle in Resources */,
+				5B96D09D1FE8C06A00CCC474 /* bundle in Resources */,
 				E9866DB8626540AEBD84C2C7 /* MaterialIcons.ttf in Resources */,
 				7C3205E2D51047CF8B075E02 /* Octicons.ttf in Resources */,
 				3D0B6D6DB64F4F95BC1FA379 /* SimpleLineIcons.ttf in Resources */,
@@ -1867,6 +1865,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = YY7LP5FMG7;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)..",
@@ -1917,6 +1916,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YY7LP5FMG7;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)..",

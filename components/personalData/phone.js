@@ -53,7 +53,6 @@ export default class Phone extends Component{
     }
     componentDidMount(){
         user=this.props.navigation.state.params.user
-        console.log(user)
     }
     //发送验证码
     send(){

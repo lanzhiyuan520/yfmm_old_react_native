@@ -77,7 +77,6 @@ export default class Expertsdetails extends Component{
             action_num:0,
             font:false
         },(responseText)=>{
-            console.log(responseText)
             this.setState({
                 problem_list:responseText.data.reply_msg
             })

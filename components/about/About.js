@@ -25,7 +25,7 @@ export default class PersonalData extends Component{
             backgroundColor:"#fff"
         },
         headerRight: <View></View>,
-        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize: 30, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
+        headerLeft: <TouchableWithoutFeedback onPress={()=>{navigation.goBack()}}><FontAwesome name="angle-left" style={{fontSize:35, color: "#ff8080",marginLeft:10}}/></TouchableWithoutFeedback>,
     });
     constructor(props){
         super(props)

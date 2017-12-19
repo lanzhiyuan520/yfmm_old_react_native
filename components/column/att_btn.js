@@ -78,7 +78,6 @@ export default class RecColumn  extends Component {
                             if (error){
                                 console.log(error)
                             }else{
-                                console.log("存值成功!");
                                 if(this.props.ischange=='true'){
                                     // this.props.change()
                                     this.props.removeItem(this.props.id)
@@ -120,8 +119,6 @@ export default class RecColumn  extends Component {
             body:`param=${dataEncrypt.param}`,
         }).then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
-                console.log(reverse)
                 if( reverse == '1' ){
                     if(responseJson.code==0){
                         if (Platform.OS === "android") {

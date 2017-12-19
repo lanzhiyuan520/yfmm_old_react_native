@@ -154,7 +154,6 @@ export default class Login extends Component {
     }
     //获取用户状态回调
     user_information(responseText){
-        console.log("user_information")
         //存入用户状态
         AsyncStorage.setItem("user_data",JSON.stringify(responseText.data))
             .then(()=>{
@@ -200,19 +199,6 @@ export default class Login extends Component {
     }
     //微信登录成功回调
     wx_login_success(responseText){
-       /* var data = JSON.stringify(responseText)
-        var url = `http://test.www.ayi800.com/test/demodemo?content=${data}`
-        fetch(url)
-            .then((response) => {
-                return response.json();
-            })
-            .then((responseText) => {
-
-            })
-            .catch((error)=>{
-                console.log(error)
-                ToastAndroid.show('网络错误', ToastAndroid.SHORT)
-            })*/
         this.user_success(responseText)
     }
     //微信登录

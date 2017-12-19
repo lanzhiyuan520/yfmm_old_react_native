@@ -76,7 +76,6 @@ export default class Questions extends Component{
                 state:true
             })
         }
-        console.log(responseText)
     }
     for_image(item){
         item.map((data)=>{
